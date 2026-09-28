@@ -1,0 +1,91 @@
+.ndsg .ndsg-mode {
+	display: inline-block;
+	margin-inline-start: 10px;
+	padding: 3px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 600;
+	vertical-align: middle;
+}
+.ndsg .ndsg-mode.is-enforce { background: #fcf0f1; color: #8a2424; }
+.ndsg .ndsg-mode.is-monitor { background: #f0f6fc; color: #135e96; }
+
+.ndsg-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+	gap: 12px;
+	margin: 16px 0;
+}
+.ndsg-card {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 14px 16px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	text-decoration: none;
+	color: inherit;
+}
+.ndsg-card__value { font-size: 28px; font-weight: 600; line-height: 1.1; }
+.ndsg-card__label { color: #646970; }
+.ndsg-card.is-warn { border-inline-start: 4px solid #dba617; }
+.ndsg-card.is-alert { border-inline-start: 4px solid #d63638; }
+a.ndsg-card:hover { border-color: #2271b1; }
+
+.ndsg-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 10px;
+}
+.ndsg-updated { margin-inline-start: auto; color: #646970; }
+
+.ndsg-live tr.ndsg-multi td:first-child { box-shadow: inset 4px 0 0 #dba617; }
+[dir="rtl"] .ndsg-live tr.ndsg-multi td:first-child { box-shadow: inset -4px 0 0 #dba617; }
+.ndsg-live .dashicons { color: #646970; }
+.ndsg-viewing { max-width: 320px; overflow: hidden; text-overflow: ellipsis; }
+.ndsg-empty { text-align: center; color: #646970; padding: 24px !important; }
+.ndsg-spinner { float: none; }
+
+.ndsg-pill {
+	display: inline-block;
+	padding: 1px 8px;
+	border-radius: 999px;
+	background: #fcf9e8;
+	color: #6e4f00;
+	font-size: 12px;
+}
+.ndsg-pill.is-ok { background: #edfaef; color: #00450c; }
+
+.ndsg-score {
+	display: inline-block;
+	min-width: 36px;
+	padding: 2px 8px;
+	border-radius: 4px;
+	text-align: center;
+	font-weight: 600;
+}
+.ndsg-score.is-high { background: #d63638; color: #fff; }
+.ndsg-score.is-mid { background: #dba617; color: #1d2327; }
+.ndsg-score.is-low { background: #f0f0f1; }
+.ndsg-flags .column-score { width: 70px; }
+.ndsg-reasons { margin: 0; }
+.ndsg-reasons li { margin: 0; }
+.ndsg-actions { white-space: nowrap; }
+.ndsg-actions .button { margin-bottom: 4px; }
+
+.ndsg-panel {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+}
+.ndsg-inline-form { display: flex; align-items: center; gap: 6px; margin-inline-start: auto; }
+.ndsg-device-id { font-size: 11px; color: #646970; }
+.ndsg-check, .ndsg-radio { display: block; margin-bottom: 6px; }

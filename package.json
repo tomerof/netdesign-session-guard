@@ -1,0 +1,13 @@
+{
+  "name": "netdesign-session-guard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Netdesign Session Guard: free WordPress plugin (wordpress.org)",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "i18n": "docker exec -u 1000 -w /var/www/html/wp-content/plugins/netdesign-session-guard php-backend wp i18n make-pot . languages/netdesign-session-guard.pot --domain=netdesign-session-guard --exclude=scripts,docs,dist,node_modules && node scripts/i18n.mjs && docker exec -u 1000 -w /var/www/html/wp-content/plugins/netdesign-session-guard php-backend sh -c 'wp i18n make-mo languages && wp i18n make-php languages'"
+  },
+  "author": "Tomer Ofer <tomer@netdesign.media>",
+  "license": "GPL-2.0-or-later"
+}

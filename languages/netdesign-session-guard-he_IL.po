@@ -1,0 +1,519 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Netdesign Session Guard\n"
+"Language: he_IL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: netdesign-session-guard\n"
+
+#. Plugin Name of the plugin
+#: netdesign-session-guard.php
+#: src/Admin/Admin.php:162
+msgid "Netdesign Session Guard"
+msgstr "Netdesign Session Guard"
+
+#. Plugin URI of the plugin
+#: netdesign-session-guard.php
+msgid "https://github.com/tomerof/netdesign-session-guard"
+msgstr ""
+
+#. Description of the plugin
+#: netdesign-session-guard.php
+msgid "See who is signed in right now, detect accounts shared between several people, and limit how many devices an account can use at once."
+msgstr "ראו מי מחובר כרגע, זהו חשבונות שמשותפים בין כמה אנשים, והגבילו בכמה מכשירים ניתן להשתמש בחשבון בו-זמנית."
+
+#. Author of the plugin
+#: netdesign-session-guard.php
+msgid "Netdesign"
+msgstr "Netdesign"
+
+#. Author URI of the plugin
+#: netdesign-session-guard.php
+msgid "https://netdesign.media"
+msgstr ""
+
+#: src/Admin/Admin.php:35
+msgid "Session Guard"
+msgstr "Session Guard"
+
+#: src/Admin/Admin.php:37
+#: src/Admin/LivePage.php:15
+msgid "Live sessions"
+msgstr "חיבורים פעילים"
+
+#: src/Admin/Admin.php:37
+msgid "Live"
+msgstr "בזמן אמת"
+
+#: src/Admin/Admin.php:38
+#: src/Admin/FlagsPage.php:25
+#: src/Admin/LivePage.php:30
+msgid "Flagged accounts"
+msgstr "חשבונות חשודים"
+
+#: src/Admin/Admin.php:39
+#: src/Admin/Admin.php:150
+msgid "Settings"
+msgstr "הגדרות"
+
+#: src/Admin/Admin.php:42
+msgid "User sessions"
+msgstr "חיבורי משתמש"
+
+#: src/Admin/Admin.php:60
+msgid "Sign out"
+msgstr "ניתוק"
+
+#: src/Admin/Admin.php:61
+msgid "Sign this device out now?"
+msgstr "לנתק את המכשיר הזה עכשיו?"
+
+#: src/Admin/Admin.php:62
+msgid "Nobody is online right now."
+msgstr "אין משתמשים מחוברים כרגע."
+
+#. translators: %d: seconds
+#: src/Admin/Admin.php:64
+#, php-format
+msgid "%ds ago"
+msgstr "לפני %d שנ׳"
+
+#. translators: %d: minutes
+#: src/Admin/Admin.php:66
+#, php-format
+msgid "%dm ago"
+msgstr "לפני %d דק׳"
+
+#. translators: %d: number of devices
+#: src/Admin/Admin.php:68
+#, php-format
+msgid "%d devices"
+msgstr "%d מכשירים"
+
+#: src/Admin/Admin.php:69
+msgid "Could not load live data."
+msgstr "לא ניתן לטעון נתונים בזמן אמת."
+
+#: src/Admin/Admin.php:80
+msgid "Not allowed."
+msgstr "אין הרשאה."
+
+#: src/Admin/Admin.php:138
+msgid "Email sent."
+msgstr "האימייל נשלח."
+
+#: src/Admin/Admin.php:138
+msgid "Done."
+msgstr "בוצע."
+
+#: src/Admin/Admin.php:144
+msgid "Sessions"
+msgstr "חיבורים"
+
+#: src/Admin/Admin.php:163
+msgid "To protect accounts from unauthorized sharing, we record the devices, approximate location (IP address and country) and activity times of signed-in sessions. This data is kept for up to 90 days and is used only to detect accounts used by more than one person."
+msgstr "כדי להגן על חשבונות משיתוף לא מורשה, אנו מתעדים את המכשירים, המיקום המשוער (כתובת IP ומדינה) וזמני הפעילות של חיבורים לחשבון. המידע נשמר עד 90 יום ומשמש רק לזיהוי חשבונות שנעשה בהם שימוש על ידי יותר מאדם אחד."
+
+#: src/Admin/FlagsPage.php:26
+msgid "Accounts whose usage looks like more than one person. Scores add up from the rules below; review before acting."
+msgstr "חשבונות שהשימוש בהם נראה כמו של יותר מאדם אחד. הציון מצטבר מהכללים שלהלן; מומלץ לבדוק לפני שפועלים."
+
+#: src/Admin/FlagsPage.php:30
+msgid "Open"
+msgstr "פתוחים"
+
+#: src/Admin/FlagsPage.php:31
+msgid "Dismissed"
+msgstr "נדחו"
+
+#: src/Admin/FlagsPage.php:38
+msgid "Search users"
+msgstr "חיפוש משתמשים"
+
+#: src/Admin/FlagsPage.php:44
+#: src/Admin/LivePage.php:42
+msgid "User"
+msgstr "משתמש"
+
+#: src/Admin/FlagsPage.php:45
+msgid "Score"
+msgstr "ציון"
+
+#: src/Admin/FlagsPage.php:46
+msgid "Why"
+msgstr "סיבה"
+
+#: src/Admin/FlagsPage.php:47
+msgid "Updated"
+msgstr "עודכן"
+
+#: src/Admin/FlagsPage.php:48
+msgid "Actions"
+msgstr "פעולות"
+
+#: src/Admin/FlagsPage.php:53
+msgid "No flagged accounts."
+msgstr "אין חשבונות חשודים."
+
+#: src/Admin/FlagsPage.php:73
+msgid "Dismiss"
+msgstr "דחייה"
+
+#: src/Admin/FlagsPage.php:82
+#: src/Admin/UserPage.php:53
+msgid "Sign out everywhere"
+msgstr "ניתוק מכל המכשירים"
+
+#: src/Admin/FlagsPage.php:83
+#: src/Admin/UserPage.php:61
+msgid "Whitelist"
+msgstr "רשימה לבנה"
+
+#: src/Admin/FlagsPage.php:85
+msgid "Reopen"
+msgstr "פתיחה מחדש"
+
+#. translators: %d: max devices
+#: src/Admin/LivePage.php:20
+#, php-format
+msgid "Enforcing: %d device per user"
+msgid_plural "Enforcing: %d devices per user"
+msgstr[0] "אכיפה: מכשיר אחד למשתמש"
+msgstr[1] "אכיפה: %d מכשירים למשתמש"
+
+#: src/Admin/LivePage.php:21
+msgid "Monitor only"
+msgstr "ניטור בלבד"
+
+#: src/Admin/LivePage.php:27
+msgid "Users online"
+msgstr "משתמשים מחוברים"
+
+#: src/Admin/LivePage.php:28
+msgid "Active sessions"
+msgstr "חיבורים פעילים"
+
+#: src/Admin/LivePage.php:29
+msgid "Users on 2+ devices now"
+msgstr "משתמשים על 2+ מכשירים כעת"
+
+#: src/Admin/LivePage.php:34
+msgid "Filter by name, email, IP or page…"
+msgstr "סינון לפי שם, אימייל, IP או עמוד…"
+
+#: src/Admin/LivePage.php:35
+msgid "Only users on 2+ devices"
+msgstr "רק משתמשים על 2+ מכשירים"
+
+#: src/Admin/LivePage.php:43
+#: src/Admin/UserPage.php:85
+msgid "Device"
+msgstr "מכשיר"
+
+#: src/Admin/LivePage.php:44
+#: src/Admin/UserPage.php:86
+msgid "IP / country"
+msgstr "IP / מדינה"
+
+#: src/Admin/LivePage.php:45
+msgid "Viewing"
+msgstr "צופה ב־"
+
+#: src/Admin/LivePage.php:46
+#: src/Admin/UserPage.php:87
+msgid "Last seen"
+msgstr "נראה לאחרונה"
+
+#: src/Admin/SettingsPage.php:30
+#: src/Admin/UserPage.php:30
+msgid "Device limit"
+msgstr "הגבלת מכשירים"
+
+#: src/Admin/SettingsPage.php:31
+msgid "Detection"
+msgstr "זיהוי"
+
+#: src/Admin/SettingsPage.php:32
+msgid "Advanced"
+msgstr "מתקדם"
+
+#: src/Admin/SettingsPage.php:53
+msgid "Mode"
+msgstr "מצב"
+
+#: src/Admin/SettingsPage.php:54
+msgid "Monitor only: track and flag, never sign anyone out"
+msgstr "ניטור בלבד: מעקב וסימון, ללא ניתוק משתמשים"
+
+#: src/Admin/SettingsPage.php:55
+msgid "Enforce: when a user signs in on a new device beyond the limit, the oldest device is signed out immediately"
+msgstr "אכיפה: כשמשתמש מתחבר ממכשיר חדש מעבר למגבלה, המכשיר הישן ביותר מנותק מיד"
+
+#: src/Admin/SettingsPage.php:57
+msgid "Devices allowed at once"
+msgstr "מספר מכשירים מותר בו־זמנית"
+
+#: src/Admin/SettingsPage.php:57
+msgid "Tabs in the same browser count as one device."
+msgstr "לשוניות באותו דפדפן נחשבות כמכשיר אחד."
+
+#: src/Admin/SettingsPage.php:58
+msgid "Roles without limits"
+msgstr "תפקידים ללא הגבלה"
+
+#: src/Admin/SettingsPage.php:58
+msgid "Not limited and never flagged."
+msgstr "ללא הגבלה ולא מסומנים כחשודים."
+
+#: src/Admin/SettingsPage.php:59
+msgid "Message shown to the signed-out device"
+msgstr "הודעה שתוצג במכשיר שנותק"
+
+#: src/Admin/SettingsPage.php:60
+msgid "Send signed-out device to"
+msgstr "העברת המכשיר שנותק אל"
+
+#: src/Admin/SettingsPage.php:60
+msgid "Empty = login page."
+msgstr "ריק = עמוד ההתחברות."
+
+#: src/Admin/SettingsPage.php:64
+msgid "Look back (days)"
+msgstr "תקופת בדיקה (ימים)"
+
+#: src/Admin/SettingsPage.php:65
+#: src/Detection/Detector.php:102
+msgid "Devices online at the same time"
+msgstr "מכשירים מחוברים בו־זמנית"
+
+#: src/Admin/SettingsPage.php:65
+msgid "+40 points"
+msgstr "‎+40 נקודות"
+
+#: src/Admin/SettingsPage.php:66
+msgid "Different devices in the period"
+msgstr "מכשירים שונים בתקופה"
+
+#: src/Admin/SettingsPage.php:66
+msgid "+30 points, +5 per extra device"
+msgstr "‎+30 נקודות, ‎+5 לכל מכשיר נוסף"
+
+#: src/Admin/SettingsPage.php:67
+msgid "Different networks in the period"
+msgstr "רשתות שונות בתקופה"
+
+#: src/Admin/SettingsPage.php:67
+msgid "+20 points. A network is an IP range (/24), so a changing home IP counts once."
+msgstr "‎+20 נקודות. רשת היא טווח כתובות (‎/24), כך ש־IP ביתי שמשתנה נספר פעם אחת."
+
+#: src/Admin/SettingsPage.php:68
+msgid "Different countries in the period"
+msgstr "מדינות שונות בתקופה"
+
+#: src/Admin/SettingsPage.php:68
+msgid "+30 points. Needs a country header from Cloudflare or the server."
+msgstr "‎+30 נקודות. דורש כותרת מדינה מ־Cloudflare או מהשרת."
+
+#: src/Admin/SettingsPage.php:69
+#: src/Detection/Detector.php:106
+msgid "Devices signed out by the limit"
+msgstr "מכשירים שנותקו בגלל המגבלה"
+
+#: src/Admin/SettingsPage.php:69
+msgid "+30 points. Frequent swapping between devices is a strong sign of sharing."
+msgstr "‎+30 נקודות. החלפה תכופה בין מכשירים היא סימן חזק לשיתוף."
+
+#: src/Admin/SettingsPage.php:70
+msgid "Flag accounts scoring at least"
+msgstr "סימון חשבונות עם ציון של לפחות"
+
+#: src/Admin/SettingsPage.php:71
+msgid "After dismissing, don't re-flag for (days)"
+msgstr "אחרי דחייה, לא לסמן שוב במשך (ימים)"
+
+#: src/Admin/SettingsPage.php:75
+msgid "Heartbeat every (seconds)"
+msgstr "בדיקת חיבור כל (שניות)"
+
+#: src/Admin/SettingsPage.php:75
+msgid "How fast a signed-out device notices. Only runs while the tab is visible."
+msgstr "כמה מהר מכשיר שנותק מגלה זאת. פועל רק כשהלשונית גלויה."
+
+#: src/Admin/SettingsPage.php:76
+msgid "Online if seen within (seconds)"
+msgstr "נחשב מחובר אם נראה בתוך (שניות)"
+
+#: src/Admin/SettingsPage.php:77
+msgid "Client IP from"
+msgstr "כתובת IP של הלקוח מתוך"
+
+#: src/Admin/SettingsPage.php:78
+msgid "Automatic (recommended): detects Cloudflare and local proxies"
+msgstr "אוטומטי (מומלץ): מזהה Cloudflare ופרוקסי מקומי"
+
+#: src/Admin/SettingsPage.php:83
+msgid "Automatic trusts a forwarding header only when the request really comes from Cloudflare or a local proxy, so visitors cannot fake their IP."
+msgstr "במצב אוטומטי כותרת העברה נחשבת אמינה רק כשהבקשה באמת מגיעה מ־Cloudflare או מפרוקסי מקומי, כך שמבקרים לא יכולים לזייף את כתובת ה־IP שלהם."
+
+#: src/Admin/SettingsPage.php:84
+msgid "Store anonymized IPs"
+msgstr "שמירת כתובות IP מוסתרות"
+
+#: src/Admin/SettingsPage.php:85
+msgid "Keep session history for (days)"
+msgstr "שמירת היסטוריית חיבורים למשך (ימים)"
+
+#: src/Admin/SettingsPage.php:98
+msgid "Session Guard settings"
+msgstr "הגדרות Session Guard"
+
+#: src/Admin/SettingsPage.php:133
+msgid "Session Guard Pro adds email alerts, per-user and per-LearnDash-group device limits, LearnDash course tracking and a faster heartbeat."
+msgstr "Session Guard Pro מוסיף התראות במייל, הגבלת מכשירים לפי משתמש ולפי קבוצת LearnDash, מעקב אחר קורסי LearnDash ודופק מהיר יותר."
+
+#: src/Admin/SettingsPage.php:134
+msgid "Learn more"
+msgstr "מידע נוסף"
+
+#: src/Admin/SettingsPage.php:147
+msgid "direct connection (REMOTE_ADDR)"
+msgstr "חיבור ישיר (REMOTE_ADDR)"
+
+#: src/Admin/SettingsPage.php:148
+msgid "Cloudflare (CF-Connecting-IP)"
+msgstr "Cloudflare (CF-Connecting-IP)"
+
+#: src/Admin/SettingsPage.php:149
+msgid "Cloudflare (real IP restored by the web server)"
+msgstr "Cloudflare (כתובת ה־IP האמיתית שוחזרה על ידי שרת האינטרנט)"
+
+#: src/Admin/SettingsPage.php:150
+msgid "local proxy (X-Forwarded-For)"
+msgstr "פרוקסי מקומי (X-Forwarded-For)"
+
+#: src/Admin/SettingsPage.php:151
+msgid "local proxy (X-Real-IP)"
+msgstr "פרוקסי מקומי (X-Real-IP)"
+
+#. translators: %s: detected source
+#: src/Admin/SettingsPage.php:157
+#, php-format
+msgid "Detected: %s"
+msgstr "זוהה: %s"
+
+#: src/Admin/SettingsPage.php:158
+msgid "Your IP as seen by Automatic:"
+msgstr "כתובת ה־IP שלך לפי המצב האוטומטי:"
+
+#: src/Admin/SettingsPage.php:185
+msgid "Enabled"
+msgstr "פעיל"
+
+#: src/Admin/UserPage.php:17
+msgid "User not found."
+msgstr "המשתמש לא נמצא."
+
+#: src/Admin/UserPage.php:29
+msgid "Signed out"
+msgstr "התנתק"
+
+#: src/Admin/UserPage.php:31
+msgid "Signed out by admin"
+msgstr "נותק על ידי מנהל"
+
+#: src/Admin/UserPage.php:32
+msgid "Expired"
+msgstr "פג תוקף"
+
+#: src/Admin/UserPage.php:33
+msgid "Password reset"
+msgstr "איפוס סיסמה"
+
+#: src/Admin/UserPage.php:38
+msgid "Edit user"
+msgstr "עריכת משתמש"
+
+#. translators: %d: days
+#: src/Admin/UserPage.php:43
+#, php-format
+msgid "Devices, last %d days"
+msgstr "מכשירים, %d ימים אחרונים"
+
+#: src/Admin/UserPage.php:44
+msgid "Networks"
+msgstr "רשתות"
+
+#: src/Admin/UserPage.php:45
+msgid "Countries"
+msgstr "מדינות"
+
+#: src/Admin/UserPage.php:46
+msgid "Logins"
+msgstr "התחברויות"
+
+#: src/Admin/UserPage.php:55
+msgid "Dismiss flag"
+msgstr "דחיית הסימון"
+
+#: src/Admin/UserPage.php:58
+msgid "Remove from whitelist"
+msgstr "הסרה מהרשימה הלבנה"
+
+#: src/Admin/UserPage.php:59
+msgid "Whitelisted: no limits, no flags"
+msgstr "ברשימה הלבנה: ללא הגבלות וללא סימונים"
+
+#: src/Admin/UserPage.php:76
+msgid "Courses"
+msgstr "קורסים"
+
+#: src/Admin/UserPage.php:80
+msgid "Session history"
+msgstr "היסטוריית חיבורים"
+
+#: src/Admin/UserPage.php:84
+msgid "Signed in"
+msgstr "התחבר"
+
+#: src/Admin/UserPage.php:88
+msgid "Status"
+msgstr "סטטוס"
+
+#: src/Admin/UserPage.php:93
+msgid "No sessions recorded yet."
+msgstr "עדיין לא נרשמו חיבורים."
+
+#: src/Admin/UserPage.php:106
+msgid "Active"
+msgstr "פעיל"
+
+#: src/Detection/Detector.php:103
+msgid "Different devices"
+msgstr "מכשירים שונים"
+
+#: src/Detection/Detector.php:104
+msgid "Different networks"
+msgstr "רשתות שונות"
+
+#: src/Detection/Detector.php:105
+msgid "Different countries"
+msgstr "מדינות שונות"
+
+#: src/Policy/Settings.php:31
+msgid "You have been signed out because your account was signed in on another device."
+msgstr "נותקת מהאתר כי החשבון שלך התחבר ממכשיר אחר."
+
+#: src/Rest/Controller.php:110
+msgid "Session not found or already ended."
+msgstr "החיבור לא נמצא או שכבר הסתיים."
+
+#: src/Session/Device.php:117
+msgid "Unknown browser"
+msgstr "דפדפן לא מזוהה"
+
+#: src/Session/Tracker.php:113
+#: src/Session/Tracker.php:143
+msgid "OK"
+msgstr "אישור"
