@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.5
+- Heartbeat falls back to the REST endpoint (`cfg.fallback`) when the configured URL fails (HTTP error, not JSON, network error), and remembers it per site (`localStorage` `ndsg_hb_fallback`). Found on ease-it production: Cloudways' nginx returns 403 for PHP files in `wp-content/plugins`, so Pro's `ping.php` never received a heartbeat and nobody appeared online.
+- On https pages the heartbeat URLs are forced to https (no mixed content).
+
 ## 1.3.4
 - `blocked` moved from `OPEN_STATUSES` to `CLOSED_STATUSES`: "Caught and blocked" leaves *All open* like "Checked, OK" (asked for by the ease-it owner). Only overlaps after the block count toward a new flag. Blocked rows keep "Sign out everywhere".
 

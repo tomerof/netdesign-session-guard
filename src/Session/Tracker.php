@@ -140,6 +140,8 @@ class Tracker {
 
 		$config = [
 			'url'      => apply_filters( 'ndsg_heartbeat_url', rest_url( 'ndsg/v1/ping' ) ),
+			// Used by the browser if the URL above fails (e.g. a host blocking PHP files in plugins).
+			'fallback' => rest_url( 'ndsg/v1/ping' ),
 			'key'      => Repository::ping_key( hash( 'sha256', $token ) ),
 			'interval' => (int) Settings::get( 'ping_interval' ),
 			'monitor'  => $monitoring ? 1 : 0,

@@ -4,6 +4,8 @@
  * video in it, cfg.video), and immediately when it regains focus, so an idle
  * or hidden tab costs nothing. On revocation it shows a notice and leaves the
  * page. Add-ons can call window.ndsgHeartbeat.ping() to send one right away.
+ * If the endpoint fails (blocked, missing, not JSON), it switches to the REST
+ * fallback (cfg.fallback) and remembers that for this site.
  */
 (function () {
 	'use strict';
@@ -17,6 +19,24 @@
 	var lastSent = 0;
 	// Identifies this page view, so add-ons can tell open tabs of one session apart.
 	var view = Math.random().toString(36).slice(2, 12);
+
+	// An https page can't call an http address (mixed content).
+	if (location.protocol === 'https:') {
+		cfg.url = cfg.url.replace(/^http:/, 'https:');
+		if (cfg.fallback) cfg.fallback = cfg.fallback.replace(/^http:/, 'https:');
+	}
+	// The fast endpoint was blocked earlier on this site (e.g. a host that
+	// forbids PHP files in plugins): go straight to the REST fallback.
+	try {
+		if (cfg.fallback && window.localStorage.getItem('ndsg_hb_fallback') === cfg.url) cfg.url = cfg.fallback;
+	} catch (e) { /* storage unavailable */ }
+
+	function useFallback() {
+		if (!cfg.fallback || cfg.url === cfg.fallback) return false;
+		try { window.localStorage.setItem('ndsg_hb_fallback', cfg.url); } catch (e) { /* ignore */ }
+		cfg.url = cfg.fallback;
+		return true;
+	}
 
 	function send() {
 		if (stopped || busy || (document.visibilityState !== 'visible' && !cfg.video)) return;
@@ -35,11 +55,27 @@
 		body.set('w', view);
 		if (cfg.monitor === 0) body.set('m', '0');
 
+		var retry = false;
 		fetch(cfg.url, { method: 'POST', body: body, credentials: 'same-origin', cache: 'no-store' })
-			.then(function (r) { return r.ok ? r.json() : null; })
-			.then(function (d) { if (d && d.s === 'revoked') revoked(d.r); })
-			.catch(function () {})
-			.then(function () { busy = false; });
+			.then(function (r) {
+				if (!r.ok) throw new Error('status ' + r.status);
+				return r.json();
+			})
+			.then(function (d) {
+				if (!d || typeof d.s !== 'string') throw new Error('bad response');
+				if (d.s === 'revoked') revoked(d.r);
+			})
+			.catch(function () {
+				// Blocked, missing or not JSON: switch to the REST endpoint and try again now.
+				retry = useFallback();
+			})
+			.then(function () {
+				busy = false;
+				if (retry) {
+					lastSent = 0;
+					send();
+				}
+			});
 	}
 
 	function revoked(reason) {

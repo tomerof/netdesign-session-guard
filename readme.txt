@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,9 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 4. Settings: device limit.
 
 == Changelog ==
+
+= 1.3.5 =
+* The heartbeat switches to the REST endpoint by itself when a faster endpoint is blocked by the host, and always uses https on https pages.
 
 = 1.3.4 =
 * "Caught and blocked" closes the case: it leaves the "All open" tab, like "Checked, OK".
