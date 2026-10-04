@@ -15,6 +15,8 @@
 	var busy = false;
 	var stopped = false;
 	var lastSent = 0;
+	// Identifies this page view, so add-ons can tell open tabs of one session apart.
+	var view = Math.random().toString(36).slice(2, 12);
 
 	function send() {
 		if (stopped || busy || (document.visibilityState !== 'visible' && !cfg.video)) return;
@@ -30,6 +32,7 @@
 		body.set('c', cfg.course || 0);
 		body.set('i', cfg.interval || 30);
 		body.set('v', cfg.video || '');
+		body.set('w', view);
 
 		fetch(cfg.url, { method: 'POST', body: body, credentials: 'same-origin', cache: 'no-store' })
 			.then(function (r) { return r.ok ? r.json() : null; })

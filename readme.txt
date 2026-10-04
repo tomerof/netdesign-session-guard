@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,9 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 4. Settings: device limit.
 
 == Changelog ==
+
+= 1.2.1 =
+* The heartbeat identifies each page view, so add-ons can tell open tabs apart.
 
 = 1.2.0 =
 * Whitelisted users tab under Flagged accounts.

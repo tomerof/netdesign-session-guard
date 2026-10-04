@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.1
+- Heartbeat sends `w`, a random id per page view, so add-ons (Pro's viewing trail) can tell open tabs of one session apart.
+
 ## 1.2.0
 - **Whitelisted users** tab under Flagged accounts (users with `ndsg_exempt`), with "Remove from whitelist".
 - `Ping\Handler::handle()` takes an optional `$after` callback; the REST heartbeat fires `ndsg_heartbeat` ($row, $now, $input). Pro records its viewing trail there.
