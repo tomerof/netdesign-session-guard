@@ -177,7 +177,7 @@ class FlagsPage {
 						</td>
 						<td class="ndsg-actions">
 							<a class="button button-small" href="<?php echo esc_url( $user ); ?>"><?php esc_html_e( 'Open case', 'netdesign-session-guard' ); ?></a>
-							<?php if ( FlagRepository::is_open( $f->status ) ) : ?>
+							<?php if ( FlagRepository::is_open( $f->status ) || 'blocked' === $f->status ) : ?>
 								<?php
 								/**
 								 * Extra buttons for an open flag (Session Guard Pro adds "Email user").

@@ -24,7 +24,7 @@ Data comes from `GET /wp-json/ndsg/v1/live` (up to 500 sessions).
 **Session Guard → Flagged accounts**
 
 - **How to read the risk levels?** A box with each level and what it means on this site (the video-based levels appear with Pro).
-- **Tabs with counts:** *All open* (default), *New*, *Needs follow-up*, *Caught and blocked*, *Checked, OK*, and *Whitelisted users*. A user search, and 30 per page. Sorted by risk level.
+- **Tabs with counts:** *All open* (default: new and needs follow-up), *New*, *Needs follow-up*, *Caught and blocked*, *Checked, OK*, and *Excluded users*. A user search, and 30 per page. Sorted by risk level.
 - **Columns:**
   - **Risk:** the highest level in the case, and "Flagged N times before" when the user had earlier flags.
   - **User:** name, email, phone (WooCommerce billing phone, if any), user ID, and the latest note.

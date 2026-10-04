@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.4
+- `blocked` moved from `OPEN_STATUSES` to `CLOSED_STATUSES`: "Caught and blocked" leaves *All open* like "Checked, OK" (asked for by the ease-it owner). Only overlaps after the block count toward a new flag. Blocked rows keep "Sign out everywhere".
+
 ## 1.3.3
 - `dismiss_days` accepts 0 (no quiet period); it was saved as 1.
 - After "Checked, OK", only overlaps that started after the check count toward a new flag (`FlagRepository::closed_at()`).

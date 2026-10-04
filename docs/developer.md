@@ -68,7 +68,7 @@ Indexes: `(user_id, ended_at)`, `last_seen`, `created_at`.
 
 `id`, `user_id`, `level` (risk level 1–4), `score` (level × 25, kept for compatibility), `reasons` (JSON: `count`, `total`, `longest`, `top` {overlap_id, level, facts}, optional `repeat`), `status`, `created_at`, `updated_at`, `notified_at`.
 
-`status` is the handling status: `new`, `follow_up`, `blocked` (open: `FlagRepository::OPEN_STATUSES`) or `resolved` ("Checked, OK"; closed). DB v3 turned `open` into `new`; v4 turned `dismissed` into `resolved` and gave points-model flags level 1.
+`status` is the handling status: `new`, `follow_up` (open: `FlagRepository::OPEN_STATUSES`) or `blocked`, `resolved` ("Checked, OK") (closed). Before 1.3.4 `blocked` counted as open. DB v3 turned `open` into `new`; v4 turned `dismissed` into `resolved` and gave points-model flags level 1.
 
 ### `{prefix}ndsg_overlaps`
 

@@ -11,11 +11,12 @@ defined( 'ABSPATH' ) || exit;
 class FlagRepository {
 
 	/**
-	 * Handling statuses. The first three are "open": the case is still being
-	 * handled. "dismissed" is from before 1.3.0 (now "resolved").
+	 * Handling statuses. "Open" ones are still being handled and appear under
+	 * "All open"; a case caught and blocked, or checked and OK, is closed.
+	 * "dismissed" is from before 1.3.0 (now "resolved").
 	 */
-	const OPEN_STATUSES   = [ 'new', 'follow_up', 'blocked' ];
-	const CLOSED_STATUSES = [ 'resolved', 'dismissed' ];
+	const OPEN_STATUSES   = [ 'new', 'follow_up' ];
+	const CLOSED_STATUSES = [ 'blocked', 'resolved', 'dismissed' ];
 
 	public static function statuses() {
 		return [
