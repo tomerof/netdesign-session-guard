@@ -1,8 +1,9 @@
 /**
  * Netdesign Session Guard heartbeat.
- * Pings only while the tab is visible, and immediately when it regains focus,
- * so an idle or hidden tab costs nothing. On revocation it shows a notice and
- * leaves the page.
+ * Pings only while the tab is visible (or while an add-on reports a playing
+ * video in it, cfg.video), and immediately when it regains focus, so an idle
+ * or hidden tab costs nothing. On revocation it shows a notice and leaves the
+ * page. Add-ons can call window.ndsgHeartbeat.ping() to send one right away.
  */
 (function () {
 	'use strict';
@@ -16,7 +17,7 @@
 	var lastSent = 0;
 
 	function send() {
-		if (stopped || busy || document.visibilityState !== 'visible') return;
+		if (stopped || busy || (document.visibilityState !== 'visible' && !cfg.video)) return;
 		var now = Date.now();
 		if (now - lastSent < MIN_GAP) return;
 		lastSent = now;
@@ -28,6 +29,7 @@
 		body.set('p', cfg.post || 0);
 		body.set('c', cfg.course || 0);
 		body.set('i', cfg.interval || 30);
+		body.set('v', cfg.video || '');
 
 		fetch(cfg.url, { method: 'POST', body: body, credentials: 'same-origin', cache: 'no-store' })
 			.then(function (r) { return r.ok ? r.json() : null; })
@@ -78,6 +80,11 @@
 	function go() {
 		location.href = cfg.redirect;
 	}
+
+	cfg.ping = function () {
+		lastSent = 0;
+		send();
+	};
 
 	setTimeout(send, 2000);
 	setInterval(send, Math.max(10, cfg.interval) * 1000);

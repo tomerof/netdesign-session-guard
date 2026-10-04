@@ -4,6 +4,7 @@ namespace NetDesign\SessionGuard\Admin;
 use NetDesign\SessionGuard\Detection\Detector;
 use NetDesign\SessionGuard\Detection\FlagRepository;
 use NetDesign\SessionGuard\Detection\NoteRepository;
+use NetDesign\SessionGuard\Policy\Enforcer;
 use NetDesign\SessionGuard\Policy\Settings;
 
 defined( 'ABSPATH' ) || exit;
@@ -16,19 +17,32 @@ class FlagsPage {
 		$statuses = FlagRepository::statuses();
 		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- list filters and paging, read-only.
 		$status = sanitize_key( wp_unslash( $_GET['status'] ?? '' ) );
-		$status = isset( $statuses[ $status ] ) ? $status : 'open';
+		$status = isset( $statuses[ $status ] ) || 'whitelisted' === $status ? $status : 'open';
 		$paged  = max( 1, absint( wp_unslash( $_GET['paged'] ?? 1 ) ) );
 		$search = sanitize_text_field( wp_unslash( $_GET['s'] ?? '' ) );
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
-		list( $rows, $total ) = FlagRepository::paginate( $status, self::PER_PAGE, $paged, $search );
+		if ( 'whitelisted' === $status ) {
+			$whitelist = new \WP_User_Query( [
+				'meta_key' => Enforcer::META_EXEMPT, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- small, admin-only list.
+				'search'   => '' !== $search ? '*' . $search . '*' : '',
+				'number'   => self::PER_PAGE,
+				'paged'    => $paged,
+				'orderby'  => 'display_name',
+			] );
+			$rows  = $whitelist->get_results();
+			$total = $whitelist->get_total();
+		} else {
+			list( $rows, $total ) = FlagRepository::paginate( $status, self::PER_PAGE, $paged, $search );
+		}
 		$counts = FlagRepository::counts();
-		$notes  = NoteRepository::summary_for_users( wp_list_pluck( $rows, 'user_id' ) );
+		$notes  = NoteRepository::summary_for_users( 'whitelisted' === $status ? wp_list_pluck( $rows, 'ID' ) : wp_list_pluck( $rows, 'user_id' ) );
 		$base   = admin_url( 'admin.php?page=ndsg-flags' );
 		$tabs   = [ 'open' => [ __( 'All open', 'netdesign-session-guard' ), FlagRepository::count_open() ] ];
 		foreach ( $statuses as $key => $label ) {
 			$tabs[ $key ] = [ $label, $counts[ $key ] ?? 0 ];
 		}
+		$tabs['whitelisted'] = [ __( 'Whitelisted users', 'netdesign-session-guard' ), self::count_whitelisted() ];
 		?>
 		<div class="wrap ndsg">
 			<h1><?php esc_html_e( 'Flagged accounts', 'netdesign-session-guard' ); ?></h1>
@@ -56,6 +70,34 @@ class FlagsPage {
 				<button class="button"><?php esc_html_e( 'Search users', 'netdesign-session-guard' ); ?></button>
 			</form>
 
+			<?php if ( 'whitelisted' === $status ) : ?>
+				<p class="description"><?php esc_html_e( 'Whitelisted users are never limited and never flagged. Users with an exempt role (Settings → Device limit) are not listed here.', 'netdesign-session-guard' ); ?></p>
+				<table class="wp-list-table widefat striped">
+					<thead>
+						<tr>
+							<th><?php esc_html_e( 'User', 'netdesign-session-guard' ); ?></th>
+							<th><?php esc_html_e( 'Notes', 'netdesign-session-guard' ); ?></th>
+							<th><?php esc_html_e( 'Actions', 'netdesign-session-guard' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php if ( ! $rows ) : ?>
+						<tr><td colspan="3" class="ndsg-empty"><?php esc_html_e( 'No whitelisted users.', 'netdesign-session-guard' ); ?></td></tr>
+					<?php endif; ?>
+					<?php foreach ( $rows as $u ) : ?>
+						<?php $note = $notes[ (int) $u->ID ] ?? null; ?>
+						<tr>
+							<td>
+								<a href="<?php echo esc_url( admin_url( 'admin.php?page=ndsg-user&user_id=' . (int) $u->ID ) ); ?>"><strong><?php echo esc_html( $u->display_name ); ?></strong></a><br>
+								<span class="description"><?php echo esc_html( $u->user_email ); ?></span>
+							</td>
+							<td><?php echo $note ? esc_html( wp_trim_words( $note->note, 16 ) ) : '—'; ?></td>
+							<td><a class="button button-small" href="<?php echo esc_url( Admin::action_url( 'unexempt', [ 'user_id' => $u->ID ] ) ); ?>"><?php esc_html_e( 'Remove from whitelist', 'netdesign-session-guard' ); ?></a></td>
+						</tr>
+					<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php else : ?>
 			<table class="wp-list-table widefat striped ndsg-flags">
 				<thead>
 					<tr>
@@ -115,6 +157,7 @@ class FlagsPage {
 				<?php endforeach; ?>
 				</tbody>
 			</table>
+			<?php endif; ?>
 
 			<div class="tablenav"><div class="tablenav-pages">
 				<?php
@@ -128,6 +171,16 @@ class FlagsPage {
 			</div></div>
 		</div>
 		<?php
+	}
+
+	public static function count_whitelisted() {
+		$q = new \WP_User_Query( [
+			'meta_key'    => Enforcer::META_EXEMPT, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- small, admin-only count.
+			'number'      => 1,
+			'fields'      => 'ID',
+			'count_total' => true,
+		] );
+		return (int) $q->get_total();
 	}
 
 	public static function duration( $seconds ) {

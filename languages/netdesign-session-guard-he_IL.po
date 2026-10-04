@@ -48,7 +48,7 @@ msgid "Live"
 msgstr "בזמן אמת"
 
 #: src/Admin/Admin.php:40
-#: src/Admin/FlagsPage.php:34
+#: src/Admin/FlagsPage.php:48
 #: src/Admin/LivePage.php:30
 msgid "Flagged accounts"
 msgstr "חשבונות חשודים"
@@ -132,63 +132,87 @@ msgstr "חיבורים"
 msgid "To protect accounts from unauthorized sharing, we record the devices, approximate location (IP address and country) and activity times of signed-in sessions. This data is kept for up to 90 days and is used only to detect accounts used by more than one person."
 msgstr "כדי להגן על חשבונות משיתוף לא מורשה, אנו מתעדים את המכשירים, המיקום המשוער (כתובת IP ומדינה) וזמני הפעילות של חיבורים לחשבון. המידע נשמר עד 90 יום ומשמש רק לזיהוי חשבונות שנעשה בהם שימוש על ידי יותר מאדם אחד."
 
-#: src/Admin/FlagsPage.php:28
+#: src/Admin/FlagsPage.php:41
 msgid "All open"
 msgstr "כל הפתוחים"
 
-#: src/Admin/FlagsPage.php:35
+#: src/Admin/FlagsPage.php:45
+msgid "Whitelisted users"
+msgstr "משתמשים ברשימה לבנה"
+
+#: src/Admin/FlagsPage.php:49
 msgid "Accounts whose usage looks like more than one person. Review each one and set its handling status."
 msgstr "חשבונות שהשימוש בהם נראה כמו של יותר מאדם אחד. בדקו כל אחד ועדכנו את סטטוס הטיפול."
 
-#: src/Admin/FlagsPage.php:39
+#: src/Admin/FlagsPage.php:53
 msgid "How are accounts flagged?"
 msgstr "איך חשבון מסומן כחשוד?"
 
-#: src/Admin/FlagsPage.php:40
+#: src/Admin/FlagsPage.php:54
 msgid "Every account gets points for signs of sharing: devices online at the same time, time two devices were active together, many different devices, internet connections or countries, and devices signed out by the limit. Accounts that reach the flag score are listed here. Nobody is signed out because of a flag."
 msgstr "כל חשבון מקבל נקודות על סימנים לשיתוף: מכשירים שמחוברים באותו רגע, זמן שבו שני מכשירים היו פעילים יחד, הרבה מכשירים, חיבורי אינטרנט או מדינות שונים, ומכשירים שנותקו על ידי ההגבלה. חשבונות שמגיעים לציון הסימון מופיעים כאן. סימון לא מנתק אף אחד."
 
 #. translators: 1: flag score, 2: days
-#: src/Admin/FlagsPage.php:42
+#: src/Admin/FlagsPage.php:56
 #, php-format
 msgid "Flagged from %1$d points. Counted over the last %2$d days."
 msgstr "מסומן מ-%1$d נקודות. נספר על פני %2$d הימים האחרונים."
 
-#: src/Admin/FlagsPage.php:43
+#: src/Admin/FlagsPage.php:57
 msgid "Change the rules"
 msgstr "שינוי הכללים"
 
-#: src/Admin/FlagsPage.php:56
+#: src/Admin/FlagsPage.php:70
 msgid "Search users"
 msgstr "חיפוש משתמשים"
 
-#: src/Admin/FlagsPage.php:62
+#: src/Admin/FlagsPage.php:74
+msgid "Whitelisted users are never limited and never flagged. Users with an exempt role (Settings → Device limit) are not listed here."
+msgstr "משתמשים ברשימה הלבנה אף פעם לא מוגבלים ולא מסומנים. משתמשים עם תפקיד פטור (הגדרות ← הגבלת מכשירים) לא מופיעים כאן."
+
+#: src/Admin/FlagsPage.php:78
+#: src/Admin/FlagsPage.php:104
 #: src/Admin/LivePage.php:42
 msgid "User"
 msgstr "משתמש"
 
-#: src/Admin/FlagsPage.php:63
-msgid "Score"
-msgstr "ציון"
+#: src/Admin/FlagsPage.php:79
+#: src/Admin/UserPage.php:100
+msgid "Notes"
+msgstr "הערות"
 
-#: src/Admin/FlagsPage.php:64
-msgid "Why"
-msgstr "סיבה"
-
-#: src/Admin/FlagsPage.php:65
-msgid "Handling"
-msgstr "טיפול"
-
-#: src/Admin/FlagsPage.php:66
+#: src/Admin/FlagsPage.php:80
+#: src/Admin/FlagsPage.php:108
 msgid "Actions"
 msgstr "פעולות"
 
-#: src/Admin/FlagsPage.php:71
+#: src/Admin/FlagsPage.php:85
+msgid "No whitelisted users."
+msgstr "אין משתמשים ברשימה הלבנה."
+
+#: src/Admin/FlagsPage.php:95
+#: src/Admin/UserPage.php:78
+msgid "Remove from whitelist"
+msgstr "הסרה מהרשימה הלבנה"
+
+#: src/Admin/FlagsPage.php:105
+msgid "Score"
+msgstr "ציון"
+
+#: src/Admin/FlagsPage.php:106
+msgid "Why"
+msgstr "סיבה"
+
+#: src/Admin/FlagsPage.php:107
+msgid "Handling"
+msgstr "טיפול"
+
+#: src/Admin/FlagsPage.php:113
 msgid "No flagged accounts."
 msgstr "אין חשבונות חשודים."
 
 #. translators: %d: number of notes
-#: src/Admin/FlagsPage.php:85
+#: src/Admin/FlagsPage.php:127
 #, php-format
 msgid "%d note"
 msgid_plural "%d notes"
@@ -196,41 +220,41 @@ msgstr[0] "הערה אחת"
 msgstr[1] "%d הערות"
 
 #. translators: %s: date and time
-#: src/Admin/FlagsPage.php:96
+#: src/Admin/FlagsPage.php:138
 #: src/Admin/UserPage.php:63
 #, php-format
 msgid "Flagged %s"
 msgstr "סומן %s"
 
-#: src/Admin/FlagsPage.php:109
+#: src/Admin/FlagsPage.php:151
 #: src/Admin/UserPage.php:76
 msgid "Sign out everywhere"
 msgstr "ניתוק מכל המכשירים"
 
-#: src/Admin/FlagsPage.php:110
+#: src/Admin/FlagsPage.php:152
 #: src/Admin/UserPage.php:81
 msgid "Whitelist"
 msgstr "רשימה לבנה"
 
-#: src/Admin/FlagsPage.php:112
+#: src/Admin/FlagsPage.php:154
 #: src/Admin/UserPage.php:104
 msgid "Add note"
 msgstr "הוספת הערה"
 
 #. translators: %d: seconds
-#: src/Admin/FlagsPage.php:137
+#: src/Admin/FlagsPage.php:190
 #, php-format
 msgid "%ds"
 msgstr "%d שנ'"
 
 #. translators: 1: minutes, 2: seconds
-#: src/Admin/FlagsPage.php:141
+#: src/Admin/FlagsPage.php:194
 #, php-format
 msgid "%1$dm %2$ds"
 msgstr "%1$d דק' %2$d שנ'"
 
 #. translators: 1: hours, 2: minutes
-#: src/Admin/FlagsPage.php:144
+#: src/Admin/FlagsPage.php:197
 #, php-format
 msgid "%1$dh %2$dm"
 msgstr "%1$d שע' %2$d דק'"
@@ -268,12 +292,12 @@ msgid "Only users on 2+ devices"
 msgstr "רק משתמשים על 2+ מכשירים"
 
 #: src/Admin/LivePage.php:43
-#: src/Admin/UserPage.php:175
+#: src/Admin/UserPage.php:185
 msgid "Device"
 msgstr "מכשיר"
 
 #: src/Admin/LivePage.php:44
-#: src/Admin/UserPage.php:176
+#: src/Admin/UserPage.php:186
 msgid "IP / country"
 msgstr "IP / מדינה"
 
@@ -282,7 +306,7 @@ msgid "Viewing"
 msgstr "צופה ב־"
 
 #: src/Admin/LivePage.php:46
-#: src/Admin/UserPage.php:177
+#: src/Admin/UserPage.php:187
 msgid "Last seen"
 msgstr "נראה לאחרונה"
 
@@ -529,10 +553,6 @@ msgstr "פעילות במקביל"
 msgid "Why this account was flagged:"
 msgstr "למה החשבון סומן:"
 
-#: src/Admin/UserPage.php:78
-msgid "Remove from whitelist"
-msgstr "הסרה מהרשימה הלבנה"
-
 #: src/Admin/UserPage.php:79
 msgid "Whitelisted: no limits, no flags"
 msgstr "ברשימה הלבנה: ללא הגבלות וללא סימונים"
@@ -540,10 +560,6 @@ msgstr "ברשימה הלבנה: ללא הגבלות וללא סימונים"
 #: src/Admin/UserPage.php:96
 msgid "Courses"
 msgstr "קורסים"
-
-#: src/Admin/UserPage.php:100
-msgid "Notes"
-msgstr "הערות"
 
 #: src/Admin/UserPage.php:103
 msgid "For example: called the student, the second device is a family member."
@@ -602,23 +618,23 @@ msgstr "אותה רשת"
 msgid "Different networks"
 msgstr "רשתות שונות"
 
-#: src/Admin/UserPage.php:170
+#: src/Admin/UserPage.php:180
 msgid "Session history"
 msgstr "היסטוריית חיבורים"
 
-#: src/Admin/UserPage.php:174
+#: src/Admin/UserPage.php:184
 msgid "Signed in"
 msgstr "התחבר"
 
-#: src/Admin/UserPage.php:178
+#: src/Admin/UserPage.php:188
 msgid "Status"
 msgstr "סטטוס"
 
-#: src/Admin/UserPage.php:183
+#: src/Admin/UserPage.php:193
 msgid "No sessions recorded yet."
 msgstr "עדיין לא נרשמו חיבורים."
 
-#: src/Admin/UserPage.php:196
+#: src/Admin/UserPage.php:206
 msgid "Active"
 msgstr "פעיל"
 
@@ -694,7 +710,7 @@ msgstr "נסגר (לא שיתוף)"
 msgid "You have been signed out because your account was signed in on another device."
 msgstr "נותקת מהאתר כי החשבון שלך התחבר ממכשיר אחר."
 
-#: src/Rest/Controller.php:110
+#: src/Rest/Controller.php:120
 msgid "Session not found or already ended."
 msgstr "החיבור לא נמצא או שכבר הסתיים."
 

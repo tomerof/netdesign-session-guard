@@ -56,7 +56,17 @@ class Controller {
 
 	public function ping( WP_REST_Request $request ) {
 		global $wpdb;
-		$response = new WP_REST_Response( Handler::handle( $wpdb, $request->get_body_params() ) );
+		$response = new WP_REST_Response( Handler::handle( $wpdb, $request->get_body_params(), function ( $wpdb, $row, $now, $input ) {
+			/**
+			 * A valid heartbeat was stored (REST transport). Session Guard Pro records
+			 * its viewing trail here; its ping.php passes the same callback directly.
+			 *
+			 * @param object $row   Session: id, user_id, device_id, ip_net.
+			 * @param string $now   UTC datetime.
+			 * @param array  $input Heartbeat fields.
+			 */
+			do_action( 'ndsg_heartbeat', $row, $now, $input );
+		} ) );
 		$response->header( 'Cache-Control', 'no-store' );
 		return $response;
 	}

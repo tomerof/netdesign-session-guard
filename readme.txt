@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,7 +35,7 @@ Accounts over the threshold are listed under **Flagged accounts**, with a plain 
 * **Handling status** for every flagged account: New, Needs follow-up, Caught and blocked, Checked and resolved, or Dismissed. Filter the list by status.
 * **Notes** on any user ("called the student, the second phone is his wife's"), with author and date.
 * **Online at the same time:** each user's page lists the periods when two of their devices were active together, how long, from which devices, and whether from the same network.
-* Sign the user out everywhere, or whitelist them.
+* Sign the user out everywhere, or whitelist them. The **Whitelisted users** tab lists everyone on the whitelist.
 
 = Device limit =
 
@@ -121,6 +121,10 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 
 == Changelog ==
 
+= 1.2.0 =
+* Whitelisted users tab under Flagged accounts.
+* Extension points for add-ons: heartbeat callback and `ndsg_heartbeat` action, `ndsg_user_page_sections`, and the heartbeat can report a playing video (keeps it running in a background tab).
+
 = 1.1.0 =
 * Overlaps: the heartbeat records when two devices of a user are active at the same time, and for how long. Listed on the user page.
 * New detection rule: minutes online together (default: flag from 10 minutes, +40 points).
@@ -133,6 +137,9 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 * First release on wordpress.org: live sessions, account-sharing detection and flags, device limit (the oldest device is signed out), manual sign-out, whitelist, automatic client-IP detection, Hebrew translation.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Adds a list of whitelisted users.
 
 = 1.1.0 =
 Adds overlap tracking, handling statuses and notes. Existing open flags become "New".

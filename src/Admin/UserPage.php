@@ -167,6 +167,16 @@ class UserPage {
 				</tbody>
 			</table>
 
+			<?php
+			/**
+			 * Extra sections on the user page, above the session history
+			 * (Session Guard Pro: courses and viewing history).
+			 *
+			 * @param WP_User $user
+			 */
+			do_action( 'ndsg_user_page_sections', $user );
+			?>
+
 			<h2><?php esc_html_e( 'Session history', 'netdesign-session-guard' ); ?></h2>
 			<table class="wp-list-table widefat striped">
 				<thead>

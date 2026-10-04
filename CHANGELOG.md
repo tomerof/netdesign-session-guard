@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+- **Whitelisted users** tab under Flagged accounts (users with `ndsg_exempt`), with "Remove from whitelist".
+- `Ping\Handler::handle()` takes an optional `$after` callback; the REST heartbeat fires `ndsg_heartbeat` ($row, $now, $input). Pro records its viewing trail there.
+- Heartbeat sends `v` (the playing video an add-on reports in `ndsgHeartbeat.video`) and keeps running in a hidden tab while a video plays. `ndsgHeartbeat.ping()` sends one right away.
+- `ndsg_user_page_sections` action on the user page.
+
 ## 1.1.0
 - Overlaps: the heartbeat records when two devices of a user are active at the same time (table `ndsg_overlaps`), shown on the user page with both devices and networks.
 - New detection rule `overlap`: minutes online together in the period (default 10, +40 points).

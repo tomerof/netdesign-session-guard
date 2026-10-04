@@ -17,10 +17,12 @@ class Handler {
 
 	/**
 	 * @param \wpdb $wpdb
-	 * @param array $input k (ping key), u (url), p (post id), c (course id), i (heartbeat interval, seconds)
+	 * @param array         $input k (ping key), u (url), p (post id), c (course id), i (heartbeat interval, seconds), v (playing video, if any)
+	 * @param callable|null $after Called after a valid heartbeat was stored: ( $wpdb, $row, $now, $input ).
+	 *                             $row has id, user_id, device_id and ip_net. Pro records its viewing trail here.
 	 * @return array Response payload.
 	 */
-	public static function handle( $wpdb, array $input ) {
+	public static function handle( $wpdb, array $input, $after = null ) {
 		$key = isset( $input['k'] ) ? (string) $input['k'] : '';
 		if ( ! preg_match( '/^[a-f0-9]{64}$/', $key ) ) {
 			return [ 's' => 'invalid' ];
@@ -56,6 +58,10 @@ class Handler {
 		) );
 
 		self::record_overlaps( $wpdb, $row, $now, isset( $input['i'] ) ? (int) $input['i'] : 30 );
+
+		if ( is_callable( $after ) ) {
+			call_user_func( $after, $wpdb, $row, $now, $input );
+		}
 
 		return [ 's' => 'ok' ];
 	}

@@ -93,7 +93,7 @@ Namespace `ndsg/v1`. Admin routes need the `ndsg_capability` (default `manage_op
 
 | Method | Route | |
 |---|---|---|
-| POST | `/ping` | Public heartbeat. Body: `k` (key), `u` (url), `p` (post), `c` (course), `i` (interval, for the overlap gap) |
+| POST | `/ping` | Public heartbeat. Body: `k` (key), `u` (url), `p` (post), `c` (course), `i` (interval, for the overlap gap), `v` (playing video reported by an add-on) |
 | GET | `/live` | Online sessions and summary |
 | POST | `/sessions/{id}/kick` | Sign out one session |
 | POST | `/users/{id}/kick` | Sign out every session of a user |
@@ -113,6 +113,8 @@ Heartbeat answers: `{"s":"ok"}`, `{"s":"revoked","r":"<reason>"}`, `{"s":"unknow
 | `ndsg_settings_notices` | `$tab` | Above a settings tab |
 | `ndsg_settings_tab_{$tab}` | | Renders a custom settings tab (instead of the fields form) |
 | `ndsg_overlap_actions` | `$overlap` | Extra links in an overlap row on the user page (row includes both devices' details) |
+| `ndsg_user_page_sections` | `$user` | Extra sections on the user page, above the session history |
+| `ndsg_heartbeat` | `$row, $now, $input` | A valid heartbeat was stored over REST. `$row` has `id`, `user_id`, `device_id`, `ip_net` |
 
 ## Filters
 
@@ -134,6 +136,12 @@ Built-in admin actions (`admin-post.php?action=ndsg_action&do=…`): `dismiss`, 
 
 Unknown keys in `ndsg_settings` are kept when the free plugin saves, so add-on settings survive.
 
+## Heartbeat extension
+
+- `Ping\Handler::handle( $wpdb, $input, $after = null )`: `$after( $wpdb, $row, $now, $input )` runs after a valid heartbeat. It must follow the SHORTINIT rule (only `$wpdb`), since Pro's `ping.php` passes its recorder this way.
+- Over REST the free plugin passes a callback that fires `ndsg_heartbeat`.
+- In the browser, `window.ndsgHeartbeat.video` (set by an add-on) is sent as `v`, and keeps the heartbeat running while the tab is hidden. `window.ndsgHeartbeat.ping()` sends a heartbeat right away (used when playback starts or stops).
+
 ## How Session Guard Pro plugs in
 
 | Pro feature | Hooks |
@@ -142,6 +150,7 @@ Unknown keys in `ndsg_settings` are kept when the free plugin saves, so add-on s
 | Per-user limit | `ndsg_user_max_devices` (priority 20), `ndsg_user_page_panel`, `ndsg_admin_action_max_devices` |
 | LearnDash | `ndsg_ping_context`, `ndsg_user_max_devices`, `ndsg_user_extra_info` |
 | Fast heartbeat | `ndsg_heartbeat_url` → Pro's `ping.php` |
+| Viewing trail and report | `ndsg_heartbeat` / the `$after` callback, `ndsg_overlap_actions`, `ndsg_user_page_sections`, `ndsgHeartbeat.video` |
 | License tab | `ndsg_settings_tabs`, `ndsg_settings_tab_license`, `ndsg_settings_notices` |
 
 ### Examples

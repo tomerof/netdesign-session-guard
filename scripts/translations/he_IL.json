@@ -161,5 +161,8 @@
 	"Needs follow-up": "דורש מעקב",
 	"Caught and blocked": "נתפס ונחסם",
 	"Checked and resolved": "נבדק ותוקן",
-	"Dismissed (not sharing)": "נסגר (לא שיתוף)"
+	"Dismissed (not sharing)": "נסגר (לא שיתוף)",
+	"Whitelisted users": "משתמשים ברשימה לבנה",
+	"Whitelisted users are never limited and never flagged. Users with an exempt role (Settings → Device limit) are not listed here.": "משתמשים ברשימה הלבנה אף פעם לא מוגבלים ולא מסומנים. משתמשים עם תפקיד פטור (הגדרות ← הגבלת מכשירים) לא מופיעים כאן.",
+	"No whitelisted users.": "אין משתמשים ברשימה הלבנה."
 }

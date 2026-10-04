@@ -34,6 +34,8 @@ Data comes from `GET /wp-json/ndsg/v1/live` (up to 500 sessions).
 
 The menu badge counts *New* flags.
 
+**Whitelisted users** (last tab) lists every whitelisted user with their latest note and a **Remove from whitelist** button. Users who are exempt by role aren't listed.
+
 ## User page
 
 Open it from a user's name on Live or Flagged accounts, or from the **Sessions** link on **Users → All Users**.
