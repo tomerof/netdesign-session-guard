@@ -70,7 +70,7 @@ class OverlapRepository {
 		global $wpdb;
 		$o = Schema::overlaps_table();
 		return $wpdb->get_results( $wpdb->prepare(
-			"SELECT id, level, facts, seconds, started_at FROM {$o} WHERE user_id = %d AND started_at >= %s AND level > 0 ORDER BY started_at",
+			"SELECT id, level, facts, seconds, started_at, ended_at FROM {$o} WHERE user_id = %d AND started_at >= %s AND level > 0 ORDER BY started_at",
 			$user_id,
 			$since
 		) );

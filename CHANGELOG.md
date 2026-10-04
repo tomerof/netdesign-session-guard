@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.2
+- Flagged accounts list redesigned after the ease-it owner's layout: Risk (+ "flagged N times before"), User (email, billing phone, ID, note), Summary (events, overlap time, double viewing, network), Period (first / last), Handling (status + quick note), Actions (Open case).
+- Flag reasons store `video_both` (sum), `first`, `last`.
+- "Whitelist" renamed to "Exclude from monitoring" / "Excluded users" (same `ndsg_exempt` meta); the button left the list rows.
+
 ## 1.3.1
 - Live screen cards: *Active now*, and users per risk level today (*Weak* / *Medium* / *Strong and above*), each with a description. Filters `ndsg_live_cards`, `ndsg_live_summary`.
 

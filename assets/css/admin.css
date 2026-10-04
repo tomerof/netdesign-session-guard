@@ -70,7 +70,7 @@ a.ndsg-card:hover { border-color: #2271b1; }
 .ndsg-score.is-high { background: #d63638; color: #fff; }
 .ndsg-score.is-mid { background: #dba617; color: #1d2327; }
 .ndsg-score.is-low { background: #f0f0f1; }
-.ndsg-flags .column-score { width: 70px; }
+.ndsg-flags .column-score { width: 110px; }
 .ndsg-reasons { margin: 0; }
 .ndsg-reasons li { margin: 0; }
 .ndsg-actions { white-space: nowrap; }
@@ -156,3 +156,10 @@ a.ndsg-card:hover { border-color: #2271b1; }
 .ndsg-card.is-weak { border-inline-start: 4px solid #dba617; }
 .ndsg-card.is-medium { border-inline-start: 4px solid #e26f00; }
 .ndsg-card.is-strong { border-inline-start: 4px solid #d63638; }
+
+/* Flagged accounts list */
+.ndsg-prior { margin: 4px 0 0; color: #b32d2e; font-size: 12px; font-weight: 600; }
+.ndsg-quick-note { display: flex; gap: 4px; margin-top: 6px; }
+.ndsg-quick-note input { min-width: 0; flex: 1; }
+.ndsg-ltr { direction: ltr; unicode-bidi: isolate; }
+.ndsg-flags td { vertical-align: top; }

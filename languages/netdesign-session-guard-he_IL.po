@@ -140,8 +140,9 @@ msgid "All open"
 msgstr "כל הפתוחים"
 
 #: src/Admin/FlagsPage.php:46
-msgid "Whitelisted users"
-msgstr "משתמשים ברשימה לבנה"
+#: src/Admin/SettingsPage.php:65
+msgid "Excluded users"
+msgstr "משתמשים מוחרגים"
 
 #: src/Admin/FlagsPage.php:50
 msgid "Accounts whose usage looks like more than one person. Review each one and set its handling status."
@@ -152,11 +153,11 @@ msgid "Search users"
 msgstr "חיפוש משתמשים"
 
 #: src/Admin/FlagsPage.php:69
-msgid "Whitelisted users are never limited and never flagged. Users with an exempt role (Settings → Device limit) are not listed here."
-msgstr "משתמשים ברשימה הלבנה אף פעם לא מוגבלים ולא מסומנים. משתמשים עם תפקיד פטור (הגדרות ← הגבלת מכשירים) לא מופיעים כאן."
+msgid "Excluded users are not monitored and never limited, for example test accounts or staff. Users excluded by role (Settings → Device limit) are not listed here."
+msgstr "משתמשים מוחרגים לא מנוטרים ולא מוגבלים, למשל חשבונות בדיקה או עובדים. משתמשים שמוחרגים לפי תפקיד (הגדרות ← הגבלת מכשירים) לא מופיעים כאן."
 
 #: src/Admin/FlagsPage.php:73
-#: src/Admin/FlagsPage.php:99
+#: src/Admin/FlagsPage.php:100
 #: src/Admin/LivePage.php:71
 msgid "User"
 msgstr "משתמש"
@@ -167,93 +168,170 @@ msgid "Notes"
 msgstr "הערות"
 
 #: src/Admin/FlagsPage.php:75
-#: src/Admin/FlagsPage.php:103
+#: src/Admin/FlagsPage.php:104
 msgid "Actions"
 msgstr "פעולות"
 
 #: src/Admin/FlagsPage.php:80
-msgid "No whitelisted users."
-msgstr "אין משתמשים ברשימה הלבנה."
+msgid "No excluded users."
+msgstr "אין משתמשים מוחרגים."
 
 #: src/Admin/FlagsPage.php:90
 #: src/Admin/UserPage.php:79
-msgid "Remove from whitelist"
-msgstr "הסרה מהרשימה הלבנה"
+msgid "Monitor again"
+msgstr "החזרה לניטור"
 
-#: src/Admin/FlagsPage.php:100
+#: src/Admin/FlagsPage.php:99
 #: src/Admin/UserPage.php:128
 msgid "Risk"
 msgstr "רמת סיכון"
 
+#: src/Admin/FlagsPage.php:99
+msgid "Highest in the case"
+msgstr "הרמה הגבוהה בתיק"
+
 #: src/Admin/FlagsPage.php:101
-msgid "Why"
-msgstr "סיבה"
+msgid "Summary"
+msgstr "סיכום"
+
+#: src/Admin/FlagsPage.php:101
+msgid "Events and time together"
+msgstr "אירועים וזמן חפיפה"
 
 #: src/Admin/FlagsPage.php:102
+msgid "Period"
+msgstr "תקופה"
+
+#: src/Admin/FlagsPage.php:102
+msgid "First and last event"
+msgstr "אירוע ראשון ואחרון"
+
+#: src/Admin/FlagsPage.php:103
 msgid "Handling"
 msgstr "טיפול"
 
-#: src/Admin/FlagsPage.php:108
+#: src/Admin/FlagsPage.php:103
+msgid "Your decision and note"
+msgstr "ההחלטה וההערה שלך"
+
+#: src/Admin/FlagsPage.php:109
 msgid "No flagged accounts."
 msgstr "אין חשבונות חשודים."
 
+#. translators: %d: number of earlier flags
+#: src/Admin/FlagsPage.php:123
+#, php-format
+msgid "Flagged %d time before"
+msgid_plural "Flagged %d times before"
+msgstr[0] "סומן פעם אחת בעבר"
+msgstr[1] "סומן %d פעמים בעבר"
+
 #. translators: %d: number of notes
-#: src/Admin/FlagsPage.php:122
+#: src/Admin/FlagsPage.php:135
 #, php-format
 msgid "%d note"
 msgid_plural "%d notes"
 msgstr[0] "הערה אחת"
 msgstr[1] "%d הערות"
 
+#. translators: %d: number of events
+#: src/Admin/FlagsPage.php:141
+#, php-format
+msgid "%d event"
+msgid_plural "%d events"
+msgstr[0] "אירוע אחד"
+msgstr[1] "%d אירועים"
+
+#. translators: %s: duration
+#: src/Admin/FlagsPage.php:143
+#, php-format
+msgid "Device overlap: %s"
+msgstr "חפיפת מכשירים: %s"
+
+#. translators: %s: duration
+#: src/Admin/FlagsPage.php:146
+#, php-format
+msgid "Actual double viewing: %s"
+msgstr "צפייה כפולה בפועל: %s"
+
+#: src/Admin/FlagsPage.php:149
+#: src/Admin/UserPage.php:155
+#: src/Detection/Detector.php:184
+msgid "Different networks"
+msgstr "רשתות שונות"
+
+#: src/Admin/FlagsPage.php:149
+#: src/Admin/UserPage.php:153
+msgid "Same network"
+msgstr "אותה רשת"
+
 #. translators: %s: date and time
-#: src/Admin/FlagsPage.php:133
+#: src/Admin/FlagsPage.php:162
+#, php-format
+msgid "First: %s"
+msgstr "ראשון: %s"
+
+#. translators: %s: date and time
+#: src/Admin/FlagsPage.php:164
+#, php-format
+msgid "Last: %s"
+msgstr "אחרון: %s"
+
+#. translators: %s: date and time
+#: src/Admin/FlagsPage.php:167
 #: src/Admin/UserPage.php:64
 #, php-format
 msgid "Flagged %s"
 msgstr "סומן %s"
 
-#: src/Admin/FlagsPage.php:146
+#: src/Admin/FlagsPage.php:174
+msgid "Note (optional)"
+msgstr "הערה (לא חובה)"
+
+#: src/Admin/FlagsPage.php:174
+msgid "Note"
+msgstr "הערה"
+
+#: src/Admin/FlagsPage.php:175
+msgid "Save note"
+msgstr "שמירת הערה"
+
+#: src/Admin/FlagsPage.php:179
+msgid "Open case"
+msgstr "פתיחת תיק"
+
+#: src/Admin/FlagsPage.php:189
 #: src/Admin/UserPage.php:77
 msgid "Sign out everywhere"
 msgstr "ניתוק מכל המכשירים"
 
-#: src/Admin/FlagsPage.php:147
-#: src/Admin/UserPage.php:82
-msgid "Whitelist"
-msgstr "רשימה לבנה"
-
-#: src/Admin/FlagsPage.php:149
-#: src/Admin/UserPage.php:105
-msgid "Add note"
-msgstr "הוספת הערה"
-
 #. translators: %d: seconds
-#: src/Admin/FlagsPage.php:185
+#: src/Admin/FlagsPage.php:226
 #, php-format
 msgid "%ds"
 msgstr "%d שנ'"
 
 #. translators: 1: minutes, 2: seconds
-#: src/Admin/FlagsPage.php:189
+#: src/Admin/FlagsPage.php:230
 #, php-format
 msgid "%1$dm %2$ds"
 msgstr "%1$d דק' %2$d שנ'"
 
 #. translators: 1: hours, 2: minutes
-#: src/Admin/FlagsPage.php:192
+#: src/Admin/FlagsPage.php:233
 #, php-format
 msgid "%1$dh %2$dm"
 msgstr "%1$d שע' %2$d דק'"
 
-#: src/Admin/FlagsPage.php:201
+#: src/Admin/FlagsPage.php:242
 msgid "How to read the risk levels?"
 msgstr "איך קוראים את רמות הסיכון?"
 
-#: src/Admin/FlagsPage.php:212
+#: src/Admin/FlagsPage.php:253
 msgid "Nobody is signed out because of a risk level."
 msgstr "רמת סיכון לא מנתקת אף אחד."
 
-#: src/Admin/FlagsPage.php:213
+#: src/Admin/FlagsPage.php:254
 msgid "Detection settings"
 msgstr "הגדרות זיהוי"
 
@@ -353,12 +431,8 @@ msgid "Tabs in the same browser count as one device."
 msgstr "לשוניות באותו דפדפן נחשבות כמכשיר אחד."
 
 #: src/Admin/SettingsPage.php:65
-msgid "Excluded users"
-msgstr "משתמשים מוחרגים"
-
-#: src/Admin/SettingsPage.php:65
-msgid "Emails, usernames or user IDs, one per line or separated by commas. Test accounts and staff listed here are never limited or flagged (the same list as the whitelist)."
-msgstr "אימיילים, שמות משתמש או מספרי משתמש, אחד בכל שורה או מופרדים בפסיק. חשבונות בדיקה ועובדים שמופיעים כאן לא מוגבלים ולא מסומנים (זו אותה רשימה כמו הרשימה הלבנה)."
+msgid "Emails, usernames or user IDs, one per line or separated by commas. Test accounts and staff listed here are not monitored and never limited (the same list as the Excluded users tab)."
+msgstr "אימיילים, שמות משתמש או מספרי משתמש, אחד בכל שורה או מופרדים בפסיק. חשבונות בדיקה ועובדים שמופיעים כאן לא מנוטרים ולא מוגבלים (זו אותה רשימה כמו בלשונית \"משתמשים מוחרגים\")."
 
 #: src/Admin/SettingsPage.php:66
 msgid "Roles without limits"
@@ -556,8 +630,12 @@ msgid "Why this account was flagged:"
 msgstr "למה החשבון סומן:"
 
 #: src/Admin/UserPage.php:80
-msgid "Whitelisted: no limits, no flags"
-msgstr "ברשימה הלבנה: ללא הגבלות וללא סימונים"
+msgid "Excluded: not monitored or limited"
+msgstr "מוחרג: לא מנוטר ולא מוגבל"
+
+#: src/Admin/UserPage.php:82
+msgid "Exclude from monitoring"
+msgstr "החרגה מניטור"
 
 #: src/Admin/UserPage.php:97
 msgid "Courses"
@@ -566,6 +644,10 @@ msgstr "קורסים"
 #: src/Admin/UserPage.php:104
 msgid "For example: called the student, the second device is a family member."
 msgstr "לדוגמה: דיברתי עם הסטודנט, המכשיר השני שייך לבן משפחה."
+
+#: src/Admin/UserPage.php:105
+msgid "Add note"
+msgstr "הוספת הערה"
 
 #: src/Admin/UserPage.php:112
 msgid "Unknown"
@@ -615,15 +697,6 @@ msgstr "בתוך תקופת החסד"
 msgid "Ended session"
 msgstr "חיבור שהסתיים"
 
-#: src/Admin/UserPage.php:153
-msgid "Same network"
-msgstr "אותה רשת"
-
-#: src/Admin/UserPage.php:155
-#: src/Detection/Detector.php:177
-msgid "Different networks"
-msgstr "רשתות שונות"
-
 #: src/Admin/UserPage.php:183
 msgid "Session history"
 msgstr "היסטוריית חיבורים"
@@ -649,7 +722,7 @@ msgid "Every 5 minutes"
 msgstr "כל 5 דקות"
 
 #. translators: 1: times, 2: days, 3: total duration, 4: longest duration
-#: src/Detection/Detector.php:139
+#: src/Detection/Detector.php:146
 #, php-format
 msgid "Two devices were active at the same time %1$d time in the last %2$d days, %3$s in total (longest %4$s)."
 msgid_plural "Two devices were active at the same time %1$d times in the last %2$d days, %3$s in total (longest %4$s)."
@@ -657,60 +730,60 @@ msgstr[0] "שני מכשירים היו פעילים במקביל פעם אחת 
 msgstr[1] "שני מכשירים היו פעילים במקביל %1$d פעמים ב-%2$d הימים האחרונים, %3$s בסך הכול (הכי ארוך %4$s)."
 
 #. translators: 1: duration, 2: date and time
-#: src/Detection/Detector.php:144
+#: src/Detection/Detector.php:151
 #, php-format
 msgid "Videos played on both devices at the same time for %1$s (%2$s)."
 msgstr "סרטונים התנגנו בשני המכשירים במקביל במשך %1$s (%2$s)."
 
 #. translators: 1: duration, 2: date and time
-#: src/Detection/Detector.php:147
+#: src/Detection/Detector.php:154
 #, php-format
 msgid "A video played on one device for %1$s while the other device was active (%2$s)."
 msgstr "סרטון התנגן במכשיר אחד במשך %1$s בזמן שהמכשיר השני היה פעיל (%2$s)."
 
 #. translators: %s: date and time
-#: src/Detection/Detector.php:150
+#: src/Detection/Detector.php:157
 #, php-format
 msgid "No video played on either device during the overlap (%s)."
 msgstr "לא התנגן סרטון באף אחד מהמכשירים בזמן החפיפה (%s)."
 
-#: src/Detection/Detector.php:155
+#: src/Detection/Detector.php:162
 msgid "The devices were on different internet connections."
 msgstr "המכשירים היו בחיבורי אינטרנט שונים."
 
-#: src/Detection/Detector.php:156
+#: src/Detection/Detector.php:163
 msgid "The devices were on the same internet connection."
 msgstr "המכשירים היו באותו חיבור אינטרנט."
 
 #. translators: 1: country code, 2: country code
-#: src/Detection/Detector.php:160
+#: src/Detection/Detector.php:167
 #, php-format
 msgid "The devices were in different countries: %1$s and %2$s."
 msgstr "המכשירים היו במדינות שונות: %1$s ו-%2$s."
 
 #. translators: 1: times, 2: risk level
-#: src/Detection/Detector.php:164
+#: src/Detection/Detector.php:171
 #, php-format
 msgid "It happened %1$d times in the last 7 days at level \"%2$s\" or higher."
 msgstr "זה קרה %1$d פעמים ב-7 הימים האחרונים ברמה \"%2$s\" ומעלה."
 
-#: src/Detection/Detector.php:174
+#: src/Detection/Detector.php:181
 msgid "Devices online at the same time"
 msgstr "מכשירים מחוברים בו־זמנית"
 
-#: src/Detection/Detector.php:175
+#: src/Detection/Detector.php:182
 msgid "Minutes online together"
 msgstr "דקות פעילות במקביל"
 
-#: src/Detection/Detector.php:176
+#: src/Detection/Detector.php:183
 msgid "Different devices"
 msgstr "מכשירים שונים"
 
-#: src/Detection/Detector.php:178
+#: src/Detection/Detector.php:185
 msgid "Different countries"
 msgstr "מדינות שונות"
 
-#: src/Detection/Detector.php:179
+#: src/Detection/Detector.php:186
 msgid "Devices signed out by the limit"
 msgstr "מכשירים שנותקו בגלל המגבלה"
 

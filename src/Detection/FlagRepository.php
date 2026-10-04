@@ -146,7 +146,9 @@ class FlagRepository {
 		}
 		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$t} f JOIN {$wpdb->users} u ON u.ID = f.user_id WHERE {$where}" );
 		$rows  = $wpdb->get_results( $wpdb->prepare(
-			"SELECT f.*, u.display_name, u.user_email FROM {$t} f JOIN {$wpdb->users} u ON u.ID = f.user_id
+			"SELECT f.*, u.display_name, u.user_email,
+				(SELECT COUNT(*) FROM {$t} p WHERE p.user_id = f.user_id AND p.id < f.id) AS prior
+			FROM {$t} f JOIN {$wpdb->users} u ON u.ID = f.user_id
 			WHERE {$where} ORDER BY f.level DESC, f.updated_at DESC LIMIT %d OFFSET %d",
 			$per_page,
 			( $page - 1 ) * $per_page

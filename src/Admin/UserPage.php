@@ -76,10 +76,10 @@ class UserPage {
 			<div class="ndsg-panel">
 				<a class="button" href="<?php echo esc_url( Admin::action_url( 'kick_user', [ 'user_id' => $user->ID ] ) ); ?>"><?php esc_html_e( 'Sign out everywhere', 'netdesign-session-guard' ); ?></a>
 				<?php if ( $exempt ) : ?>
-					<a class="button" href="<?php echo esc_url( Admin::action_url( 'unexempt', [ 'user_id' => $user->ID ] ) ); ?>"><?php esc_html_e( 'Remove from whitelist', 'netdesign-session-guard' ); ?></a>
-					<span class="ndsg-pill"><?php esc_html_e( 'Whitelisted: no limits, no flags', 'netdesign-session-guard' ); ?></span>
+					<a class="button" href="<?php echo esc_url( Admin::action_url( 'unexempt', [ 'user_id' => $user->ID ] ) ); ?>"><?php esc_html_e( 'Monitor again', 'netdesign-session-guard' ); ?></a>
+					<span class="ndsg-pill"><?php esc_html_e( 'Excluded: not monitored or limited', 'netdesign-session-guard' ); ?></span>
 				<?php else : ?>
-					<a class="button" href="<?php echo esc_url( Admin::action_url( 'exempt', [ 'user_id' => $user->ID ] ) ); ?>"><?php esc_html_e( 'Whitelist', 'netdesign-session-guard' ); ?></a>
+					<a class="button" href="<?php echo esc_url( Admin::action_url( 'exempt', [ 'user_id' => $user->ID ] ) ); ?>"><?php esc_html_e( 'Exclude from monitoring', 'netdesign-session-guard' ); ?></a>
 				<?php endif; ?>
 
 				<?php

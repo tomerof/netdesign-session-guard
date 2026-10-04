@@ -102,10 +102,17 @@ class Detector {
 			}
 		}
 
+		$both = 0;
+		foreach ( $rows as $row ) {
+			$both += (int) ( ( json_decode( (string) $row->facts, true ) ?: [] )['video_both'] ?? 0 );
+		}
 		$reasons = [
-			'count'   => count( $rows ),
-			'total'   => array_sum( wp_list_pluck( $rows, 'seconds' ) ),
-			'longest' => max( wp_list_pluck( $rows, 'seconds' ) ),
+			'count'      => count( $rows ),
+			'total'      => array_sum( wp_list_pluck( $rows, 'seconds' ) ),
+			'longest'    => max( wp_list_pluck( $rows, 'seconds' ) ),
+			'video_both' => $both,
+			'first'      => min( wp_list_pluck( $rows, 'started_at' ) ),
+			'last'       => max( wp_list_pluck( $rows, 'ended_at' ) ),
 			'top'     => [
 				'overlap_id' => (int) $top->id,
 				'level'      => (int) $top->level,

@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ Accounts from the level you choose are listed under **Flagged accounts**, with a
 * **Handling status** for every flagged account: New, Needs follow-up, Caught and blocked, or Checked, OK. Filter the list by status.
 * **Notes** on any user ("called the student, the second phone is his wife's"), with author and date.
 * **Online at the same time:** each user's page lists the periods when two of their devices were active together, how long, from which devices, and whether from the same network.
-* Sign the user out everywhere, or whitelist them. The **Whitelisted users** tab lists everyone on the whitelist, and **Excluded users** in the settings lets you paste a list of emails or user IDs.
+* Sign the user out everywhere, or exclude them from monitoring (test accounts, staff). The **Excluded users** tab lists them, and the setting of the same name lets you paste a list of emails or user IDs.
 * **Monitoring switch:** turn collection off without deleting anything.
 
 = Device limit =
@@ -120,6 +120,10 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 4. Settings: device limit.
 
 == Changelog ==
+
+= 1.3.2 =
+* Flagged accounts list: summary (events, device-overlap time, double viewing), period (first and last event), phone and user ID, quick note, "flagged before", and an "Open case" button.
+* "Whitelist" is now "Exclude from monitoring" / "Excluded users".
 
 = 1.3.1 =
 * Live screen: cards for users active now and users at each risk level today.

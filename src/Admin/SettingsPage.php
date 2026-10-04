@@ -62,7 +62,7 @@ class SettingsPage {
 						'enforce' => __( 'Enforce: when a user signs in on a new device beyond the limit, the oldest device is signed out immediately', 'netdesign-session-guard' ),
 					] ],
 					'max_devices'   => [ 'number', __( 'Devices allowed at once', 'netdesign-session-guard' ), null, __( 'Tabs in the same browser count as one device.', 'netdesign-session-guard' ) ],
-					'exempt_users'  => [ 'textarea', __( 'Excluded users', 'netdesign-session-guard' ), null, __( 'Emails, usernames or user IDs, one per line or separated by commas. Test accounts and staff listed here are never limited or flagged (the same list as the whitelist).', 'netdesign-session-guard' ) ],
+					'exempt_users'  => [ 'textarea', __( 'Excluded users', 'netdesign-session-guard' ), null, __( 'Emails, usernames or user IDs, one per line or separated by commas. Test accounts and staff listed here are not monitored and never limited (the same list as the Excluded users tab).', 'netdesign-session-guard' ) ],
 					'exempt_roles'  => [ 'checkboxes', __( 'Roles without limits', 'netdesign-session-guard' ), $roles, __( 'Not limited and never flagged.', 'netdesign-session-guard' ) ],
 					'kick_message'  => [ 'textarea', __( 'Message shown to the signed-out device', 'netdesign-session-guard' ) ],
 					'kick_redirect' => [ 'url', __( 'Send signed-out device to', 'netdesign-session-guard' ), null, __( 'Empty = login page.', 'netdesign-session-guard' ) ],

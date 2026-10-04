@@ -26,15 +26,16 @@ Data comes from `GET /wp-json/ndsg/v1/live` (up to 500 sessions).
 - **How to read the risk levels?** A box with each level and what it means on this site (the video-based levels appear with Pro).
 - **Tabs with counts:** *All open* (default), *New*, *Needs follow-up*, *Caught and blocked*, *Checked, OK*, and *Whitelisted users*. A user search, and 30 per page. Sorted by risk level.
 - **Columns:**
-  - **User**, with a preview of the latest note.
-  - **Risk:** the level badge (weak, medium, strong, very strong).
-  - **Why:** the explanation in plain sentences, and when the account was flagged.
-  - **Handling:** the status dropdown. It saves as soon as you change it.
-- **Actions** (open flags): **Sign out everywhere**, **Whitelist** (exempts the user and closes the flag as "Checked, OK"), **Add note**. Pro adds **Email user**.
+  - **Risk:** the highest level in the case, and "Flagged N times before" when the user had earlier flags.
+  - **User:** name, email, phone (WooCommerce billing phone, if any), user ID, and the latest note.
+  - **Summary:** number of events (overlaps), total device-overlap time, actual double viewing (with Pro), same / different network.
+  - **Period:** first and last event.
+  - **Handling:** the status dropdown (saves on change) and a quick note field.
+- **Actions:** **Open case** (the user page with the full explanation, overlaps and history); for open flags also **Sign out everywhere**, and with Pro **Email user**.
 
 The menu badge counts *New* flags.
 
-**Whitelisted users** (last tab) lists every whitelisted user with their latest note and a **Remove from whitelist** button. Users who are exempt by role aren't listed.
+**Excluded users** (last tab) lists every user excluded from monitoring (test accounts, staff), with their latest note and a **Monitor again** button. Users excluded by role aren't listed. (Called "whitelist" before 1.3.2.)
 
 ## User page
 
@@ -42,7 +43,7 @@ Open it from a user's name on Live or Flagged accounts, or from the **Sessions**
 
 - **Cards:** devices, networks, countries, logins and time online together in the look-back period.
 - **Flag box:** the latest flag's risk level, date, handling status and the plain explanation.
-- **Actions:** sign out everywhere, whitelist or remove from the whitelist.
+- **Actions:** sign out everywhere, **Exclude from monitoring** / **Monitor again**.
 - **Notes:** add a note; each shows its author and date and can be deleted.
 - **Online at the same time:** the user's overlaps (a minute or longer): when, risk level (or *within the grace period*), how long, both devices with IP and country, and *Same network* / *Different networks*. Pro adds a *Viewing report* link.
 - **Add-on panels:** Session Guard Pro adds *Email user*, a per-user device limit and, with LearnDash, the enrolled courses.

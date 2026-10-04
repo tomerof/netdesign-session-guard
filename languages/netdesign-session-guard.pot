@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Netdesign Session Guard 1.3.0\n"
+"Project-Id-Version: Netdesign Session Guard 1.3.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/netdesign-session-guard\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-04T08:06:45+00:00\n"
+"POT-Creation-Date: 2026-10-04T08:13:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: netdesign-session-guard\n"
@@ -146,7 +146,8 @@ msgid "All open"
 msgstr ""
 
 #: src/Admin/FlagsPage.php:46
-msgid "Whitelisted users"
+#: src/Admin/SettingsPage.php:65
+msgid "Excluded users"
 msgstr ""
 
 #: src/Admin/FlagsPage.php:50
@@ -158,11 +159,11 @@ msgid "Search users"
 msgstr ""
 
 #: src/Admin/FlagsPage.php:69
-msgid "Whitelisted users are never limited and never flagged. Users with an exempt role (Settings → Device limit) are not listed here."
+msgid "Excluded users are not monitored and never limited, for example test accounts or staff. Users excluded by role (Settings → Device limit) are not listed here."
 msgstr ""
 
 #: src/Admin/FlagsPage.php:73
-#: src/Admin/FlagsPage.php:99
+#: src/Admin/FlagsPage.php:100
 #: src/Admin/LivePage.php:71
 msgid "User"
 msgstr ""
@@ -173,93 +174,170 @@ msgid "Notes"
 msgstr ""
 
 #: src/Admin/FlagsPage.php:75
-#: src/Admin/FlagsPage.php:103
+#: src/Admin/FlagsPage.php:104
 msgid "Actions"
 msgstr ""
 
 #: src/Admin/FlagsPage.php:80
-msgid "No whitelisted users."
+msgid "No excluded users."
 msgstr ""
 
 #: src/Admin/FlagsPage.php:90
 #: src/Admin/UserPage.php:79
-msgid "Remove from whitelist"
+msgid "Monitor again"
 msgstr ""
 
-#: src/Admin/FlagsPage.php:100
+#: src/Admin/FlagsPage.php:99
 #: src/Admin/UserPage.php:128
 msgid "Risk"
 msgstr ""
 
+#: src/Admin/FlagsPage.php:99
+msgid "Highest in the case"
+msgstr ""
+
 #: src/Admin/FlagsPage.php:101
-msgid "Why"
+msgid "Summary"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:101
+msgid "Events and time together"
 msgstr ""
 
 #: src/Admin/FlagsPage.php:102
+msgid "Period"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:102
+msgid "First and last event"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:103
 msgid "Handling"
 msgstr ""
 
-#: src/Admin/FlagsPage.php:108
+#: src/Admin/FlagsPage.php:103
+msgid "Your decision and note"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:109
 msgid "No flagged accounts."
 msgstr ""
 
+#. translators: %d: number of earlier flags
+#: src/Admin/FlagsPage.php:123
+#, php-format
+msgid "Flagged %d time before"
+msgid_plural "Flagged %d times before"
+msgstr[0] ""
+msgstr[1] ""
+
 #. translators: %d: number of notes
-#: src/Admin/FlagsPage.php:122
+#: src/Admin/FlagsPage.php:135
 #, php-format
 msgid "%d note"
 msgid_plural "%d notes"
 msgstr[0] ""
 msgstr[1] ""
 
+#. translators: %d: number of events
+#: src/Admin/FlagsPage.php:141
+#, php-format
+msgid "%d event"
+msgid_plural "%d events"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: duration
+#: src/Admin/FlagsPage.php:143
+#, php-format
+msgid "Device overlap: %s"
+msgstr ""
+
+#. translators: %s: duration
+#: src/Admin/FlagsPage.php:146
+#, php-format
+msgid "Actual double viewing: %s"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:149
+#: src/Admin/UserPage.php:155
+#: src/Detection/Detector.php:184
+msgid "Different networks"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:149
+#: src/Admin/UserPage.php:153
+msgid "Same network"
+msgstr ""
+
 #. translators: %s: date and time
-#: src/Admin/FlagsPage.php:133
+#: src/Admin/FlagsPage.php:162
+#, php-format
+msgid "First: %s"
+msgstr ""
+
+#. translators: %s: date and time
+#: src/Admin/FlagsPage.php:164
+#, php-format
+msgid "Last: %s"
+msgstr ""
+
+#. translators: %s: date and time
+#: src/Admin/FlagsPage.php:167
 #: src/Admin/UserPage.php:64
 #, php-format
 msgid "Flagged %s"
 msgstr ""
 
-#: src/Admin/FlagsPage.php:146
+#: src/Admin/FlagsPage.php:174
+msgid "Note (optional)"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:174
+msgid "Note"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:175
+msgid "Save note"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:179
+msgid "Open case"
+msgstr ""
+
+#: src/Admin/FlagsPage.php:189
 #: src/Admin/UserPage.php:77
 msgid "Sign out everywhere"
 msgstr ""
 
-#: src/Admin/FlagsPage.php:147
-#: src/Admin/UserPage.php:82
-msgid "Whitelist"
-msgstr ""
-
-#: src/Admin/FlagsPage.php:149
-#: src/Admin/UserPage.php:105
-msgid "Add note"
-msgstr ""
-
 #. translators: %d: seconds
-#: src/Admin/FlagsPage.php:185
+#: src/Admin/FlagsPage.php:226
 #, php-format
 msgid "%ds"
 msgstr ""
 
 #. translators: 1: minutes, 2: seconds
-#: src/Admin/FlagsPage.php:189
+#: src/Admin/FlagsPage.php:230
 #, php-format
 msgid "%1$dm %2$ds"
 msgstr ""
 
 #. translators: 1: hours, 2: minutes
-#: src/Admin/FlagsPage.php:192
+#: src/Admin/FlagsPage.php:233
 #, php-format
 msgid "%1$dh %2$dm"
 msgstr ""
 
-#: src/Admin/FlagsPage.php:201
+#: src/Admin/FlagsPage.php:242
 msgid "How to read the risk levels?"
 msgstr ""
 
-#: src/Admin/FlagsPage.php:212
+#: src/Admin/FlagsPage.php:253
 msgid "Nobody is signed out because of a risk level."
 msgstr ""
 
-#: src/Admin/FlagsPage.php:213
+#: src/Admin/FlagsPage.php:254
 msgid "Detection settings"
 msgstr ""
 
@@ -359,11 +437,7 @@ msgid "Tabs in the same browser count as one device."
 msgstr ""
 
 #: src/Admin/SettingsPage.php:65
-msgid "Excluded users"
-msgstr ""
-
-#: src/Admin/SettingsPage.php:65
-msgid "Emails, usernames or user IDs, one per line or separated by commas. Test accounts and staff listed here are never limited or flagged (the same list as the whitelist)."
+msgid "Emails, usernames or user IDs, one per line or separated by commas. Test accounts and staff listed here are not monitored and never limited (the same list as the Excluded users tab)."
 msgstr ""
 
 #: src/Admin/SettingsPage.php:66
@@ -562,7 +636,11 @@ msgid "Why this account was flagged:"
 msgstr ""
 
 #: src/Admin/UserPage.php:80
-msgid "Whitelisted: no limits, no flags"
+msgid "Excluded: not monitored or limited"
+msgstr ""
+
+#: src/Admin/UserPage.php:82
+msgid "Exclude from monitoring"
 msgstr ""
 
 #: src/Admin/UserPage.php:97
@@ -571,6 +649,10 @@ msgstr ""
 
 #: src/Admin/UserPage.php:104
 msgid "For example: called the student, the second device is a family member."
+msgstr ""
+
+#: src/Admin/UserPage.php:105
+msgid "Add note"
 msgstr ""
 
 #: src/Admin/UserPage.php:112
@@ -621,15 +703,6 @@ msgstr ""
 msgid "Ended session"
 msgstr ""
 
-#: src/Admin/UserPage.php:153
-msgid "Same network"
-msgstr ""
-
-#: src/Admin/UserPage.php:155
-#: src/Detection/Detector.php:177
-msgid "Different networks"
-msgstr ""
-
 #: src/Admin/UserPage.php:183
 msgid "Session history"
 msgstr ""
@@ -655,7 +728,7 @@ msgid "Every 5 minutes"
 msgstr ""
 
 #. translators: 1: times, 2: days, 3: total duration, 4: longest duration
-#: src/Detection/Detector.php:139
+#: src/Detection/Detector.php:146
 #, php-format
 msgid "Two devices were active at the same time %1$d time in the last %2$d days, %3$s in total (longest %4$s)."
 msgid_plural "Two devices were active at the same time %1$d times in the last %2$d days, %3$s in total (longest %4$s)."
@@ -663,60 +736,60 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: duration, 2: date and time
-#: src/Detection/Detector.php:144
+#: src/Detection/Detector.php:151
 #, php-format
 msgid "Videos played on both devices at the same time for %1$s (%2$s)."
 msgstr ""
 
 #. translators: 1: duration, 2: date and time
-#: src/Detection/Detector.php:147
+#: src/Detection/Detector.php:154
 #, php-format
 msgid "A video played on one device for %1$s while the other device was active (%2$s)."
 msgstr ""
 
 #. translators: %s: date and time
-#: src/Detection/Detector.php:150
+#: src/Detection/Detector.php:157
 #, php-format
 msgid "No video played on either device during the overlap (%s)."
 msgstr ""
 
-#: src/Detection/Detector.php:155
+#: src/Detection/Detector.php:162
 msgid "The devices were on different internet connections."
 msgstr ""
 
-#: src/Detection/Detector.php:156
+#: src/Detection/Detector.php:163
 msgid "The devices were on the same internet connection."
 msgstr ""
 
 #. translators: 1: country code, 2: country code
-#: src/Detection/Detector.php:160
+#: src/Detection/Detector.php:167
 #, php-format
 msgid "The devices were in different countries: %1$s and %2$s."
 msgstr ""
 
 #. translators: 1: times, 2: risk level
-#: src/Detection/Detector.php:164
+#: src/Detection/Detector.php:171
 #, php-format
 msgid "It happened %1$d times in the last 7 days at level \"%2$s\" or higher."
 msgstr ""
 
-#: src/Detection/Detector.php:174
+#: src/Detection/Detector.php:181
 msgid "Devices online at the same time"
 msgstr ""
 
-#: src/Detection/Detector.php:175
+#: src/Detection/Detector.php:182
 msgid "Minutes online together"
 msgstr ""
 
-#: src/Detection/Detector.php:176
+#: src/Detection/Detector.php:183
 msgid "Different devices"
 msgstr ""
 
-#: src/Detection/Detector.php:178
+#: src/Detection/Detector.php:185
 msgid "Different countries"
 msgstr ""
 
-#: src/Detection/Detector.php:179
+#: src/Detection/Detector.php:186
 msgid "Devices signed out by the limit"
 msgstr ""
 
