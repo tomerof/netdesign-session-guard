@@ -200,5 +200,6 @@
 	"Open case": "פתיחת תיק",
 	"Emails, usernames or user IDs, one per line or separated by commas. Test accounts and staff listed here are not monitored and never limited (the same list as the Excluded users tab).": "אימיילים, שמות משתמש או מספרי משתמש, אחד בכל שורה או מופרדים בפסיק. חשבונות בדיקה ועובדים שמופיעים כאן לא מנוטרים ולא מוגבלים (זו אותה רשימה כמו בלשונית \"משתמשים מוחרגים\").",
 	"Excluded: not monitored or limited": "מוחרג: לא מנוטר ולא מוגבל",
-	"Exclude from monitoring": "החרגה מניטור"
+	"Exclude from monitoring": "החרגה מניטור",
+	"0 = flag it again at the next new overlap. Either way, only overlaps after \"checked, OK\" count.": "0 = לסמן שוב כבר בחפיפה החדשה הבאה. בכל מקרה נספרות רק חפיפות שאחרי \"נבדק ותקין\"."
 }

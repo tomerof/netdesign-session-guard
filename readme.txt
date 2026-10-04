@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,9 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 4. Settings: device limit.
 
 == Changelog ==
+
+= 1.3.3 =
+* "Don't flag again for (days)" accepts 0. After "Checked, OK" only new overlaps count.
 
 = 1.3.2 =
 * Flagged accounts list: summary (events, device-overlap time, double viewing), period (first and last event), phone and user ID, quick note, "flagged before", and an "Open case" button.

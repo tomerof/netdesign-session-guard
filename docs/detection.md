@@ -49,7 +49,7 @@ Nothing runs during page views. Exempt users (whitelist, exempt roles) are skipp
 | Caught and blocked | yes | Sharing confirmed and acted on (blocking the account is up to you). |
 | Checked, OK | no | Handled / not sharing. |
 
-- **Checked, OK** stops new flags for *dismiss days* (30); after that a new flag can open.
+- **Checked, OK** stops new flags for *dismiss days* (30; 0 = none). Either way, only overlaps that started after the check count toward the next flag, so reviewed events never re-open a case on their own.
 - **Notes:** free-text notes per user, with author and date.
 - **Whitelist / Excluded users:** never limited or flagged.
 

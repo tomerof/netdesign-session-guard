@@ -256,7 +256,7 @@ msgstr "צפייה כפולה בפועל: %s"
 
 #: src/Admin/FlagsPage.php:149
 #: src/Admin/UserPage.php:155
-#: src/Detection/Detector.php:184
+#: src/Detection/Detector.php:189
 msgid "Different networks"
 msgstr "רשתות שונות"
 
@@ -501,6 +501,10 @@ msgstr "הרשימה ודפי המשתמשים סופרים חפיפות מהת�
 msgid "After \"checked, OK\", don't flag the account again for (days)"
 msgstr "אחרי \"נבדק ותקין\", לא לסמן שוב את החשבון במשך (ימים)"
 
+#: src/Admin/SettingsPage.php:78
+msgid "0 = flag it again at the next new overlap. Either way, only overlaps after \"checked, OK\" count."
+msgstr "0 = לסמן שוב כבר בחפיפה החדשה הבאה. בכל מקרה נספרות רק חפיפות שאחרי \"נבדק ותקין\"."
+
 #: src/Admin/SettingsPage.php:82
 msgid "Heartbeat every (seconds)"
 msgstr "בדיקת חיבור כל (שניות)"
@@ -722,7 +726,7 @@ msgid "Every 5 minutes"
 msgstr "כל 5 דקות"
 
 #. translators: 1: times, 2: days, 3: total duration, 4: longest duration
-#: src/Detection/Detector.php:146
+#: src/Detection/Detector.php:151
 #, php-format
 msgid "Two devices were active at the same time %1$d time in the last %2$d days, %3$s in total (longest %4$s)."
 msgid_plural "Two devices were active at the same time %1$d times in the last %2$d days, %3$s in total (longest %4$s)."
@@ -730,60 +734,60 @@ msgstr[0] "שני מכשירים היו פעילים במקביל פעם אחת 
 msgstr[1] "שני מכשירים היו פעילים במקביל %1$d פעמים ב-%2$d הימים האחרונים, %3$s בסך הכול (הכי ארוך %4$s)."
 
 #. translators: 1: duration, 2: date and time
-#: src/Detection/Detector.php:151
+#: src/Detection/Detector.php:156
 #, php-format
 msgid "Videos played on both devices at the same time for %1$s (%2$s)."
 msgstr "סרטונים התנגנו בשני המכשירים במקביל במשך %1$s (%2$s)."
 
 #. translators: 1: duration, 2: date and time
-#: src/Detection/Detector.php:154
+#: src/Detection/Detector.php:159
 #, php-format
 msgid "A video played on one device for %1$s while the other device was active (%2$s)."
 msgstr "סרטון התנגן במכשיר אחד במשך %1$s בזמן שהמכשיר השני היה פעיל (%2$s)."
 
 #. translators: %s: date and time
-#: src/Detection/Detector.php:157
+#: src/Detection/Detector.php:162
 #, php-format
 msgid "No video played on either device during the overlap (%s)."
 msgstr "לא התנגן סרטון באף אחד מהמכשירים בזמן החפיפה (%s)."
 
-#: src/Detection/Detector.php:162
+#: src/Detection/Detector.php:167
 msgid "The devices were on different internet connections."
 msgstr "המכשירים היו בחיבורי אינטרנט שונים."
 
-#: src/Detection/Detector.php:163
+#: src/Detection/Detector.php:168
 msgid "The devices were on the same internet connection."
 msgstr "המכשירים היו באותו חיבור אינטרנט."
 
 #. translators: 1: country code, 2: country code
-#: src/Detection/Detector.php:167
+#: src/Detection/Detector.php:172
 #, php-format
 msgid "The devices were in different countries: %1$s and %2$s."
 msgstr "המכשירים היו במדינות שונות: %1$s ו-%2$s."
 
 #. translators: 1: times, 2: risk level
-#: src/Detection/Detector.php:171
+#: src/Detection/Detector.php:176
 #, php-format
 msgid "It happened %1$d times in the last 7 days at level \"%2$s\" or higher."
 msgstr "זה קרה %1$d פעמים ב-7 הימים האחרונים ברמה \"%2$s\" ומעלה."
 
-#: src/Detection/Detector.php:181
+#: src/Detection/Detector.php:186
 msgid "Devices online at the same time"
 msgstr "מכשירים מחוברים בו־זמנית"
 
-#: src/Detection/Detector.php:182
+#: src/Detection/Detector.php:187
 msgid "Minutes online together"
 msgstr "דקות פעילות במקביל"
 
-#: src/Detection/Detector.php:183
+#: src/Detection/Detector.php:188
 msgid "Different devices"
 msgstr "מכשירים שונים"
 
-#: src/Detection/Detector.php:185
+#: src/Detection/Detector.php:190
 msgid "Different countries"
 msgstr "מדינות שונות"
 
-#: src/Detection/Detector.php:186
+#: src/Detection/Detector.php:191
 msgid "Devices signed out by the limit"
 msgstr "מכשירים שנותקו בגלל המגבלה"
 

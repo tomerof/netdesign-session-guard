@@ -93,9 +93,11 @@ class Settings {
 		$out['ping_interval']  = min( 300, max( 10, (int) ( $in['ping_interval'] ?? $d['ping_interval'] ) ) );
 		$out['active_window']  = max( $out['ping_interval'] * 2, (int) ( $in['active_window'] ?? $d['active_window'] ) );
 
-		foreach ( [ 'window_days', 'repeat_count', 'dismiss_days', 'retention_days' ] as $k ) {
+		foreach ( [ 'window_days', 'repeat_count', 'retention_days' ] as $k ) {
 			$out[ $k ] = max( 1, (int) ( $in[ $k ] ?? $d[ $k ] ) );
 		}
+		// 0 = no quiet period after "Checked, OK".
+		$out['dismiss_days'] = max( 0, (int) ( $in['dismiss_days'] ?? $d['dismiss_days'] ) );
 		$out['monitoring']    = empty( $in['monitoring'] ) ? 0 : 1;
 		$out['grace_seconds'] = max( 10, (int) ( $in['grace_seconds'] ?? $d['grace_seconds'] ) );
 		unset( $out['grace_minutes'] );

@@ -81,6 +81,11 @@ class Detector {
 	public static function evaluate_user( $user_id ) {
 		$s     = Settings::all();
 		$since = gmdate( 'Y-m-d H:i:s', time() - (int) $s['window_days'] * DAY_IN_SECONDS );
+		// After "Checked, OK" only new overlaps count (the earlier ones were reviewed).
+		$closed = FlagRepository::closed_at( $user_id );
+		if ( $closed && $closed > $since ) {
+			$since = $closed;
+		}
 		$rows  = OverlapRepository::rated_for_user( $user_id, $since );
 		if ( ! $rows ) {
 			return;

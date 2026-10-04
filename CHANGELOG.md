@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.3
+- `dismiss_days` accepts 0 (no quiet period); it was saved as 1.
+- After "Checked, OK", only overlaps that started after the check count toward a new flag (`FlagRepository::closed_at()`).
+
 ## 1.3.2
 - Flagged accounts list redesigned after the ease-it owner's layout: Risk (+ "flagged N times before"), User (email, billing phone, ID, note), Summary (events, overlap time, double viewing, network), Period (first / last), Handling (status + quick note), Actions (Open case).
 - Flag reasons store `video_both` (sum), `first`, `last`.

@@ -47,13 +47,15 @@ class FlagRepository {
 		$now    = Repository::now();
 		$closed = self::in_list( self::CLOSED_STATUSES );
 
-		$recently_closed = $wpdb->get_var( $wpdb->prepare(
-			"SELECT id FROM {$t} WHERE user_id = %d AND status IN ({$closed}) AND updated_at >= %s LIMIT 1",
-			$user_id,
-			gmdate( 'Y-m-d H:i:s', time() - $dismiss_days * DAY_IN_SECONDS )
-		) );
-		if ( $recently_closed ) {
-			return false;
+		if ( $dismiss_days > 0 ) {
+			$recently_closed = $wpdb->get_var( $wpdb->prepare(
+				"SELECT id FROM {$t} WHERE user_id = %d AND status IN ({$closed}) AND updated_at >= %s LIMIT 1",
+				$user_id,
+				gmdate( 'Y-m-d H:i:s', time() - $dismiss_days * DAY_IN_SECONDS )
+			) );
+			if ( $recently_closed ) {
+				return false;
+			}
 		}
 
 		$open = self::open_for_user( $user_id );
@@ -102,6 +104,23 @@ class FlagRepository {
 		global $wpdb;
 		$t = Schema::flags_table();
 		return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$t} WHERE user_id = %d ORDER BY id DESC LIMIT 1", $user_id ) );
+	}
+
+	/**
+	 * When the user's last case was closed ("Checked, OK"), or null. Overlaps
+	 * before that moment were already reviewed and don't count again.
+	 */
+	public static function closed_at( $user_id ) {
+		global $wpdb;
+		$t      = Schema::flags_table();
+		$closed = self::in_list( self::CLOSED_STATUSES );
+		$open   = self::in_list( self::OPEN_STATUSES );
+		return $wpdb->get_var( $wpdb->prepare(
+			"SELECT MAX(updated_at) FROM {$t} WHERE user_id = %d AND status IN ({$closed})
+			AND NOT EXISTS (SELECT 1 FROM {$t} o WHERE o.user_id = %d AND o.status IN ({$open}))",
+			$user_id,
+			$user_id
+		) );
 	}
 
 	public static function set_status( $id, $status ) {

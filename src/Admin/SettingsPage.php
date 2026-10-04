@@ -75,7 +75,7 @@ class SettingsPage {
 					/* translators: %s: risk level */
 					'repeat_count'  => [ 'number', __( '"Very strong" when it happens (times in 7 days)', 'netdesign-session-guard' ), null, sprintf( __( 'Counts overlaps at level "%s" or higher.', 'netdesign-session-guard' ), Risk::label( Risk::repeat_level() ) ) ],
 					'window_days'   => [ 'number', __( 'How many days back to check', 'netdesign-session-guard' ), null, __( 'The account list and the user pages count overlaps from this period.', 'netdesign-session-guard' ) ],
-					'dismiss_days'  => [ 'number', __( 'After "checked, OK", don\'t flag the account again for (days)', 'netdesign-session-guard' ) ],
+					'dismiss_days'  => [ 'number', __( 'After "checked, OK", don\'t flag the account again for (days)', 'netdesign-session-guard' ), null, __( '0 = flag it again at the next new overlap. Either way, only overlaps after "checked, OK" count.', 'netdesign-session-guard' ) ],
 				];
 			case 'advanced':
 				return [
@@ -177,7 +177,7 @@ class SettingsPage {
 
 		switch ( $type ) {
 			case 'number':
-				printf( '<input type="number" min="1" id="%s" name="%s" value="%d" class="small-text">', esc_attr( $id ), esc_attr( $name ), (int) $value );
+				printf( '<input type="number" min="%d" id="%s" name="%s" value="%d" class="small-text">', 'dismiss_days' === $key ? 0 : 1, esc_attr( $id ), esc_attr( $name ), (int) $value );
 				break;
 			case 'text':
 			case 'email':
