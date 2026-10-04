@@ -3,6 +3,8 @@ namespace NetDesign\SessionGuard\Admin;
 
 use NetDesign\SessionGuard\Detection\Detector;
 use NetDesign\SessionGuard\Detection\FlagRepository;
+use NetDesign\SessionGuard\Detection\NoteRepository;
+use NetDesign\SessionGuard\Detection\OverlapRepository;
 use NetDesign\SessionGuard\Policy\Enforcer;
 use NetDesign\SessionGuard\Policy\Settings;
 use NetDesign\SessionGuard\Session\Repository;
@@ -21,9 +23,14 @@ class UserPage {
 		$history  = Repository::history_for_user( $user->ID, 100 );
 		$window   = (int) Settings::get( 'window_days' );
 		$stats    = Repository::stats_for_users( [ $user->ID ], gmdate( 'Y-m-d H:i:s', time() - $window * DAY_IN_SECONDS ) )[ $user->ID ] ?? null;
+		$devices  = [ 'mobile' => '📱', 'tablet' => '📱', 'desktop' => '💻' ];
+		$since    = gmdate( 'Y-m-d H:i:s', time() - $window * DAY_IN_SECONDS );
 		$flag     = FlagRepository::open_for_user( $user->ID );
+		$latest   = $flag ?: FlagRepository::latest_for_user( $user->ID );
+		$overlaps = OverlapRepository::for_user( $user->ID, 50 );
+		$together = OverlapRepository::seconds_for_users( [ $user->ID ], $since )[ $user->ID ] ?? 0;
+		$notes    = NoteRepository::for_user( $user->ID );
 		$exempt   = (bool) get_user_meta( $user->ID, Enforcer::META_EXEMPT, true );
-		$reasons  = $flag ? ( json_decode( $flag->reasons, true ) ?: [] ) : [];
 		$courses  = apply_filters( 'ndsg_user_extra_info', [], $user->ID );
 		$ended    = [
 			'logout'   => __( 'Signed out', 'netdesign-session-guard' ),
@@ -44,16 +51,29 @@ class UserPage {
 				<div class="ndsg-card"><span class="ndsg-card__value"><?php echo (int) ( $stats->networks ?? 0 ); ?></span><span class="ndsg-card__label"><?php esc_html_e( 'Networks', 'netdesign-session-guard' ); ?></span></div>
 				<div class="ndsg-card"><span class="ndsg-card__value"><?php echo (int) ( $stats->countries ?? 0 ); ?></span><span class="ndsg-card__label"><?php esc_html_e( 'Countries', 'netdesign-session-guard' ); ?></span></div>
 				<div class="ndsg-card"><span class="ndsg-card__value"><?php echo (int) ( $stats->logins ?? 0 ); ?></span><span class="ndsg-card__label"><?php esc_html_e( 'Logins', 'netdesign-session-guard' ); ?></span></div>
-				<?php if ( $flag ) : ?>
-					<div class="ndsg-card is-alert"><span class="ndsg-card__value"><?php echo (int) $flag->score; ?></span><span class="ndsg-card__label"><?php echo esc_html( Detector::describe( $reasons ) ); ?></span></div>
-				<?php endif; ?>
+				<div class="ndsg-card <?php echo $together ? 'is-alert' : ''; ?>"><span class="ndsg-card__value"><?php echo esc_html( FlagsPage::duration( $together ) ); ?></span><span class="ndsg-card__label"><?php esc_html_e( 'Online together', 'netdesign-session-guard' ); ?></span></div>
 			</div>
+
+			<?php if ( $latest ) : ?>
+				<?php $latest_reasons = json_decode( $latest->reasons, true ) ?: []; ?>
+				<div class="ndsg-flag-box <?php echo FlagRepository::is_open( $latest->status ) ? 'is-open' : ''; ?>">
+					<div class="ndsg-flag-box__head">
+						<span class="ndsg-score <?php echo esc_attr( FlagsPage::score_class( (int) $latest->score ) ); ?>"><?php echo (int) $latest->score; ?></span>
+						<?php /* translators: %s: date and time */ ?>
+						<strong><?php echo esc_html( sprintf( __( 'Flagged %s', 'netdesign-session-guard' ), FlagsPage::local_time( $latest->created_at ) ) ); ?></strong>
+						<?php Admin::status_form( $latest ); ?>
+					</div>
+					<p class="description"><?php esc_html_e( 'Why this account was flagged:', 'netdesign-session-guard' ); ?></p>
+					<ul class="ndsg-reasons">
+						<?php foreach ( Detector::explain( $latest_reasons ) as $key => $text ) : ?>
+							<li><?php echo esc_html( $text ); ?> <span class="description">+<?php echo (int) ( $latest_reasons[ $key ]['points'] ?? 0 ); ?></span></li>
+						<?php endforeach; ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 
 			<div class="ndsg-panel">
 				<a class="button" href="<?php echo esc_url( Admin::action_url( 'kick_user', [ 'user_id' => $user->ID ] ) ); ?>"><?php esc_html_e( 'Sign out everywhere', 'netdesign-session-guard' ); ?></a>
-				<?php if ( $flag ) : ?>
-					<a class="button" href="<?php echo esc_url( Admin::action_url( 'dismiss', [ 'flag_id' => $flag->id ] ) ); ?>"><?php esc_html_e( 'Dismiss flag', 'netdesign-session-guard' ); ?></a>
-				<?php endif; ?>
 				<?php if ( $exempt ) : ?>
 					<a class="button" href="<?php echo esc_url( Admin::action_url( 'unexempt', [ 'user_id' => $user->ID ] ) ); ?>"><?php esc_html_e( 'Remove from whitelist', 'netdesign-session-guard' ); ?></a>
 					<span class="ndsg-pill"><?php esc_html_e( 'Whitelisted: no limits, no flags', 'netdesign-session-guard' ); ?></span>
@@ -76,6 +96,76 @@ class UserPage {
 				<h2><?php esc_html_e( 'Courses', 'netdesign-session-guard' ); ?></h2>
 				<p><?php echo esc_html( implode( ', ', $courses ) ); ?></p>
 			<?php endif; ?>
+
+			<h2 id="ndsg-notes"><?php esc_html_e( 'Notes', 'netdesign-session-guard' ); ?></h2>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="ndsg-note-form">
+				<?php Admin::action_fields( 'add_note', [ 'user_id' => $user->ID ] ); ?>
+				<textarea name="note" rows="3" class="large-text" required placeholder="<?php esc_attr_e( 'For example: called the student, the second device is a family member.', 'netdesign-session-guard' ); ?>"></textarea>
+				<button class="button"><?php esc_html_e( 'Add note', 'netdesign-session-guard' ); ?></button>
+			</form>
+			<?php if ( $notes ) : ?>
+				<ul class="ndsg-notes">
+					<?php foreach ( $notes as $n ) : ?>
+						<li>
+							<div class="ndsg-notes__meta">
+								<strong><?php echo esc_html( $n->author_name ?: __( 'Unknown', 'netdesign-session-guard' ) ); ?></strong>
+								· <?php echo esc_html( FlagsPage::local_time( $n->created_at ) ); ?>
+								· <a class="ndsg-delete-note" href="<?php echo esc_url( Admin::action_url( 'delete_note', [ 'note_id' => $n->id ] ) ); ?>"><?php esc_html_e( 'Delete', 'netdesign-session-guard' ); ?></a>
+							</div>
+							<?php echo wp_kses_post( wpautop( esc_html( $n->note ) ) ); ?>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+
+			<h2><?php esc_html_e( 'Online at the same time', 'netdesign-session-guard' ); ?></h2>
+			<p class="description"><?php esc_html_e( 'Periods when two devices of this account were active together. Shorter than a minute are not shown.', 'netdesign-session-guard' ); ?></p>
+			<table class="wp-list-table widefat striped ndsg-overlaps">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'When', 'netdesign-session-guard' ); ?></th>
+						<th><?php esc_html_e( 'Duration', 'netdesign-session-guard' ); ?></th>
+						<th><?php esc_html_e( 'Device A', 'netdesign-session-guard' ); ?></th>
+						<th><?php esc_html_e( 'Device B', 'netdesign-session-guard' ); ?></th>
+						<th><?php esc_html_e( 'Network', 'netdesign-session-guard' ); ?></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php if ( ! $overlaps ) : ?>
+					<tr><td colspan="6" class="ndsg-empty"><?php esc_html_e( 'No overlaps recorded.', 'netdesign-session-guard' ); ?></td></tr>
+				<?php endif; ?>
+				<?php foreach ( $overlaps as $o ) : ?>
+					<tr>
+						<td><?php echo esc_html( FlagsPage::local_time( $o->started_at ) ); ?></td>
+						<td><strong><?php echo esc_html( FlagsPage::duration( $o->seconds ) ); ?></strong></td>
+						<?php foreach ( [ 'a', 'b' ] as $side ) : ?>
+							<td>
+								<?php echo esc_html( ( $devices[ $o->{"type_$side"} ] ?? '' ) . ' ' . ( $o->{"label_$side"} ?: __( 'Ended session', 'netdesign-session-guard' ) ) ); ?>
+								<br><span class="description"><code><?php echo esc_html( (string) $o->{"ip_$side"} ); ?></code> <?php echo esc_html( (string) $o->{"country_$side"} ); ?></span>
+							</td>
+						<?php endforeach; ?>
+						<td>
+							<?php if ( $o->net_a && $o->net_a === $o->net_b ) : ?>
+								<span class="ndsg-pill"><?php esc_html_e( 'Same network', 'netdesign-session-guard' ); ?></span>
+							<?php else : ?>
+								<span class="ndsg-pill is-warn"><?php esc_html_e( 'Different networks', 'netdesign-session-guard' ); ?></span>
+							<?php endif; ?>
+						</td>
+						<td>
+							<?php
+							/**
+							 * Extra links for an overlap (Session Guard Pro: viewing report).
+							 *
+							 * @param object $overlap Row with both devices' details.
+							 */
+							do_action( 'ndsg_overlap_actions', $o );
+							?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
 
 			<h2><?php esc_html_e( 'Session history', 'netdesign-session-guard' ); ?></h2>
 			<table class="wp-list-table widefat striped">

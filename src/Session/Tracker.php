@@ -81,6 +81,8 @@ class Tracker {
 		global $wpdb;
 		$wpdb->delete( \NetDesign\SessionGuard\Install\Schema::sessions_table(), [ 'user_id' => (int) $user_id ] );
 		$wpdb->delete( \NetDesign\SessionGuard\Install\Schema::flags_table(), [ 'user_id' => (int) $user_id ] );
+		\NetDesign\SessionGuard\Detection\OverlapRepository::delete_for_user( $user_id );
+		\NetDesign\SessionGuard\Detection\NoteRepository::delete_for_user( $user_id );
 	}
 
 	/**

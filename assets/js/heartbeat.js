@@ -27,6 +27,7 @@
 		body.set('u', location.pathname + location.search);
 		body.set('p', cfg.post || 0);
 		body.set('c', cfg.course || 0);
+		body.set('i', cfg.interval || 30);
 
 		fetch(cfg.url, { method: 'POST', body: body, credentials: 'same-origin', cache: 'no-store' })
 			.then(function (r) { return r.ok ? r.json() : null; })

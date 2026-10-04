@@ -10,6 +10,8 @@ global $wpdb;
 // phpcs:disable WordPress.DB.DirectDatabaseQuery -- removing the plugin's own tables.
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->base_prefix}ndsg_sessions" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->base_prefix}ndsg_flags" );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->base_prefix}ndsg_overlaps" );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->base_prefix}ndsg_notes" );
 // phpcs:enable WordPress.DB.DirectDatabaseQuery
 
 foreach ( [ 'ndsg_settings', 'ndsg_db_version', 'ndsg_detector_last_run', 'ndsg_cloudflare_ranges' ] as $ndsg_option ) {

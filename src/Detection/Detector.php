@@ -56,11 +56,12 @@ class Detector {
 	public static function evaluate( array $user_ids, array $concurrent = [] ) {
 		$s     = Settings::all();
 		$since = gmdate( 'Y-m-d H:i:s', time() - (int) $s['window_days'] * DAY_IN_SECONDS );
-		$stats = Repository::stats_for_users( $user_ids, $since );
+		$stats   = Repository::stats_for_users( $user_ids, $since );
+		$overlap = OverlapRepository::seconds_for_users( $user_ids, $since );
 
 		foreach ( $user_ids as $user_id ) {
 			$st      = $stats[ $user_id ] ?? null;
-			$reasons = self::reasons( $st, (int) ( $concurrent[ $user_id ] ?? 0 ), $s );
+			$reasons = self::reasons( $st, (int) ( $concurrent[ $user_id ] ?? 0 ), $s, (int) ( $overlap[ $user_id ] ?? 0 ) );
 			if ( $reasons ) {
 				// New flags fire the ndsg_flag_raised action (Session Guard Pro emails them).
 				FlagRepository::raise( $user_id, $reasons, (int) $s['flag_score'], (int) $s['dismiss_days'] );
@@ -70,12 +71,21 @@ class Detector {
 
 	/**
 	 * Rules that fired, keyed by rule id: [value, threshold, points].
+	 *
+	 * @param object|null $st              Session stats for the period.
+	 * @param int         $concurrent      Devices online right now.
+	 * @param array       $s               Settings.
+	 * @param int         $overlap_seconds Time two devices were active together in the period.
 	 */
-	public static function reasons( $st, $concurrent, array $s ) {
+	public static function reasons( $st, $concurrent, array $s, $overlap_seconds = 0 ) {
 		$r = [];
 
 		if ( $concurrent >= $s['concurrent_threshold'] ) {
 			$r['concurrent'] = [ 'value' => $concurrent, 'threshold' => (int) $s['concurrent_threshold'], 'points' => 40 ];
+		}
+		$overlap_minutes = (int) floor( $overlap_seconds / 60 );
+		if ( $overlap_minutes >= (int) $s['overlap_threshold'] ) {
+			$r['overlap'] = [ 'value' => $overlap_minutes, 'threshold' => (int) $s['overlap_threshold'], 'points' => 40 ];
 		}
 		if ( ! $st ) {
 			return $r;
@@ -100,11 +110,57 @@ class Detector {
 	public static function labels() {
 		return [
 			'concurrent' => __( 'Devices online at the same time', 'netdesign-session-guard' ),
+			'overlap'    => __( 'Minutes online together', 'netdesign-session-guard' ),
 			'devices'    => __( 'Different devices', 'netdesign-session-guard' ),
 			'networks'   => __( 'Different networks', 'netdesign-session-guard' ),
 			'countries'  => __( 'Different countries', 'netdesign-session-guard' ),
 			'kicks'      => __( 'Devices signed out by the limit', 'netdesign-session-guard' ),
 		];
+	}
+
+	/**
+	 * One plain sentence per rule that fired, e.g. "Signed in from 4 different
+	 * devices in the last 30 days (flagged from 3)."
+	 *
+	 * @return string[] rule => sentence
+	 */
+	public static function explain( array $reasons ) {
+		$days = (int) Settings::get( 'window_days' );
+		$out  = [];
+		foreach ( $reasons as $key => $r ) {
+			$v = (int) $r['value'];
+			$t = (int) $r['threshold'];
+			switch ( $key ) {
+				case 'concurrent':
+					/* translators: 1: devices, 2: threshold */
+					$text = sprintf( __( '%1$d devices were online at the same moment (flagged from %2$d).', 'netdesign-session-guard' ), $v, $t );
+					break;
+				case 'overlap':
+					/* translators: 1: minutes, 2: days, 3: threshold in minutes */
+					$text = sprintf( __( 'Two devices were active at the same time for %1$d minutes in the last %2$d days (flagged from %3$d).', 'netdesign-session-guard' ), $v, $days, $t );
+					break;
+				case 'devices':
+					/* translators: 1: devices, 2: days, 3: threshold */
+					$text = sprintf( __( 'Signed in from %1$d different devices in the last %2$d days (flagged from %3$d).', 'netdesign-session-guard' ), $v, $days, $t );
+					break;
+				case 'networks':
+					/* translators: 1: networks, 2: days, 3: threshold */
+					$text = sprintf( __( 'Used from %1$d different internet connections in the last %2$d days (flagged from %3$d).', 'netdesign-session-guard' ), $v, $days, $t );
+					break;
+				case 'countries':
+					/* translators: 1: countries, 2: days, 3: threshold */
+					$text = sprintf( __( 'Used from %1$d different countries in the last %2$d days (flagged from %3$d).', 'netdesign-session-guard' ), $v, $days, $t );
+					break;
+				case 'kicks':
+					/* translators: 1: times, 2: days, 3: threshold */
+					$text = sprintf( __( 'The device limit signed out one of its devices %1$d times in the last %2$d days (flagged from %3$d).', 'netdesign-session-guard' ), $v, $days, $t );
+					break;
+				default:
+					$text = sprintf( '%s: %d', $key, $v );
+			}
+			$out[ $key ] = $text;
+		}
+		return $out;
 	}
 
 	public static function describe( array $reasons ) {

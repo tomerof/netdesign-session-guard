@@ -22,14 +22,17 @@ netdesign-session-guard/
 │   │   ├── Settings.php         Defaults, get/sanitize the ndsg_settings option
 │   │   └── Enforcer.php         Device limit at login, exemptions, effective limit
 │   ├── Detection/
-│   │   ├── Detector.php         Rules and scoring (login + hourly)
-│   │   └── FlagRepository.php   All SQL for the flags table
+│   │   ├── Detector.php         Rules, scoring and plain explanations (login + hourly)
+│   │   ├── FlagRepository.php   All SQL for the flags table, handling statuses
+│   │   ├── OverlapRepository.php Reads overlaps (written by Ping\Handler)
+│   │   └── NoteRepository.php   Admin notes about users
 │   ├── Cron/Jobs.php            Hourly, daily and import jobs
 │   ├── Rest/Controller.php      /ndsg/v1 REST routes
 │   ├── Ping/Handler.php         Heartbeat logic (DB only; Pro's ping.php reuses it)
 │   └── Admin/                   Menu, Live, Flags, User and Settings pages
 ├── assets/js/heartbeat.js       Front-end heartbeat (~1 KB, no dependencies)
 ├── assets/js/admin-live.js      Live screen (uses wp.apiFetch)
+├── assets/js/admin.js           Saves the status dropdown on change, confirms note deletion
 ├── assets/css/admin.css
 ├── languages/                   POT, Hebrew .po/.mo/.l10n.php
 ├── scripts/                     build.mjs, i18n.mjs (Node, no dependencies; not shipped)
@@ -62,7 +65,17 @@ Indexes: `(user_id, ended_at)`, `last_seen`, `created_at`.
 
 ### `{prefix}ndsg_flags`
 
-`id`, `user_id`, `score`, `reasons` (JSON), `status` (`open`/`dismissed`), `created_at`, `updated_at`, `notified_at`.
+`id`, `user_id`, `score`, `reasons` (JSON), `status`, `created_at`, `updated_at`, `notified_at`.
+
+`status` is the handling status: `new`, `follow_up`, `blocked` (open: `FlagRepository::OPEN_STATUSES`) or `resolved`, `dismissed` (closed). Before DB version 3 it was `open`/`dismissed`; the upgrade turns `open` into `new`.
+
+### `{prefix}ndsg_overlaps`
+
+`id`, `user_id`, `session_a` (always the lower id), `session_b`, `net_a`, `net_b`, `started_at`, `ended_at`, `seconds`. One row per pair of sessions per continuous period. Written by `Ping\Handler::record_overlaps()`. Indexes: `(user_id, started_at)`, `(session_a, session_b, ended_at)`, `ended_at`.
+
+### `{prefix}ndsg_notes`
+
+`id`, `user_id`, `author_id`, `note`, `created_at`.
 
 ### Options and meta
 
@@ -80,7 +93,7 @@ Namespace `ndsg/v1`. Admin routes need the `ndsg_capability` (default `manage_op
 
 | Method | Route | |
 |---|---|---|
-| POST | `/ping` | Public heartbeat fallback. Body: `k`, `u`, `p`, `c` |
+| POST | `/ping` | Public heartbeat. Body: `k` (key), `u` (url), `p` (post), `c` (course), `i` (interval, for the overlap gap) |
 | GET | `/live` | Online sessions and summary |
 | POST | `/sessions/{id}/kick` | Sign out one session |
 | POST | `/users/{id}/kick` | Sign out every session of a user |
@@ -99,6 +112,7 @@ Heartbeat answers: `{"s":"ok"}`, `{"s":"revoked","r":"<reason>"}`, `{"s":"unknow
 | `ndsg_user_page_panel` | `$user, $flag` | Extra panels on the user page |
 | `ndsg_settings_notices` | `$tab` | Above a settings tab |
 | `ndsg_settings_tab_{$tab}` | | Renders a custom settings tab (instead of the fields form) |
+| `ndsg_overlap_actions` | `$overlap` | Extra links in an overlap row on the user page (row includes both devices' details) |
 
 ## Filters
 
@@ -115,6 +129,8 @@ Heartbeat answers: `{"s":"ok"}`, `{"s":"revoked","r":"<reason>"}`, `{"s":"unknow
 | `ndsg_settings_tabs` | `$tabs` | `general`, `detect`, `advanced` |
 | `ndsg_settings_fields` | `$fields, $tab` | The fields of a tab |
 | `ndsg_admin_action_{$do}` | `$notice, $user_id, $flag_id` | Handles a custom admin action (nonce already checked); return a notice key |
+
+Built-in admin actions (`admin-post.php?action=ndsg_action&do=…`): `dismiss`, `reopen`, `set_status`, `add_note`, `delete_note`, `exempt`, `unexempt`, `kick_user`. `Admin::action_url()` builds GET links and `Admin::action_fields()` prints the hidden fields for POST forms.
 
 Unknown keys in `ndsg_settings` are kept when the free plugin saves, so add-on settings survive.
 

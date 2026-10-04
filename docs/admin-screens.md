@@ -23,23 +23,26 @@ Data comes from `GET /wp-json/ndsg/v1/live` (up to 500 sessions).
 
 **Session Guard → Flagged accounts**
 
-- **Open** and **Dismissed** tabs, a user search, and 30 per page.
+- **Tabs with counts:** *All open* (default), *New*, *Needs follow-up*, *Caught and blocked*, *Checked and resolved*, *Dismissed*. A user search, and 30 per page.
+- **How are accounts flagged?** A short explanation of the scoring, with a link to the rules.
 - **Columns:**
+  - **User**, with a preview of the latest note.
   - **Score:** grey below 50, yellow 50–79, red 80 and above.
-  - **Why:** every rule that fired, with its value and threshold.
-  - **Updated:** when the flag last changed.
-- **Actions:**
-  - **Dismiss**
-  - **Sign out everywhere**
-  - **Whitelist:** exempts the user and dismisses the flag
-  - **Reopen:** on dismissed flags
+  - **Why:** each rule that fired as a plain sentence, with its points, and when the account was flagged.
+  - **Handling:** the status dropdown. It saves as soon as you change it.
+- **Actions** (open flags): **Sign out everywhere**, **Whitelist** (exempts the user and dismisses the flag), **Add note**. Pro adds **Email user**.
+
+The menu badge counts *New* flags.
 
 ## User page
 
 Open it from a user's name on Live or Flagged accounts, or from the **Sessions** link on **Users → All Users**.
 
-- **Cards:** devices, networks, countries and logins in the look-back period, plus the open flag's score and reasons.
-- **Actions:** sign out everywhere, dismiss the flag, whitelist or remove from the whitelist.
+- **Cards:** devices, networks, countries, logins and time online together in the look-back period.
+- **Flag box:** the latest flag's score, date, handling status and a plain explanation of each reason.
+- **Actions:** sign out everywhere, whitelist or remove from the whitelist.
+- **Notes:** add a note; each shows its author and date and can be deleted.
+- **Online at the same time:** the user's overlaps (a minute or longer): when, how long, both devices with IP and country, and *Same network* / *Different networks*.
 - **Add-on panels:** Session Guard Pro adds *Email user*, a per-user device limit and, with LearnDash, the enrolled courses.
 - **Session history:** the last 100 sessions, each with:
   - sign-in time and device (the full user agent shows on hover),

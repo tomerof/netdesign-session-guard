@@ -24,12 +24,13 @@ See [Sharing detection](detection.md) for how scoring works.
 |---|---|---|
 | Look back (days) | 30 | The period the rules count over |
 | Devices online at the same time | 2 | +40 points |
+| Minutes online together in the period | 10 | +40 points. Total overlap time of the account's devices |
 | Different devices in the period | 3 | +30 points, +5 for each extra device (max 50) |
 | Different networks in the period | 5 | +20 points |
 | Different countries in the period | 2 | +30 points |
 | Devices signed out by the limit | 5 | +30 points |
 | Flag accounts scoring at least | 50 | An account with at least this many points is flagged |
-| After dismissing, don't re-flag for (days) | 30 | Quiet period after you dismiss a flag |
+| After dismissing, don't re-flag for (days) | 30 | Quiet period after a flag is dismissed or resolved |
 
 ## Advanced tab
 
@@ -39,7 +40,7 @@ See [Sharing detection](detection.md) for how scoring works.
 | Online if seen within (seconds) | 300 | A session counts as "online" if its last heartbeat was within this time. Must be at least twice the heartbeat interval. |
 | Client IP from | Automatic | **Automatic** detects Cloudflare and local proxies (see below). The fixed options force one header; use them only if Automatic gets it wrong. |
 | Store anonymized IPs | Off | Stores `1.2.3.0` instead of `1.2.3.4`. The network (/24) is still recorded for detection. |
-| Keep session history for (days) | 90 | Ended sessions older than this are deleted daily. |
+| Keep session history for (days) | 90 | Ended sessions and overlaps older than this are deleted daily. |
 
 ### How "Automatic" finds the client IP
 

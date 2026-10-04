@@ -92,6 +92,19 @@ Checked on 2026-09-28 against ease-it (WP 7.1, LearnDash 5.0.5, PHP 8.1):
 | 9 | Privacy policy guide | Suggested text listed under Settings → Privacy | ✅ |
 | 10 | Hebrew admin | Tabs and screens in Hebrew, RTL | ✅ |
 
+1.1.0, checked 2026-10-04:
+
+| # | Scenario | Expected | Result |
+|---|---|---|---|
+| 11 | DB upgrade 2 → 3 | `ndsg_overlaps` and `ndsg_notes` created; open flags become `new` | ✅ |
+| 12 | Two devices send heartbeats (Pro `ping.php` and REST) | One overlap row for the pair, extended by each heartbeat | ✅ |
+| 13 | 12-minute overlap, detection | `overlap` reason (12 ≥ 10), plain explanation | ✅ |
+| 14 | Status change / invalid status / no nonce | Saved / ignored / 403 | ✅ |
+| 15 | Add and show a note | Stored as plain text with author; preview in the list | ✅ |
+| 16 | Flags tabs, user page (free alone and with Pro) | No errors; Hebrew; status saves on change | ✅ |
+| 17 | Delete a user | Their notes and overlaps are deleted | ✅ |
+| 18 | Plugin Check | Only the 2 known warnings | ✅ |
+
 ## Plugin Check
 
 wordpress.org reviews submissions with [Plugin Check](https://wordpress.org/plugins/plugin-check/). Run it before every release:

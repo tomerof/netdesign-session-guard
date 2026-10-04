@@ -66,6 +66,7 @@ class SettingsPage {
 					'devices_threshold'    => [ 'number', __( 'Different devices in the period', 'netdesign-session-guard' ), null, __( '+30 points, +5 per extra device', 'netdesign-session-guard' ) ],
 					'networks_threshold'   => [ 'number', __( 'Different networks in the period', 'netdesign-session-guard' ), null, __( '+20 points. A network is an IP range (/24), so a changing home IP counts once.', 'netdesign-session-guard' ) ],
 					'countries_threshold'  => [ 'number', __( 'Different countries in the period', 'netdesign-session-guard' ), null, __( '+30 points. Needs a country header from Cloudflare or the server.', 'netdesign-session-guard' ) ],
+					'overlap_threshold'    => [ 'number', __( 'Minutes online together in the period', 'netdesign-session-guard' ), null, __( '+40 points. Total time two devices of the account were active at the same moment (overlaps under a minute are ignored).', 'netdesign-session-guard' ) ],
 					'kicks_threshold'      => [ 'number', __( 'Devices signed out by the limit', 'netdesign-session-guard' ), null, __( '+30 points. Frequent swapping between devices is a strong sign of sharing.', 'netdesign-session-guard' ) ],
 					'flag_score'           => [ 'number', __( 'Flag accounts scoring at least', 'netdesign-session-guard' ) ],
 					'dismiss_days'         => [ 'number', __( 'After dismissing, don\'t re-flag for (days)', 'netdesign-session-guard' ) ],

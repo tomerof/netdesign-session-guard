@@ -16,7 +16,11 @@ For each login session (`{prefix}ndsg_sessions`):
 | Last URL and post id (and course id with Session Guard Pro + LearnDash) | "Viewing" column on the Live screen |
 | Created, last seen, expiry, end time and reason | History |
 
-Flags (`{prefix}ndsg_flags`) store the user id, the score and the rule values.
+Flags (`{prefix}ndsg_flags`) store the user id, the score, the rule values and the handling status.
+
+Overlaps (`{prefix}ndsg_overlaps`) store the user id, the two session ids, their IP ranges, and the start, end and length of the period.
+
+Notes (`{prefix}ndsg_notes`) store the user id, the text, the admin who wrote it and the date.
 
 ## Cookies
 
@@ -24,7 +28,7 @@ Flags (`{prefix}ndsg_flags`) store the user id, the score and the rule values.
 
 ## Retention
 
-Ended sessions older than **Keep session history for** (90 days by default) are deleted every day. Flags are kept until the user is deleted or the plugin is uninstalled.
+Ended sessions and overlaps older than **Keep session history for** (90 days by default) are deleted every day. Flags and notes are kept until they (or the user) are deleted, or the plugin is uninstalled.
 
 ## Anonymization
 
@@ -32,7 +36,7 @@ With **Store anonymized IPs** on, IPs are stored through `wp_privacy_anonymize_i
 
 ## Deleting a user
 
-Deleting a WordPress user deletes all of their sessions and flags.
+Deleting a WordPress user deletes all of their sessions, flags, overlaps and notes.
 
 ## Suggested privacy-policy text
 

@@ -2,6 +2,7 @@
 namespace NetDesign\SessionGuard\Admin;
 
 use NetDesign\SessionGuard\Detection\FlagRepository;
+use NetDesign\SessionGuard\Detection\NoteRepository;
 use NetDesign\SessionGuard\Policy\Enforcer;
 use NetDesign\SessionGuard\Session\Kicker;
 use const NetDesign\SessionGuard\VERSION;
@@ -29,8 +30,9 @@ class Admin {
 
 	public function menu() {
 		$cap   = self::capability();
-		$open  = FlagRepository::count_open();
-		$badge = $open ? ' <span class="awaiting-mod">' . (int) $open . '</span>' : '';
+		// The badge counts new flags: the ones nobody has looked at yet.
+		$new   = FlagRepository::counts()['new'];
+		$badge = $new ? ' <span class="awaiting-mod">' . (int) $new . '</span>' : '';
 
 		add_menu_page( __( 'Session Guard', 'netdesign-session-guard' ), __( 'Session Guard', 'netdesign-session-guard' ) . $badge, $cap, self::SLUG, [ new LivePage(), 'render' ], 'dashicons-shield', 71 );
 		// Same slug as the top-level page: renames the first submenu item. No callback, or the page renders twice.
@@ -50,6 +52,10 @@ class Admin {
 			return;
 		}
 		wp_enqueue_style( 'ndsg-admin', NDSG_URL . 'assets/css/admin.css', [], VERSION );
+		wp_enqueue_script( 'ndsg-admin', NDSG_URL . 'assets/js/admin.js', [], VERSION, true );
+		wp_localize_script( 'ndsg-admin', 'ndsgAdmin', [
+			'deleteNote' => __( 'Delete this note?', 'netdesign-session-guard' ),
+		] );
 
 		if ( false !== strpos( $hook, self::SLUG ) ) {
 			wp_enqueue_script( 'ndsg-live', NDSG_URL . 'assets/js/admin-live.js', [ 'wp-api-fetch' ], VERSION, true );
@@ -91,7 +97,17 @@ class Admin {
 				FlagRepository::set_status( $flag_id, 'dismissed' );
 				break;
 			case 'reopen':
-				FlagRepository::set_status( $flag_id, 'open' );
+				FlagRepository::set_status( $flag_id, 'new' );
+				break;
+			case 'set_status':
+				FlagRepository::set_status( $flag_id, sanitize_key( wp_unslash( $_REQUEST['status'] ?? '' ) ) );
+				break;
+			case 'add_note':
+				NoteRepository::add( $user_id, get_current_user_id(), sanitize_textarea_field( wp_unslash( $_REQUEST['note'] ?? '' ) ) );
+				$notice = 'note_added';
+				break;
+			case 'delete_note':
+				NoteRepository::delete( absint( wp_unslash( $_REQUEST['note_id'] ?? 0 ) ) );
 				break;
 			case 'exempt':
 				update_user_meta( $user_id, Enforcer::META_EXEMPT, 1 );
@@ -123,6 +139,34 @@ class Admin {
 		exit;
 	}
 
+	/**
+	 * Hidden fields for a POST form to handle_action().
+	 */
+	public static function action_fields( $do, array $args = [] ) {
+		wp_nonce_field( 'ndsg_action' );
+		foreach ( array_merge( [ 'action' => 'ndsg_action', 'do' => $do ], $args ) as $name => $value ) {
+			printf( '<input type="hidden" name="%s" value="%s">', esc_attr( $name ), esc_attr( $value ) );
+		}
+	}
+
+	/**
+	 * Handling-status dropdown for a flag. Saves on change (assets/js/admin.js);
+	 * the button is the fallback without JavaScript.
+	 */
+	public static function status_form( $flag ) {
+		?>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="ndsg-status-form">
+			<?php self::action_fields( 'set_status', [ 'flag_id' => (int) $flag->id ] ); ?>
+			<select name="status" class="ndsg-status ndsg-status--<?php echo esc_attr( $flag->status ); ?>" aria-label="<?php esc_attr_e( 'Handling status', 'netdesign-session-guard' ); ?>">
+				<?php foreach ( FlagRepository::statuses() as $key => $label ) : ?>
+					<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $flag->status, $key ); ?>><?php echo esc_html( $label ); ?></option>
+				<?php endforeach; ?>
+			</select>
+			<button class="button button-small ndsg-status-save"><?php esc_html_e( 'Save', 'netdesign-session-guard' ); ?></button>
+		</form>
+		<?php
+	}
+
 	public static function action_url( $do, array $args = [] ) {
 		return wp_nonce_url(
 			add_query_arg( array_merge( [ 'action' => 'ndsg_action', 'do' => $do ], $args ), admin_url( 'admin-post.php' ) ),
@@ -135,7 +179,11 @@ class Admin {
 		if ( ! $n ) {
 			return;
 		}
-		$text = 'emailed' === $n ? __( 'Email sent.', 'netdesign-session-guard' ) : __( 'Done.', 'netdesign-session-guard' );
+		$texts = [
+			'emailed'    => __( 'Email sent.', 'netdesign-session-guard' ),
+			'note_added' => __( 'Note added.', 'netdesign-session-guard' ),
+		];
+		$text  = $texts[ $n ] ?? __( 'Done.', 'netdesign-session-guard' );
 		printf( '<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $text ) );
 	}
 

@@ -50,6 +50,7 @@ class Jobs {
 
 	public function daily() {
 		Repository::purge_older_than( (int) Settings::get( 'retention_days' ) );
+		\NetDesign\SessionGuard\Detection\OverlapRepository::purge_older_than( (int) Settings::get( 'retention_days' ) );
 		ClientIp::refresh_ranges();
 		do_action( 'ndsg_daily' );
 	}

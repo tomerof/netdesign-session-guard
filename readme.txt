@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,11 +23,19 @@ Everyone signed in right now: user, device and browser, IP and country, the page
 Each account gets a score from simple, explainable rules:
 
 * devices online at the same time
+* how long two devices were active together (overlaps)
 * different devices in the last 30 days
 * different networks (IP ranges) and countries
 * devices signing each other out again and again
 
-Accounts over the threshold are listed under **Flagged accounts**, with the reasons. You can dismiss a flag, sign the user out everywhere, or whitelist them.
+Accounts over the threshold are listed under **Flagged accounts**, with a plain explanation of why, for example "Two devices were active at the same time for 12 minutes in the last 30 days".
+
+= Handle each case =
+
+* **Handling status** for every flagged account: New, Needs follow-up, Caught and blocked, Checked and resolved, or Dismissed. Filter the list by status.
+* **Notes** on any user ("called the student, the second phone is his wife's"), with author and date.
+* **Online at the same time:** each user's page lists the periods when two of their devices were active together, how long, from which devices, and whether from the same network.
+* Sign the user out everywhere, or whitelist them.
 
 = Device limit =
 
@@ -45,7 +53,7 @@ Normal page views add no database queries. Activity comes from a small heartbeat
 
 = Session Guard Pro =
 
-An optional paid add-on, sold separately at [netdesign.media](https://netdesign.media/session-guard/), adds:
+An optional paid add-on, sold separately by [Netdesign](https://dashboard.netdesign.media/buy/netdesign-session-guard-pro), adds:
 
 * email alerts about flagged accounts, and a warning email to the user,
 * per-user device limits,
@@ -96,9 +104,9 @@ For every login session, Session Guard stores in your own database (`{prefix}nds
 * the country code, when Cloudflare or the server provides one,
 * the last page visited, and timestamps.
 
-Flags store the user ID and the rule values.
+Flags store the user ID, the rule values and the handling status. Overlaps store the two sessions, their networks and the times. Notes store the text, its author and the date.
 
-Ended sessions are deleted after 90 days (configurable). Deleting a user deletes their data. Uninstalling the plugin removes all of its data.
+Ended sessions and overlaps are deleted after 90 days (configurable). Notes are kept until you delete them or the user. Deleting a user deletes their data. Uninstalling the plugin removes all of its data.
 
 **External request:** once a day the plugin downloads Cloudflare's public list of IP ranges from `https://api.cloudflare.com/client/v4/ips`. It uses them only to recognize requests coming through Cloudflare, and a built-in copy is used if the download fails. No data about your site or users is sent anywhere. This service is provided by Cloudflare, Inc.: [Terms of Use](https://www.cloudflare.com/website-terms/), [Privacy Policy](https://www.cloudflare.com/privacypolicy/).
 
@@ -107,16 +115,27 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 == Screenshots ==
 
 1. Live view: who is online, their device, location and current page.
-2. Flagged accounts, with scores and reasons.
-3. A user's session history and devices.
+2. Flagged accounts, with scores, plain reasons and handling status.
+3. A user's page: why they were flagged, notes, overlaps and session history.
 4. Settings: device limit.
 
 == Changelog ==
+
+= 1.1.0 =
+* Overlaps: the heartbeat records when two devices of a user are active at the same time, and for how long. Listed on the user page.
+* New detection rule: minutes online together (default: flag from 10 minutes, +40 points).
+* Handling status for flags: New, Needs follow-up, Caught and blocked, Checked and resolved, Dismissed. Filter tabs with counts.
+* Notes on users.
+* Plain-language explanation of why an account was flagged.
+* The menu badge counts new flags only.
 
 = 1.0.0 =
 * First release on wordpress.org: live sessions, account-sharing detection and flags, device limit (the oldest device is signed out), manual sign-out, whitelist, automatic client-IP detection, Hebrew translation.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Adds overlap tracking, handling statuses and notes. Existing open flags become "New".
 
 = 1.0.0 =
 First release.
