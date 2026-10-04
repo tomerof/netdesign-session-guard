@@ -105,6 +105,17 @@ Checked on 2026-09-28 against ease-it (WP 7.1, LearnDash 5.0.5, PHP 8.1):
 | 17 | Delete a user | Their notes and overlaps are deleted | ✅ |
 | 18 | Plugin Check | Only the 2 known warnings | ✅ |
 
+1.3.0 (risk levels), checked 2026-10-04 with Pro 1.2.0:
+
+| # | Scenario | Expected | Result |
+|---|---|---|---|
+| 19 | DB upgrade 3 → 4 | `level`/`facts` on overlaps, `level` on flags; dismissed → resolved | ✅ |
+| 20 | Three 6-minute overlaps: no video / one video / both videos | weak / medium / strong; account flagged *strong* with plain sentences | ✅ |
+| 21 | Alert (strong, 1 min, two recipients, mail intercepted) | One email to both; none on the next run | ✅ |
+| 22 | Excluded users box | Emails / IDs whitelisted, unknown ignored, removal un-whitelists | ✅ |
+| 23 | Monitoring off | Detector skips; heartbeat sends `m=0` (only sign-out check) | ✅ |
+| 24 | Screens in Hebrew: legend, risk badges, detection settings | No errors | ✅ |
+
 ## Plugin Check
 
 wordpress.org reviews submissions with [Plugin Check](https://wordpress.org/plugins/plugin-check/). Run it before every release:

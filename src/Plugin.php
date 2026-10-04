@@ -30,6 +30,7 @@ final class Plugin {
 
 		( new Tracker() )->register();
 		( new Jobs() )->register();
+		\NetDesign\SessionGuard\Detection\Detector::register();
 		( new Controller() )->register();
 
 		if ( is_admin() ) {

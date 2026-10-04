@@ -10,6 +10,7 @@ All settings live in **Session Guard → Settings**, stored in a single option, 
 |---|---|---|
 | Mode | Monitor only | **Monitor only**: track and flag accounts, never sign anyone out. **Enforce**: apply the device limit. |
 | Devices allowed at once | 1 | How many devices an account may be signed in on at the same time. Tabs in one browser count as one device. |
+| Excluded users | — | Emails, usernames or user IDs. The same list as the whitelist: editing it adds or removes whitelisted users. |
 | Roles without limits | Administrator | Users with these roles are never limited and never flagged. |
 | Message shown to the signed-out device | "You have been signed out because…" | Shown on the device that was signed out. |
 | Send signed-out device to | *(login page)* | Where that device goes after the message. |
@@ -18,19 +19,16 @@ Session Guard Pro adds per-user and per-LearnDash-group limits. Code can change 
 
 ## Detection tab
 
-See [Sharing detection](detection.md) for how scoring works.
+See [Sharing detection](detection.md) for how risk levels work.
 
-| Setting | Default | Rule |
+| Setting | Default | Meaning |
 |---|---|---|
-| Look back (days) | 30 | The period the rules count over |
-| Devices online at the same time | 2 | +40 points |
-| Minutes online together in the period | 10 | +40 points. Total overlap time of the account's devices |
-| Different devices in the period | 3 | +30 points, +5 for each extra device (max 50) |
-| Different networks in the period | 5 | +20 points |
-| Different countries in the period | 2 | +30 points |
-| Devices signed out by the limit | 5 | +30 points |
-| Flag accounts scoring at least | 50 | An account with at least this many points is flagged |
-| After dismissing, don't re-flag for (days) | 30 | Quiet period after a flag is dismissed or resolved |
+| Monitoring | On | Collects overlaps (and viewing, with Pro) and rates them. Off stops collecting new data; nothing is deleted. |
+| Grace period (seconds) | 120 | Two devices active together for less than this is ignored. |
+| Add accounts to the list from risk level | Weak | Accounts at this level or higher appear under Flagged accounts. |
+| "Very strong" when it happens (times in 7 days) | 3 | Repeats at the repeat level (weak; strong with Pro) that raise an account to *very strong*. |
+| How many days back to check | 30 | The period the account level and the user pages count. |
+| After "checked, OK", don't flag the account again for (days) | 30 | Quiet period after a case is closed. |
 
 ## Advanced tab
 

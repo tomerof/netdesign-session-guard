@@ -131,3 +131,19 @@ a.ndsg-card:hover { border-color: #2271b1; }
 	.ndsg-actions { white-space: normal; }
 	.ndsg-status { min-width: 0; max-width: 100%; }
 }
+
+/* Risk levels */
+.ndsg-risk { display: inline-block; padding: 2px 10px; border-radius: 999px; font-weight: 600; font-size: 12px; white-space: nowrap; background: #f0f0f1; color: #50575e; }
+.ndsg-risk.is-ok { background: #edfaef; color: #00450c; }
+.ndsg-risk.is-weak { background: #fcf9e8; color: #6e4f00; }
+.ndsg-risk.is-medium { background: #fdf0e6; color: #8a3f00; }
+.ndsg-risk.is-strong { background: #fcf0f1; color: #b32d2e; }
+.ndsg-risk.is-very_strong { background: #f5c6c8; color: #8a1f1f; }
+
+.ndsg-legend { max-width: 1100px; margin: 10px 0 6px; padding: 10px 14px; background: #fff; border: 1px solid #dcdcde; border-inline-start: 4px solid #2271b1; border-radius: 6px; }
+.ndsg-legend summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+.ndsg-legend__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.ndsg-legend__item { display: flex; align-items: flex-start; gap: 10px; background: #f6f7f7; border-radius: 6px; padding: 8px 10px; }
+.ndsg-legend__item .ndsg-risk { flex: none; }
+.ndsg-legend .description { margin: 8px 0 0; }
+@media (max-width: 960px) { .ndsg-legend__grid { grid-template-columns: 1fr; } }

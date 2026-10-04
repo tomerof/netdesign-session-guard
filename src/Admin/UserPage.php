@@ -5,6 +5,7 @@ use NetDesign\SessionGuard\Detection\Detector;
 use NetDesign\SessionGuard\Detection\FlagRepository;
 use NetDesign\SessionGuard\Detection\NoteRepository;
 use NetDesign\SessionGuard\Detection\OverlapRepository;
+use NetDesign\SessionGuard\Detection\Risk;
 use NetDesign\SessionGuard\Policy\Enforcer;
 use NetDesign\SessionGuard\Policy\Settings;
 use NetDesign\SessionGuard\Session\Repository;
@@ -58,15 +59,15 @@ class UserPage {
 				<?php $latest_reasons = json_decode( $latest->reasons, true ) ?: []; ?>
 				<div class="ndsg-flag-box <?php echo FlagRepository::is_open( $latest->status ) ? 'is-open' : ''; ?>">
 					<div class="ndsg-flag-box__head">
-						<span class="ndsg-score <?php echo esc_attr( FlagsPage::score_class( (int) $latest->score ) ); ?>"><?php echo (int) $latest->score; ?></span>
+						<?php echo Risk::badge( $latest->level ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Risk::badge(). ?>
 						<?php /* translators: %s: date and time */ ?>
 						<strong><?php echo esc_html( sprintf( __( 'Flagged %s', 'netdesign-session-guard' ), FlagsPage::local_time( $latest->created_at ) ) ); ?></strong>
 						<?php Admin::status_form( $latest ); ?>
 					</div>
 					<p class="description"><?php esc_html_e( 'Why this account was flagged:', 'netdesign-session-guard' ); ?></p>
 					<ul class="ndsg-reasons">
-						<?php foreach ( Detector::explain( $latest_reasons ) as $key => $text ) : ?>
-							<li><?php echo esc_html( $text ); ?> <span class="description">+<?php echo (int) ( $latest_reasons[ $key ]['points'] ?? 0 ); ?></span></li>
+						<?php foreach ( Detector::explain( $latest_reasons ) as $text ) : ?>
+							<li><?php echo esc_html( $text ); ?></li>
 						<?php endforeach; ?>
 					</ul>
 				</div>
@@ -124,6 +125,7 @@ class UserPage {
 				<thead>
 					<tr>
 						<th><?php esc_html_e( 'When', 'netdesign-session-guard' ); ?></th>
+						<th><?php esc_html_e( 'Risk', 'netdesign-session-guard' ); ?></th>
 						<th><?php esc_html_e( 'Duration', 'netdesign-session-guard' ); ?></th>
 						<th><?php esc_html_e( 'Device A', 'netdesign-session-guard' ); ?></th>
 						<th><?php esc_html_e( 'Device B', 'netdesign-session-guard' ); ?></th>
@@ -133,11 +135,12 @@ class UserPage {
 				</thead>
 				<tbody>
 				<?php if ( ! $overlaps ) : ?>
-					<tr><td colspan="6" class="ndsg-empty"><?php esc_html_e( 'No overlaps recorded.', 'netdesign-session-guard' ); ?></td></tr>
+					<tr><td colspan="7" class="ndsg-empty"><?php esc_html_e( 'No overlaps recorded.', 'netdesign-session-guard' ); ?></td></tr>
 				<?php endif; ?>
 				<?php foreach ( $overlaps as $o ) : ?>
 					<tr>
 						<td><?php echo esc_html( FlagsPage::local_time( $o->started_at ) ); ?></td>
+						<td><?php echo (int) $o->level ? Risk::badge( $o->level ) : '<span class="description">' . esc_html__( 'Within the grace period', 'netdesign-session-guard' ) . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Risk::badge(). ?></td>
 						<td><strong><?php echo esc_html( FlagsPage::duration( $o->seconds ) ); ?></strong></td>
 						<?php foreach ( [ 'a', 'b' ] as $side ) : ?>
 							<td>

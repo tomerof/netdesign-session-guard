@@ -38,6 +38,44 @@ class OverlapRepository {
 		) );
 	}
 
+	/**
+	 * Overlaps that changed since a date and are at least $min_seconds long,
+	 * with both sessions' countries and devices (for rating them).
+	 */
+	public static function changed_since( $since, $min_seconds ) {
+		global $wpdb;
+		$o = Schema::overlaps_table();
+		$s = Schema::sessions_table();
+		return $wpdb->get_results( $wpdb->prepare(
+			"SELECT o.*, sa.country AS country_a, sb.country AS country_b, sa.device_id AS device_a, sb.device_id AS device_b
+			FROM {$o} o
+			LEFT JOIN {$s} sa ON sa.id = o.session_a
+			LEFT JOIN {$s} sb ON sb.id = o.session_b
+			WHERE o.ended_at >= %s AND o.seconds >= %d
+			ORDER BY o.id LIMIT 2000",
+			$since,
+			$min_seconds
+		) );
+	}
+
+	public static function set_risk( $id, $level, array $facts ) {
+		global $wpdb;
+		$wpdb->update( Schema::overlaps_table(), [ 'level' => (int) $level, 'facts' => wp_json_encode( $facts ) ], [ 'id' => (int) $id ] );
+	}
+
+	/**
+	 * Rated overlaps (level > 0) of one user since a date.
+	 */
+	public static function rated_for_user( $user_id, $since ) {
+		global $wpdb;
+		$o = Schema::overlaps_table();
+		return $wpdb->get_results( $wpdb->prepare(
+			"SELECT id, level, facts, seconds, started_at FROM {$o} WHERE user_id = %d AND started_at >= %s AND level > 0 ORDER BY started_at",
+			$user_id,
+			$since
+		) );
+	}
+
 	public static function find( $id ) {
 		global $wpdb;
 		$o = Schema::overlaps_table();

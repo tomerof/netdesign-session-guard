@@ -20,6 +20,6 @@ foreach ( [ 'ndsg_settings', 'ndsg_db_version', 'ndsg_detector_last_run', 'ndsg_
 
 delete_metadata( 'user', 0, 'ndsg_exempt', '', true );
 
-foreach ( [ 'ndsg_hourly', 'ndsg_daily', 'ndsg_import_sessions' ] as $ndsg_hook ) {
+foreach ( [ 'ndsg_hourly', 'ndsg_daily', 'ndsg_import_sessions', 'ndsg_assess' ] as $ndsg_hook ) {
 	wp_clear_scheduled_hook( $ndsg_hook );
 }

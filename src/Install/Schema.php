@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Schema {
 
-	const DB_VERSION = '3';
+	const DB_VERSION = '4';
 	const OPTION     = 'ndsg_db_version';
 
 	public static function sessions_table() {
@@ -90,6 +90,7 @@ class Schema {
 			id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			user_id bigint(20) unsigned NOT NULL,
 			score smallint(5) unsigned NOT NULL DEFAULT 0,
+			level tinyint(3) unsigned NOT NULL DEFAULT 0,
 			reasons text NOT NULL,
 			status varchar(20) NOT NULL DEFAULT 'new',
 			created_at datetime NOT NULL,
@@ -111,6 +112,8 @@ class Schema {
 			started_at datetime NOT NULL,
 			ended_at datetime NOT NULL,
 			seconds int(10) unsigned NOT NULL DEFAULT 0,
+			level tinyint(3) unsigned NOT NULL DEFAULT 0,
+			facts text NULL,
 			PRIMARY KEY  (id),
 			KEY user_started (user_id,started_at),
 			KEY pair_ended (session_a,session_b,ended_at),
@@ -129,6 +132,11 @@ class Schema {
 
 		// v3: flags got a handling status. "open" flags become "new".
 		$wpdb->query( "UPDATE {$flags} SET status = 'new' WHERE status = 'open'" );
+
+		// v4: risk levels instead of points. "Dismissed" merges into "checked, OK";
+		// flags from the points model get the lowest level.
+		$wpdb->query( "UPDATE {$flags} SET status = 'resolved' WHERE status = 'dismissed'" );
+		$wpdb->query( "UPDATE {$flags} SET level = 1 WHERE level = 0" );
 
 		// v2: "Client IP from" gained Automatic. Sites still on the old default switch to it.
 		$settings = get_option( 'ndsg_settings' );

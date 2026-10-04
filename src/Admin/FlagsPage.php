@@ -4,6 +4,7 @@ namespace NetDesign\SessionGuard\Admin;
 use NetDesign\SessionGuard\Detection\Detector;
 use NetDesign\SessionGuard\Detection\FlagRepository;
 use NetDesign\SessionGuard\Detection\NoteRepository;
+use NetDesign\SessionGuard\Detection\Risk;
 use NetDesign\SessionGuard\Policy\Enforcer;
 use NetDesign\SessionGuard\Policy\Settings;
 
@@ -49,13 +50,7 @@ class FlagsPage {
 			<p class="description"><?php esc_html_e( 'Accounts whose usage looks like more than one person. Review each one and set its handling status.', 'netdesign-session-guard' ); ?></p>
 			<?php Admin::notice(); ?>
 
-			<details class="ndsg-help">
-				<summary><?php esc_html_e( 'How are accounts flagged?', 'netdesign-session-guard' ); ?></summary>
-				<p><?php esc_html_e( 'Every account gets points for signs of sharing: devices online at the same time, time two devices were active together, many different devices, internet connections or countries, and devices signed out by the limit. Accounts that reach the flag score are listed here. Nobody is signed out because of a flag.', 'netdesign-session-guard' ); ?></p>
-				<?php /* translators: 1: flag score, 2: days */ ?>
-				<p><?php echo esc_html( sprintf( __( 'Flagged from %1$d points. Counted over the last %2$d days.', 'netdesign-session-guard' ), (int) Settings::get( 'flag_score' ), (int) Settings::get( 'window_days' ) ) ); ?>
-					<a href="<?php echo esc_url( admin_url( 'admin.php?page=ndsg-settings&tab=detect' ) ); ?>"><?php esc_html_e( 'Change the rules', 'netdesign-session-guard' ); ?></a></p>
-			</details>
+			<?php self::legend(); ?>
 
 			<ul class="subsubsub">
 				<?php $i = 0; foreach ( $tabs as $key => $tab ) : ?>
@@ -102,7 +97,7 @@ class FlagsPage {
 				<thead>
 					<tr>
 						<th><?php esc_html_e( 'User', 'netdesign-session-guard' ); ?></th>
-						<th class="column-score"><?php esc_html_e( 'Score', 'netdesign-session-guard' ); ?></th>
+						<th class="column-score"><?php esc_html_e( 'Risk', 'netdesign-session-guard' ); ?></th>
 						<th><?php esc_html_e( 'Why', 'netdesign-session-guard' ); ?></th>
 						<th><?php esc_html_e( 'Handling', 'netdesign-session-guard' ); ?></th>
 						<th><?php esc_html_e( 'Actions', 'netdesign-session-guard' ); ?></th>
@@ -127,11 +122,11 @@ class FlagsPage {
 								<p class="ndsg-note-preview"><a href="<?php echo esc_url( $user . '#ndsg-notes' ); ?>" title="<?php echo esc_attr( sprintf( _n( '%d note', '%d notes', $note->count, 'netdesign-session-guard' ), $note->count ) ); ?>">✎</a> <?php echo esc_html( wp_trim_words( $note->note, 12 ) ); ?></p>
 							<?php endif; ?>
 						</td>
-						<td class="column-score"><span class="ndsg-score <?php echo esc_attr( self::score_class( (int) $f->score ) ); ?>"><?php echo (int) $f->score; ?></span></td>
+						<td class="column-score"><?php echo Risk::badge( $f->level ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Risk::badge(). ?></td>
 						<td>
 							<ul class="ndsg-reasons">
-							<?php foreach ( Detector::explain( $reasons ) as $key => $text ) : ?>
-								<li><?php echo esc_html( $text ); ?> <span class="description">+<?php echo (int) ( $reasons[ $key ]['points'] ?? 0 ); ?></span></li>
+							<?php foreach ( Detector::explain( $reasons ) as $text ) : ?>
+								<li><?php echo esc_html( $text ); ?></li>
 							<?php endforeach; ?>
 							</ul>
 							<?php /* translators: %s: date and time */ ?>
@@ -197,8 +192,28 @@ class FlagsPage {
 		return sprintf( __( '%1$dh %2$dm', 'netdesign-session-guard' ), intdiv( $seconds, HOUR_IN_SECONDS ), intdiv( $seconds % HOUR_IN_SECONDS, 60 ) );
 	}
 
-	public static function score_class( $score ) {
-		return $score >= 80 ? 'is-high' : ( $score >= 50 ? 'is-mid' : 'is-low' );
+	/**
+	 * "How to read the risk levels" box.
+	 */
+	public static function legend() {
+		?>
+		<details class="ndsg-legend" open>
+			<summary><?php esc_html_e( 'How to read the risk levels?', 'netdesign-session-guard' ); ?></summary>
+			<div class="ndsg-legend__grid">
+				<?php foreach ( Risk::levels() as $level => $info ) : ?>
+					<?php if ( '' === $info[2] ) { continue; } ?>
+					<div class="ndsg-legend__item">
+						<?php echo Risk::badge( $level ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Risk::badge(). ?>
+						<span><?php echo esc_html( $info[2] ); ?></span>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<p class="description">
+				<?php esc_html_e( 'Nobody is signed out because of a risk level.', 'netdesign-session-guard' ); ?>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=ndsg-settings&tab=detect' ) ); ?>"><?php esc_html_e( 'Detection settings', 'netdesign-session-guard' ); ?></a>
+			</p>
+		</details>
+		<?php
 	}
 
 	public static function local_time( $utc ) {

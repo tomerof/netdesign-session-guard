@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,24 +18,23 @@ Selling courses, memberships or subscriptions? Session Guard shows you when one 
 
 Everyone signed in right now: user, device and browser, IP and country, the page they're on, and when they were last seen. Users on more than one device at the same time stand out. Sign out any device with one click.
 
-= Account-sharing detection =
+= Account-sharing detection with risk levels =
 
-Each account gets a score from simple, explainable rules:
+The clearest sign of a shared account is two devices used at the same moment. Session Guard records every **overlap** (two devices of one account active together), and rates it:
 
-* devices online at the same time
-* how long two devices were active together (overlaps)
-* different devices in the last 30 days
-* different networks (IP ranges) and countries
-* devices signing each other out again and again
+* **Weak:** two devices active together longer than the grace period.
+* **Very strong:** the devices were in different countries, or it keeps happening (several times in a week).
+* With the Pro add-on, which detects video playback: **medium** (only one device watching a video) and **strong** (both watching at the same time).
 
-Accounts over the threshold are listed under **Flagged accounts**, with a plain explanation of why, for example "Two devices were active at the same time for 12 minutes in the last 30 days".
+Accounts from the level you choose are listed under **Flagged accounts**, with a plain explanation, for example "Two devices were active at the same time 3 times in the last 30 days, 18 min in total. The devices were on the same internet connection." A "How to read the risk levels?" box explains each level.
 
 = Handle each case =
 
-* **Handling status** for every flagged account: New, Needs follow-up, Caught and blocked, Checked and resolved, or Dismissed. Filter the list by status.
+* **Handling status** for every flagged account: New, Needs follow-up, Caught and blocked, or Checked, OK. Filter the list by status.
 * **Notes** on any user ("called the student, the second phone is his wife's"), with author and date.
 * **Online at the same time:** each user's page lists the periods when two of their devices were active together, how long, from which devices, and whether from the same network.
-* Sign the user out everywhere, or whitelist them. The **Whitelisted users** tab lists everyone on the whitelist.
+* Sign the user out everywhere, or whitelist them. The **Whitelisted users** tab lists everyone on the whitelist, and **Excluded users** in the settings lets you paste a list of emails or user IDs.
+* **Monitoring switch:** turn collection off without deleting anything.
 
 = Device limit =
 
@@ -43,7 +42,7 @@ Allow N devices per account, one by default. When someone signs in on another de
 
 = Built to stay light =
 
-Normal page views add no database queries. Activity comes from a small heartbeat that runs only while the tab is visible, detection runs hourly in the background, and old history is cleaned up automatically.
+Normal page views add no database queries. Activity comes from a small heartbeat that runs only while the tab is visible, detection runs every 5 minutes in the background, and old history is cleaned up automatically.
 
 = More =
 
@@ -55,7 +54,8 @@ Normal page views add no database queries. Activity comes from a small heartbeat
 
 An optional paid add-on, sold separately by [Netdesign](https://dashboard.netdesign.media/buy/netdesign-session-guard-pro), adds:
 
-* email alerts about flagged accounts, and a warning email to the user,
+* video detection (Vimeo, YouTube, HTML5) for the medium and strong levels, and a viewing report for every overlap,
+* email alerts about flagged accounts and active suspects, with an email history, and a warning email to the user,
 * per-user device limits,
 * LearnDash: device limits per group, and the course each user is in,
 * a faster heartbeat endpoint.
@@ -75,7 +75,7 @@ Behind Cloudflare or a proxy? Leave **Settings → Advanced → Client IP from**
 
 = Does it slow my site down? =
 
-No. Page views do no extra database work. The heartbeat runs once every 30 seconds (configurable), and only while the tab is visible. Detection runs hourly in the background.
+No. Page views do no extra database work. The heartbeat runs once every 30 seconds (configurable), and only while the tab is visible. Detection runs every 5 minutes in the background.
 
 = What does a signed-out device see? =
 
@@ -121,6 +121,13 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 
 == Changelog ==
 
+= 1.3.0 =
+* Risk levels (weak / medium / strong / very strong) replace the points score. Accounts are flagged from a level you choose, with a plain explanation and a "How to read the risk levels?" box.
+* Detection runs every 5 minutes.
+* Simpler detection settings: monitoring on/off, grace period in seconds, level to list from, repeats for "very strong", days to check.
+* Excluded users box (emails, usernames or IDs), synced with the whitelist.
+* Status "Checked, OK" replaces "Checked and resolved" and "Dismissed".
+
 = 1.2.1 =
 * The heartbeat identifies each page view, so add-ons can tell open tabs apart.
 
@@ -140,6 +147,9 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 * First release on wordpress.org: live sessions, account-sharing detection and flags, device limit (the oldest device is signed out), manual sign-out, whitelist, automatic client-IP detection, Hebrew translation.
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Risk levels replace the points score. Existing flags keep their reasons; "Dismissed" flags become "Checked, OK".
 
 = 1.2.0 =
 Adds a list of whitelisted users.

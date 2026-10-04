@@ -22,7 +22,8 @@ netdesign-session-guard/
 │   │   ├── Settings.php         Defaults, get/sanitize the ndsg_settings option
 │   │   └── Enforcer.php         Device limit at login, exemptions, effective limit
 │   ├── Detection/
-│   │   ├── Detector.php         Rules, scoring and plain explanations (login + hourly)
+│   │   ├── Risk.php             Risk levels, labels, rating one overlap
+│   │   ├── Detector.php         5-minute rating of overlaps, account levels, explanations
 │   │   ├── FlagRepository.php   All SQL for the flags table, handling statuses
 │   │   ├── OverlapRepository.php Reads overlaps (written by Ping\Handler)
 │   │   └── NoteRepository.php   Admin notes about users
@@ -65,13 +66,13 @@ Indexes: `(user_id, ended_at)`, `last_seen`, `created_at`.
 
 ### `{prefix}ndsg_flags`
 
-`id`, `user_id`, `score`, `reasons` (JSON), `status`, `created_at`, `updated_at`, `notified_at`.
+`id`, `user_id`, `level` (risk level 1–4), `score` (level × 25, kept for compatibility), `reasons` (JSON: `count`, `total`, `longest`, `top` {overlap_id, level, facts}, optional `repeat`), `status`, `created_at`, `updated_at`, `notified_at`.
 
-`status` is the handling status: `new`, `follow_up`, `blocked` (open: `FlagRepository::OPEN_STATUSES`) or `resolved`, `dismissed` (closed). Before DB version 3 it was `open`/`dismissed`; the upgrade turns `open` into `new`.
+`status` is the handling status: `new`, `follow_up`, `blocked` (open: `FlagRepository::OPEN_STATUSES`) or `resolved` ("Checked, OK"; closed). DB v3 turned `open` into `new`; v4 turned `dismissed` into `resolved` and gave points-model flags level 1.
 
 ### `{prefix}ndsg_overlaps`
 
-`id`, `user_id`, `session_a` (always the lower id), `session_b`, `net_a`, `net_b`, `started_at`, `ended_at`, `seconds`. One row per pair of sessions per continuous period. Written by `Ping\Handler::record_overlaps()`. Indexes: `(user_id, started_at)`, `(session_a, session_b, ended_at)`, `ended_at`.
+`id`, `user_id`, `session_a` (always the lower id), `session_b`, `net_a`, `net_b`, `started_at`, `ended_at`, `seconds`, `level` (0 until rated), `facts` (JSON: seconds, networks_differ, countries; Pro adds video_both, video_one, video_streak, same_video, video_checked). One row per pair of sessions per continuous period. Written by `Ping\Handler::record_overlaps()`. Indexes: `(user_id, started_at)`, `(session_a, session_b, ended_at)`, `ended_at`.
 
 ### `{prefix}ndsg_notes`
 
@@ -93,7 +94,7 @@ Namespace `ndsg/v1`. Admin routes need the `ndsg_capability` (default `manage_op
 
 | Method | Route | |
 |---|---|---|
-| POST | `/ping` | Public heartbeat. Body: `k` (key), `u` (url), `p` (post), `c` (course), `i` (interval, for the overlap gap), `v` (playing video reported by an add-on), `w` (random page-view id) |
+| POST | `/ping` | Public heartbeat. Body: `k` (key), `u` (url), `p` (post), `c` (course), `i` (interval, for the overlap gap), `v` (playing video reported by an add-on), `w` (random page-view id), `m` (`0` when monitoring is off: only the sign-out check runs) |
 | GET | `/live` | Online sessions and summary |
 | POST | `/sessions/{id}/kick` | Sign out one session |
 | POST | `/users/{id}/kick` | Sign out every session of a user |
@@ -106,7 +107,8 @@ Heartbeat answers: `{"s":"ok"}`, `{"s":"revoked","r":"<reason>"}`, `{"s":"unknow
 |---|---|---|
 | `ndsg_loaded` | `$plugin` | The plugin finished booting. Add-ons start here. |
 | `ndsg_session_kicked` | `$session_row, $reason` | A session was ended by policy or an admin |
-| `ndsg_flag_raised` | `$user_id, $score, $reasons` | A new flag was created |
+| `ndsg_flag_raised` | `$user_id, $score, $reasons` | A new flag was created (`$score` = level × 25) |
+| `ndsg_overlap_assessed` | `$overlap, $level, $facts` | An overlap was rated (every 5 minutes while it lasts) |
 | `ndsg_daily` | | The daily cron ran |
 | `ndsg_flag_actions` | `$flag` | Extra buttons in a Flagged accounts row |
 | `ndsg_user_page_panel` | `$user, $flag` | Extra panels on the user page |
@@ -122,6 +124,9 @@ Heartbeat answers: `{"s":"ok"}`, `{"s":"revoked","r":"<reason>"}`, `{"s":"unknow
 |---|---|---|
 | `ndsg_capability` | `$cap` | `manage_options` |
 | `ndsg_user_max_devices` | `$max, $user_id` | The site setting |
+| `ndsg_overlap_risk` | `$risk ['level','facts'], $overlap` | Level from countries (very strong) or weak |
+| `ndsg_risk_levels` | `$levels` (level => [key, label, description]) | Descriptions shown in the legend; empty = not shown |
+| `ndsg_risk_repeat_level` | `$level` | `Risk::WEAK` (Pro: `STRONG`) |
 | `ndsg_ping_context` | `$context ['post','course'], $post_id` | Current post, course 0 |
 | `ndsg_heartbeat_url` | `$url` | `rest_url( 'ndsg/v1/ping' )` |
 | `ndsg_user_extra_info` | `$lines[], $user_id` | Lines shown on the user page |

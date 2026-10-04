@@ -57,6 +57,11 @@ class Handler {
 			$row->id
 		) );
 
+		// m=0: monitoring is off; the heartbeat only checks for sign-outs.
+		if ( isset( $input['m'] ) && '0' === (string) $input['m'] ) {
+			return [ 's' => 'ok' ];
+		}
+
 		self::record_overlaps( $wpdb, $row, $now, isset( $input['i'] ) ? (int) $input['i'] : 30 );
 
 		if ( is_callable( $after ) ) {

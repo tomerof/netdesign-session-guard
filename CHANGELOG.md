@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0
+- **Risk levels** replace the points model (`Detection\Risk`): every overlap is rated weak / very strong (countries) by the free plugin, medium / strong by Pro's video detection (`ndsg_overlap_risk`). Account level = highest recent overlap, raised to very strong on repeats (`ndsg_risk_repeat_level`).
+- Detector runs every 5 minutes (`ndsg_assess`) over changed overlaps; fires `ndsg_overlap_assessed`. Old rules (devices / networks / countries counts, kicks, concurrent at login, flag score) removed.
+- Flags list: risk badge column, legend box, sorted by level. User page: level per overlap.
+- Statuses: "Checked, OK" (`resolved`) replaces "Checked and resolved" and "Dismissed".
+- Settings: monitoring switch (`monitoring`; heartbeat sends `m=0` when off), `grace_seconds`, `flag_level`, `repeat_count`; Excluded users box synced with the whitelist.
+- DB v4: `level`/`facts` on overlaps, `level` on flags.
+
 ## 1.2.1
 - Heartbeat sends `w`, a random id per page view, so add-ons (Pro's viewing trail) can tell open tabs of one session apart.
 

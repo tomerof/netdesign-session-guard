@@ -10,7 +10,10 @@ defined( 'ABSPATH' ) || exit;
 
 class FlagRepository {
 
-	/** Handling statuses. The first three are "open": the case is still being handled. */
+	/**
+	 * Handling statuses. The first three are "open": the case is still being
+	 * handled. "dismissed" is from before 1.3.0 (now "resolved").
+	 */
 	const OPEN_STATUSES   = [ 'new', 'follow_up', 'blocked' ];
 	const CLOSED_STATUSES = [ 'resolved', 'dismissed' ];
 
@@ -19,8 +22,7 @@ class FlagRepository {
 			'new'       => __( 'New', 'netdesign-session-guard' ),
 			'follow_up' => __( 'Needs follow-up', 'netdesign-session-guard' ),
 			'blocked'   => __( 'Caught and blocked', 'netdesign-session-guard' ),
-			'resolved'  => __( 'Checked and resolved', 'netdesign-session-guard' ),
-			'dismissed' => __( 'Dismissed (not sharing)', 'netdesign-session-guard' ),
+			'resolved'  => __( 'Checked, OK', 'netdesign-session-guard' ),
 		];
 	}
 
@@ -33,46 +35,32 @@ class FlagRepository {
 	}
 
 	/**
-	 * Create or update the user's open flag. Reasons are merged with the
-	 * existing ones so momentary signals (concurrent devices) are kept.
-	 * A user whose case was closed (resolved or dismissed) recently isn't
-	 * flagged again until the quiet period ends.
+	 * Create or update the user's open flag with a risk level. A user whose
+	 * case was closed ("checked, OK") recently isn't flagged again until the
+	 * quiet period ends.
 	 *
 	 * @return bool True when a new flag was created.
 	 */
-	public static function raise( $user_id, array $reasons, $min_score, $dismiss_days ) {
+	public static function raise_level( $user_id, $level, array $reasons, $dismiss_days ) {
 		global $wpdb;
-		$t   = Schema::flags_table();
-		$now = Repository::now();
+		$t      = Schema::flags_table();
+		$now    = Repository::now();
+		$closed = self::in_list( self::CLOSED_STATUSES );
 
-		$closed             = self::in_list( self::CLOSED_STATUSES );
-		$recently_dismissed = $wpdb->get_var( $wpdb->prepare(
+		$recently_closed = $wpdb->get_var( $wpdb->prepare(
 			"SELECT id FROM {$t} WHERE user_id = %d AND status IN ({$closed}) AND updated_at >= %s LIMIT 1",
 			$user_id,
 			gmdate( 'Y-m-d H:i:s', time() - $dismiss_days * DAY_IN_SECONDS )
 		) );
-		if ( $recently_dismissed ) {
+		if ( $recently_closed ) {
 			return false;
 		}
 
 		$open = self::open_for_user( $user_id );
 		if ( $open ) {
-			$old = json_decode( $open->reasons, true ) ?: [];
-			foreach ( $old as $key => $r ) {
-				if ( ! isset( $reasons[ $key ] ) || $r['value'] > $reasons[ $key ]['value'] ) {
-					$reasons[ $key ] = $r;
-				}
-			}
-		}
-
-		$score = min( 100, array_sum( wp_list_pluck( $reasons, 'points' ) ) );
-		if ( $score < $min_score ) {
-			return false;
-		}
-
-		if ( $open ) {
 			$wpdb->update( $t, [
-				'score'      => $score,
+				'level'      => max( (int) $open->level, (int) $level ),
+				'score'      => max( (int) $open->level, (int) $level ) * 25,
 				'reasons'    => wp_json_encode( $reasons ),
 				'updated_at' => $now,
 			], [ 'id' => $open->id ] );
@@ -81,14 +69,15 @@ class FlagRepository {
 
 		$wpdb->insert( $t, [
 			'user_id'    => $user_id,
-			'score'      => $score,
+			'level'      => (int) $level,
+			'score'      => (int) $level * 25,
 			'reasons'    => wp_json_encode( $reasons ),
 			'status'     => 'new',
 			'created_at' => $now,
 			'updated_at' => $now,
 		] );
 
-		do_action( 'ndsg_flag_raised', $user_id, $score, $reasons );
+		do_action( 'ndsg_flag_raised', $user_id, (int) $level * 25, $reasons );
 		return true;
 	}
 
@@ -158,7 +147,7 @@ class FlagRepository {
 		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$t} f JOIN {$wpdb->users} u ON u.ID = f.user_id WHERE {$where}" );
 		$rows  = $wpdb->get_results( $wpdb->prepare(
 			"SELECT f.*, u.display_name, u.user_email FROM {$t} f JOIN {$wpdb->users} u ON u.ID = f.user_id
-			WHERE {$where} ORDER BY f.score DESC, f.updated_at DESC LIMIT %d OFFSET %d",
+			WHERE {$where} ORDER BY f.level DESC, f.updated_at DESC LIMIT %d OFFSET %d",
 			$per_page,
 			( $page - 1 ) * $per_page
 		) );

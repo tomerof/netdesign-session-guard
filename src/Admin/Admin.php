@@ -94,7 +94,7 @@ class Admin {
 
 		switch ( $do ) {
 			case 'dismiss':
-				FlagRepository::set_status( $flag_id, 'dismissed' );
+				FlagRepository::set_status( $flag_id, 'resolved' );
 				break;
 			case 'reopen':
 				FlagRepository::set_status( $flag_id, 'new' );
@@ -113,7 +113,7 @@ class Admin {
 				update_user_meta( $user_id, Enforcer::META_EXEMPT, 1 );
 				$flag = FlagRepository::open_for_user( $user_id );
 				if ( $flag ) {
-					FlagRepository::set_status( $flag->id, 'dismissed' );
+					FlagRepository::set_status( $flag->id, 'resolved' );
 				}
 				break;
 			case 'unexempt':
@@ -181,10 +181,11 @@ class Admin {
 		}
 		$texts = [
 			'emailed'    => __( 'Email sent.', 'netdesign-session-guard' ),
-			'note_added' => __( 'Note added.', 'netdesign-session-guard' ),
+			'note_added'   => __( 'Note added.', 'netdesign-session-guard' ),
+			'email_failed' => __( 'The email could not be sent. Check the site\'s email settings.', 'netdesign-session-guard' ),
 		];
 		$text  = $texts[ $n ] ?? __( 'Done.', 'netdesign-session-guard' );
-		printf( '<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html( $text ) );
+		printf( '<div class="notice %s is-dismissible"><p>%s</p></div>', 'email_failed' === $n ? 'notice-error' : 'notice-success', esc_html( $text ) );
 	}
 
 	public function user_row_action( $actions, $user ) {

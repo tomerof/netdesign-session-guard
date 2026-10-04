@@ -1,6 +1,7 @@
 <?php
 namespace NetDesign\SessionGuard\Admin;
 
+use NetDesign\SessionGuard\Detection\Risk;
 use NetDesign\SessionGuard\Policy\Settings;
 use NetDesign\SessionGuard\Session\ClientIp;
 
@@ -42,6 +43,12 @@ class SettingsPage {
 	}
 
 	private function core_fields( $tab ) {
+		$levels = [];
+		foreach ( Risk::levels() as $level => $info ) {
+			if ( $level > Risk::OK && '' !== $info[2] ) {
+				$levels[ $level ] = $info[1];
+			}
+		}
 		$roles = [];
 		foreach ( wp_roles()->get_names() as $key => $name ) {
 			$roles[ $key ] = translate_user_role( $name );
@@ -55,21 +62,20 @@ class SettingsPage {
 						'enforce' => __( 'Enforce: when a user signs in on a new device beyond the limit, the oldest device is signed out immediately', 'netdesign-session-guard' ),
 					] ],
 					'max_devices'   => [ 'number', __( 'Devices allowed at once', 'netdesign-session-guard' ), null, __( 'Tabs in the same browser count as one device.', 'netdesign-session-guard' ) ],
+					'exempt_users'  => [ 'textarea', __( 'Excluded users', 'netdesign-session-guard' ), null, __( 'Emails, usernames or user IDs, one per line or separated by commas. Test accounts and staff listed here are never limited or flagged (the same list as the whitelist).', 'netdesign-session-guard' ) ],
 					'exempt_roles'  => [ 'checkboxes', __( 'Roles without limits', 'netdesign-session-guard' ), $roles, __( 'Not limited and never flagged.', 'netdesign-session-guard' ) ],
 					'kick_message'  => [ 'textarea', __( 'Message shown to the signed-out device', 'netdesign-session-guard' ) ],
 					'kick_redirect' => [ 'url', __( 'Send signed-out device to', 'netdesign-session-guard' ), null, __( 'Empty = login page.', 'netdesign-session-guard' ) ],
 				];
 			case 'detect':
 				return [
-					'window_days'          => [ 'number', __( 'Look back (days)', 'netdesign-session-guard' ) ],
-					'concurrent_threshold' => [ 'number', __( 'Devices online at the same time', 'netdesign-session-guard' ), null, __( '+40 points', 'netdesign-session-guard' ) ],
-					'devices_threshold'    => [ 'number', __( 'Different devices in the period', 'netdesign-session-guard' ), null, __( '+30 points, +5 per extra device', 'netdesign-session-guard' ) ],
-					'networks_threshold'   => [ 'number', __( 'Different networks in the period', 'netdesign-session-guard' ), null, __( '+20 points. A network is an IP range (/24), so a changing home IP counts once.', 'netdesign-session-guard' ) ],
-					'countries_threshold'  => [ 'number', __( 'Different countries in the period', 'netdesign-session-guard' ), null, __( '+30 points. Needs a country header from Cloudflare or the server.', 'netdesign-session-guard' ) ],
-					'overlap_threshold'    => [ 'number', __( 'Minutes online together in the period', 'netdesign-session-guard' ), null, __( '+40 points. Total time two devices of the account were active at the same moment (overlaps under a minute are ignored).', 'netdesign-session-guard' ) ],
-					'kicks_threshold'      => [ 'number', __( 'Devices signed out by the limit', 'netdesign-session-guard' ), null, __( '+30 points. Frequent swapping between devices is a strong sign of sharing.', 'netdesign-session-guard' ) ],
-					'flag_score'           => [ 'number', __( 'Flag accounts scoring at least', 'netdesign-session-guard' ) ],
-					'dismiss_days'         => [ 'number', __( 'After dismissing, don\'t re-flag for (days)', 'netdesign-session-guard' ) ],
+					'monitoring'    => [ 'checkbox', __( 'Monitoring', 'netdesign-session-guard' ), null, __( 'Collects activity (overlaps, and viewing with Pro) and rates it. Turning it off stops collecting new data; nothing is deleted. The device limit keeps working.', 'netdesign-session-guard' ) ],
+					'grace_seconds' => [ 'number', __( 'Grace period (seconds)', 'netdesign-session-guard' ), null, __( 'How long two devices must be active together before it counts. A quick move from the phone to the computer is not flagged.', 'netdesign-session-guard' ) ],
+					'flag_level'    => [ 'select', __( 'Add accounts to the list from risk level', 'netdesign-session-guard' ), $levels, __( 'Accounts at this level or higher appear under Flagged accounts.', 'netdesign-session-guard' ) ],
+					/* translators: %s: risk level */
+					'repeat_count'  => [ 'number', __( '"Very strong" when it happens (times in 7 days)', 'netdesign-session-guard' ), null, sprintf( __( 'Counts overlaps at level "%s" or higher.', 'netdesign-session-guard' ), Risk::label( Risk::repeat_level() ) ) ],
+					'window_days'   => [ 'number', __( 'How many days back to check', 'netdesign-session-guard' ), null, __( 'The account list and the user pages count overlaps from this period.', 'netdesign-session-guard' ) ],
+					'dismiss_days'  => [ 'number', __( 'After "checked, OK", don\'t flag the account again for (days)', 'netdesign-session-guard' ) ],
 				];
 			case 'advanced':
 				return [
@@ -165,7 +171,7 @@ class SettingsPage {
 		$type    = $f[0];
 		$options = $f[2] ?? [];
 		$help    = $f[3] ?? '';
-		$value   = Settings::get( $key );
+		$value   = 'exempt_users' === $key ? \NetDesign\SessionGuard\Policy\Enforcer::whitelist_text() : Settings::get( $key );
 		$name    = Settings::OPTION . '[' . $key . ']';
 		$id      = 'ndsg-' . $key;
 

@@ -36,14 +36,11 @@ class Settings {
 			'active_window'       => 300,
 
 			// Detection.
+			'monitoring'          => 1,
 			'window_days'         => 30,
-			'devices_threshold'   => 3,
-			'networks_threshold'  => 5,
-			'countries_threshold' => 2,
-			'concurrent_threshold' => 2,
-			'overlap_threshold'   => 10,
-			'kicks_threshold'     => 5,
-			'flag_score'          => 50,
+			'grace_seconds'       => 120,
+			'flag_level'          => 1,
+			'repeat_count'        => 3,
 			'dismiss_days'        => 30,
 
 			// Privacy / data.
@@ -96,8 +93,23 @@ class Settings {
 		$out['ping_interval']  = min( 300, max( 10, (int) ( $in['ping_interval'] ?? $d['ping_interval'] ) ) );
 		$out['active_window']  = max( $out['ping_interval'] * 2, (int) ( $in['active_window'] ?? $d['active_window'] ) );
 
-		foreach ( [ 'window_days', 'devices_threshold', 'networks_threshold', 'countries_threshold', 'concurrent_threshold', 'overlap_threshold', 'kicks_threshold', 'flag_score', 'dismiss_days', 'retention_days' ] as $k ) {
+		foreach ( [ 'window_days', 'repeat_count', 'dismiss_days', 'retention_days' ] as $k ) {
 			$out[ $k ] = max( 1, (int) ( $in[ $k ] ?? $d[ $k ] ) );
+		}
+		$out['monitoring']    = empty( $in['monitoring'] ) ? 0 : 1;
+		$out['grace_seconds'] = max( 10, (int) ( $in['grace_seconds'] ?? $d['grace_seconds'] ) );
+		unset( $out['grace_minutes'] );
+
+		// "Excluded users" isn't stored: it edits the whitelist (user meta), and
+		// only when that field was on the submitted tab.
+		if ( is_array( $input ) && isset( $input['exempt_users'] ) ) {
+			Enforcer::sync_whitelist( wp_unslash( (string) $input['exempt_users'] ) );
+		}
+		unset( $out['exempt_users'] );
+		$out['flag_level'] = min( 4, max( 1, (int) ( $in['flag_level'] ?? $d['flag_level'] ) ) );
+		// Points-model settings from before 1.3.0.
+		foreach ( [ 'devices_threshold', 'networks_threshold', 'countries_threshold', 'concurrent_threshold', 'overlap_threshold', 'kicks_threshold', 'flag_score' ] as $k ) {
+			unset( $out[ $k ] );
 		}
 
 		$headers                 = [ 'auto', 'REMOTE_ADDR', 'HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP' ];

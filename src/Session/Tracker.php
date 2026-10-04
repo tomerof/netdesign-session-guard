@@ -1,7 +1,6 @@
 <?php
 namespace NetDesign\SessionGuard\Session;
 
-use NetDesign\SessionGuard\Detection\Detector;
 use NetDesign\SessionGuard\Policy\Enforcer;
 use NetDesign\SessionGuard\Policy\Settings;
 use const NetDesign\SessionGuard\VERSION;
@@ -61,7 +60,6 @@ class Tracker {
 		] );
 
 		Enforcer::on_login( (int) $user_id );
-		Detector::on_login( (int) $user_id );
 	}
 
 	public function on_logout( $user_id ) {
@@ -127,6 +125,11 @@ class Tracker {
 		if ( ! is_user_logged_in() ) {
 			return;
 		}
+		// With monitoring off the heartbeat is only needed to sign out devices quickly.
+		$monitoring = (bool) Settings::get( 'monitoring' );
+		if ( ! $monitoring && ! \NetDesign\SessionGuard\Policy\Enforcer::enforcing() ) {
+			return;
+		}
 		$token = wp_get_session_token();
 		if ( ! $token ) {
 			return;
@@ -139,6 +142,7 @@ class Tracker {
 			'url'      => apply_filters( 'ndsg_heartbeat_url', rest_url( 'ndsg/v1/ping' ) ),
 			'key'      => Repository::ping_key( hash( 'sha256', $token ) ),
 			'interval' => (int) Settings::get( 'ping_interval' ),
+			'monitor'  => $monitoring ? 1 : 0,
 			'post'     => (int) $context['post'],
 			'course'   => (int) $context['course'],
 			'message'  => Settings::get( 'kick_message' ),

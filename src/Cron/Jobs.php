@@ -1,7 +1,6 @@
 <?php
 namespace NetDesign\SessionGuard\Cron;
 
-use NetDesign\SessionGuard\Detection\Detector;
 use NetDesign\SessionGuard\Policy\Settings;
 use NetDesign\SessionGuard\Session\ClientIp;
 use NetDesign\SessionGuard\Session\Device;
@@ -38,14 +37,13 @@ class Jobs {
 	}
 
 	public static function unschedule() {
-		foreach ( [ self::HOURLY_HOOK, self::DAILY_HOOK, self::IMPORT_HOOK ] as $hook ) {
+		foreach ( [ self::HOURLY_HOOK, self::DAILY_HOOK, self::IMPORT_HOOK, \NetDesign\SessionGuard\Detection\Detector::HOOK ] as $hook ) {
 			wp_clear_scheduled_hook( $hook );
 		}
 	}
 
 	public function hourly() {
 		Repository::close_expired();
-		Detector::run();
 	}
 
 	public function daily() {

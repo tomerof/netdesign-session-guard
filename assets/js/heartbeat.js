@@ -33,6 +33,7 @@
 		body.set('i', cfg.interval || 30);
 		body.set('v', cfg.video || '');
 		body.set('w', view);
+		if (cfg.monitor === 0) body.set('m', '0');
 
 		fetch(cfg.url, { method: 'POST', body: body, credentials: 'same-origin', cache: 'no-store' })
 			.then(function (r) { return r.ok ? r.json() : null; })
