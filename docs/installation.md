@@ -11,7 +11,7 @@
 ## Install
 
 1. In WordPress go to **Plugins → Add New**, search for **Netdesign Session Guard**, then **Install** and **Activate**.
-2. Or upload `netdesign-session-guard.zip` under **Plugins → Add New → Upload Plugin**.
+2. Or upload `netdesign-session-guard-<version>.zip` under **Plugins → Add New → Upload Plugin**.
 
 On activation the plugin:
 

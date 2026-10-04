@@ -6,7 +6,7 @@ The free plugin is distributed by wordpress.org. The GitHub repo is the source o
 
 ## First submission
 
-1. `node scripts/build.mjs` builds `dist/netdesign-session-guard.zip`. It checks that the header version, the `VERSION` constant and the readme `Stable tag` agree.
+1. `node scripts/build.mjs` builds `dist/netdesign-session-guard-<version>.zip`. It checks that the header version, the `VERSION` constant and the readme `Stable tag` agree.
 2. Upload the zip at https://wordpress.org/plugins/developers/add/ while signed in as **netdesign**.
 3. The review team emails tomer@netdesign.media. Fix what they ask for, rebuild, and upload the new zip on the same page (or reply to the email).
 4. On approval you get SVN access: `https://plugins.svn.wordpress.org/netdesign-session-guard/`.
@@ -20,6 +20,7 @@ Submitted: 2026-09-28.
 3. Bump `Schema::DB_VERSION` if a table changed. `Schema::maybe_upgrade()` runs `dbDelta` on the first request after the update.
 4. Run `npm run i18n` if strings changed, then Plugin Check (see [Testing](testing.md)).
 5. Commit and tag on GitHub: `git tag vX.Y.Z && git push origin main vX.Y.Z`.
+   Then publish the GitHub release with the versioned zip: `gh release create vX.Y.Z dist/netdesign-session-guard-X.Y.Z.zip --title vX.Y.Z --notes-file <notes>` (notes from `CHANGELOG.md`).
 6. Build and publish to SVN:
 
 ```bash

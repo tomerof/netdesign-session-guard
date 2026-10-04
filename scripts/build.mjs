@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Builds dist/netdesign-session-guard.zip: the package submitted to
+ * Builds dist/netdesign-session-guard-<version>.zip: the package submitted to
  * wordpress.org (first review) and the content committed to the SVN trunk.
  * Needs `zip`.
  */
@@ -30,5 +30,5 @@ mkdirSync(stage, { recursive: true });
 for (const item of include) {
 	if (existsSync(join(root, item))) cpSync(join(root, item), join(stage, item), { recursive: true });
 }
-execFileSync('zip', ['-rq9', `${slug}.zip`, slug], { cwd: dist });
-console.log(`Built dist/${slug}.zip (${version}); staged copy in dist/${slug}/ for SVN trunk.`);
+execFileSync('zip', ['-rq9', `${slug}-${version}.zip`, slug], { cwd: dist });
+console.log(`Built dist/${slug}-${version}.zip; staged copy in dist/${slug}/ for SVN trunk.`);
