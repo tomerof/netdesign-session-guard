@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-04T07:58:42+00:00\n"
+"POT-Creation-Date: 2026-10-04T08:06:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: netdesign-session-guard\n"
@@ -45,7 +45,7 @@ msgid "Session Guard"
 msgstr ""
 
 #: src/Admin/Admin.php:39
-#: src/Admin/LivePage.php:15
+#: src/Admin/LivePage.php:41
 msgid "Live sessions"
 msgstr ""
 
@@ -55,7 +55,6 @@ msgstr ""
 
 #: src/Admin/Admin.php:40
 #: src/Admin/FlagsPage.php:49
-#: src/Admin/LivePage.php:30
 msgid "Flagged accounts"
 msgstr ""
 
@@ -164,7 +163,7 @@ msgstr ""
 
 #: src/Admin/FlagsPage.php:73
 #: src/Admin/FlagsPage.php:99
-#: src/Admin/LivePage.php:42
+#: src/Admin/LivePage.php:71
 msgid "User"
 msgstr ""
 
@@ -264,53 +263,64 @@ msgstr ""
 msgid "Detection settings"
 msgstr ""
 
-#. translators: %d: max devices
+#. translators: %d: seconds
 #: src/Admin/LivePage.php:20
+msgid "Active now"
+msgstr ""
+
+#. translators: %d: seconds
+#: src/Admin/LivePage.php:20
+#, php-format
+msgid "Users active on the site in the last %d seconds."
+msgstr ""
+
+#: src/Admin/LivePage.php:21
+msgid "Weak today"
+msgstr ""
+
+#: src/Admin/LivePage.php:22
+msgid "Medium today"
+msgstr ""
+
+#: src/Admin/LivePage.php:23
+msgid "Strong and above today"
+msgstr ""
+
+#. translators: %d: max devices
+#: src/Admin/LivePage.php:46
 #, php-format
 msgid "Enforcing: %d device per user"
 msgid_plural "Enforcing: %d devices per user"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Admin/LivePage.php:21
+#: src/Admin/LivePage.php:47
 msgid "Monitor only"
 msgstr ""
 
-#: src/Admin/LivePage.php:27
-msgid "Users online"
-msgstr ""
-
-#: src/Admin/LivePage.php:28
-msgid "Active sessions"
-msgstr ""
-
-#: src/Admin/LivePage.php:29
-msgid "Users on 2+ devices now"
-msgstr ""
-
-#: src/Admin/LivePage.php:34
+#: src/Admin/LivePage.php:63
 msgid "Filter by name, email, IP or page…"
 msgstr ""
 
-#: src/Admin/LivePage.php:35
+#: src/Admin/LivePage.php:64
 msgid "Only users on 2+ devices"
 msgstr ""
 
-#: src/Admin/LivePage.php:43
+#: src/Admin/LivePage.php:72
 #: src/Admin/UserPage.php:188
 msgid "Device"
 msgstr ""
 
-#: src/Admin/LivePage.php:44
+#: src/Admin/LivePage.php:73
 #: src/Admin/UserPage.php:189
 msgid "IP / country"
 msgstr ""
 
-#: src/Admin/LivePage.php:45
+#: src/Admin/LivePage.php:74
 msgid "Viewing"
 msgstr ""
 
-#: src/Admin/LivePage.php:46
+#: src/Admin/LivePage.php:75
 #: src/Admin/UserPage.php:190
 msgid "Last seen"
 msgstr ""
@@ -768,7 +778,7 @@ msgstr ""
 msgid "You have been signed out because your account was signed in on another device."
 msgstr ""
 
-#: src/Rest/Controller.php:120
+#: src/Rest/Controller.php:134
 msgid "Session not found or already ended."
 msgstr ""
 

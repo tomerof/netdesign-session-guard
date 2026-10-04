@@ -8,7 +8,7 @@ Everything is under the **Session Guard** menu (shield icon). By default only us
 
 **Session Guard → Live**
 
-- **Summary cards:** users online, active sessions, users on 2+ devices now, and open flags (links to the list).
+- **Summary cards** (refreshed with the table): *Active now* (users active within the online window), *Weak today*, *Strong and above today* (users with an overlap at that level today, site timezone). With Pro also *Playing now* and *Medium today*. Each card has a one-line description.
 - **Mode badge:** *Monitor only*, or *Enforcing: N devices per user*.
 - **Table:** one row per online session.
   - Columns: user, device and browser (with a desktop, phone or tablet icon), IP and country, what they're viewing (the page title or URL; with Pro + LearnDash, the course in bold plus the lesson), and last seen.

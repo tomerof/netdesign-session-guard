@@ -147,3 +147,12 @@ a.ndsg-card:hover { border-color: #2271b1; }
 .ndsg-legend__item .ndsg-risk { flex: none; }
 .ndsg-legend .description { margin: 8px 0 0; }
 @media (max-width: 960px) { .ndsg-legend__grid { grid-template-columns: 1fr; } }
+
+/* Live screen cards: title, number, description */
+.ndsg-live-cards { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.ndsg-live-cards .ndsg-card__label { color: #1d2327; font-weight: 600; }
+.ndsg-card__desc { color: #646970; font-size: 12px; line-height: 1.4; }
+.ndsg-card.is-playing { border-inline-start: 4px solid #2271b1; }
+.ndsg-card.is-weak { border-inline-start: 4px solid #dba617; }
+.ndsg-card.is-medium { border-inline-start: 4px solid #e26f00; }
+.ndsg-card.is-strong { border-inline-start: 4px solid #d63638; }

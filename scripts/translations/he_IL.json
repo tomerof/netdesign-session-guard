@@ -29,9 +29,6 @@
 		"אכיפה: %d מכשירים למשתמש"
 	],
 	"Monitor only": "ניטור בלבד",
-	"Users online": "משתמשים מחוברים",
-	"Active sessions": "חיבורים פעילים",
-	"Users on 2+ devices now": "משתמשים על 2+ מכשירים כעת",
 	"Filter by name, email, IP or page…": "סינון לפי שם, אימייל, IP או עמוד…",
 	"Only users on 2+ devices": "רק משתמשים על 2+ מכשירים",
 	"Device": "מכשיר",
@@ -178,5 +175,10 @@
 	"Very strong": "חזק מאוד",
 	"Two devices of the account were active at the same time for more than %s. It may be the same person switching devices.": "שני מכשירים של החשבון היו פעילים במקביל יותר מ-%s. ייתכן שזה אותו אדם שעבר בין מכשירים.",
 	"It happened %d times or more within 7 days, or the two devices were in different countries.": "זה קרה %d פעמים או יותר תוך 7 ימים, או שהמכשירים היו במדינות שונות.",
-	"All clear": "תקין"
+	"All clear": "תקין",
+	"Active now": "פעילים עכשיו",
+	"Users active on the site in the last %d seconds.": "משתמשים שהיו פעילים באתר ב-%d השניות האחרונות.",
+	"Weak today": "חלש היום",
+	"Medium today": "בינוני היום",
+	"Strong and above today": "חזק ומעלה היום"
 }

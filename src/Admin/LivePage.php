@@ -1,12 +1,38 @@
 <?php
 namespace NetDesign\SessionGuard\Admin;
 
+use NetDesign\SessionGuard\Detection\Risk;
 use NetDesign\SessionGuard\Policy\Enforcer;
 use NetDesign\SessionGuard\Policy\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
 class LivePage {
+
+	/**
+	 * Summary cards: stat key => [ label, description, css class ]. The values
+	 * come from the live REST response ("summary"), refreshed every 15 seconds.
+	 */
+	public static function cards() {
+		$levels = Risk::levels();
+		$cards  = [
+			/* translators: %d: seconds */
+			'active'       => [ __( 'Active now', 'netdesign-session-guard' ), sprintf( __( 'Users active on the site in the last %d seconds.', 'netdesign-session-guard' ), (int) Settings::get( 'active_window' ) ) ],
+			'weak_today'   => [ __( 'Weak today', 'netdesign-session-guard' ), $levels[ Risk::WEAK ][2], 'is-weak' ],
+			'medium_today' => [ __( 'Medium today', 'netdesign-session-guard' ), $levels[ Risk::MEDIUM ][2], 'is-medium' ],
+			'strong_today' => [ __( 'Strong and above today', 'netdesign-session-guard' ), $levels[ Risk::STRONG ][2] ?: $levels[ Risk::VERY_STRONG ][2], 'is-strong' ],
+		];
+		// A level that can't happen with the current data (no description) has no card.
+		if ( '' === $levels[ Risk::MEDIUM ][2] ) {
+			unset( $cards['medium_today'] );
+		}
+		/**
+		 * Cards at the top of the Live screen (Session Guard Pro adds "Playing now").
+		 *
+		 * @param array $cards key => [ label, description, css class ]
+		 */
+		return (array) apply_filters( 'ndsg_live_cards', $cards );
+	}
 
 	public function render() {
 		$enforcing = Enforcer::enforcing();
@@ -23,11 +49,14 @@ class LivePage {
 			</span>
 			<hr class="wp-header-end">
 
-			<div class="ndsg-cards">
-				<div class="ndsg-card"><span class="ndsg-card__value" data-stat="users">–</span><span class="ndsg-card__label"><?php esc_html_e( 'Users online', 'netdesign-session-guard' ); ?></span></div>
-				<div class="ndsg-card"><span class="ndsg-card__value" data-stat="sessions">–</span><span class="ndsg-card__label"><?php esc_html_e( 'Active sessions', 'netdesign-session-guard' ); ?></span></div>
-				<div class="ndsg-card is-warn"><span class="ndsg-card__value" data-stat="multi">–</span><span class="ndsg-card__label"><?php esc_html_e( 'Users on 2+ devices now', 'netdesign-session-guard' ); ?></span></div>
-				<a class="ndsg-card is-alert" href="<?php echo esc_url( admin_url( 'admin.php?page=ndsg-flags' ) ); ?>"><span class="ndsg-card__value" data-stat="open_flags">–</span><span class="ndsg-card__label"><?php esc_html_e( 'Flagged accounts', 'netdesign-session-guard' ); ?></span></a>
+			<div class="ndsg-cards ndsg-live-cards">
+				<?php foreach ( self::cards() as $key => $card ) : ?>
+					<div class="ndsg-card <?php echo esc_attr( $card[2] ?? '' ); ?>">
+						<span class="ndsg-card__label"><?php echo esc_html( $card[0] ); ?></span>
+						<span class="ndsg-card__value" data-stat="<?php echo esc_attr( $key ); ?>">–</span>
+						<span class="ndsg-card__desc"><?php echo esc_html( $card[1] ); ?></span>
+					</div>
+				<?php endforeach; ?>
 			</div>
 
 			<div class="ndsg-toolbar">

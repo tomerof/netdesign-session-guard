@@ -127,6 +127,8 @@ Heartbeat answers: `{"s":"ok"}`, `{"s":"revoked","r":"<reason>"}`, `{"s":"unknow
 | `ndsg_overlap_risk` | `$risk ['level','facts'], $overlap` | Level from countries (very strong) or weak |
 | `ndsg_risk_levels` | `$levels` (level => [key, label, description]) | Descriptions shown in the legend; empty = not shown |
 | `ndsg_risk_repeat_level` | `$level` | `Risk::WEAK` (Pro: `STRONG`) |
+| `ndsg_live_cards` | `$cards` (key => [label, description, css class]) | Active now, Weak / Medium / Strong-and-above today |
+| `ndsg_live_summary` | `$summary` (key => number) | Numbers for the cards, in the `/live` response |
 | `ndsg_ping_context` | `$context ['post','course'], $post_id` | Current post, course 0 |
 | `ndsg_heartbeat_url` | `$url` | `rest_url( 'ndsg/v1/ping' )` |
 | `ndsg_user_extra_info` | `$lines[], $user_id` | Lines shown on the user page |

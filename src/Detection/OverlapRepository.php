@@ -76,6 +76,22 @@ class OverlapRepository {
 		) );
 	}
 
+	/**
+	 * Users with a rated overlap since a date, per level (an overlap still
+	 * running counts on the day it is active).
+	 *
+	 * @return array level => number of users
+	 */
+	public static function users_by_level_since( $since ) {
+		global $wpdb;
+		$o   = Schema::overlaps_table();
+		$out = [];
+		foreach ( $wpdb->get_results( $wpdb->prepare( "SELECT level, COUNT(DISTINCT user_id) AS n FROM {$o} WHERE ended_at >= %s AND level > 0 GROUP BY level", $since ) ) as $r ) {
+			$out[ (int) $r->level ] = (int) $r->n;
+		}
+		return $out;
+	}
+
 	public static function find( $id ) {
 		global $wpdb;
 		$o = Schema::overlaps_table();

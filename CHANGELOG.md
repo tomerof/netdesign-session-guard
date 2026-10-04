@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1
+- Live screen cards: *Active now*, and users per risk level today (*Weak* / *Medium* / *Strong and above*), each with a description. Filters `ndsg_live_cards`, `ndsg_live_summary`.
+
 ## 1.3.0
 - **Risk levels** replace the points model (`Detection\Risk`): every overlap is rated weak / very strong (countries) by the free plugin, medium / strong by Pro's video detection (`ndsg_overlap_risk`). Account level = highest recent overlap, raised to very strong on repeats (`ndsg_risk_repeat_level`).
 - Detector runs every 5 minutes (`ndsg_assess`) over changed overlaps; fires `ndsg_overlap_assessed`. Old rules (devices / networks / countries counts, kicks, concurrent at login, flag score) removed.

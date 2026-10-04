@@ -39,7 +39,7 @@ msgid "Session Guard"
 msgstr "Session Guard"
 
 #: src/Admin/Admin.php:39
-#: src/Admin/LivePage.php:15
+#: src/Admin/LivePage.php:41
 msgid "Live sessions"
 msgstr "חיבורים פעילים"
 
@@ -49,7 +49,6 @@ msgstr "בזמן אמת"
 
 #: src/Admin/Admin.php:40
 #: src/Admin/FlagsPage.php:49
-#: src/Admin/LivePage.php:30
 msgid "Flagged accounts"
 msgstr "חשבונות חשודים"
 
@@ -158,7 +157,7 @@ msgstr "משתמשים ברשימה הלבנה אף פעם לא מוגבלים �
 
 #: src/Admin/FlagsPage.php:73
 #: src/Admin/FlagsPage.php:99
-#: src/Admin/LivePage.php:42
+#: src/Admin/LivePage.php:71
 msgid "User"
 msgstr "משתמש"
 
@@ -258,53 +257,64 @@ msgstr "רמת סיכון לא מנתקת אף אחד."
 msgid "Detection settings"
 msgstr "הגדרות זיהוי"
 
-#. translators: %d: max devices
+#. translators: %d: seconds
 #: src/Admin/LivePage.php:20
+msgid "Active now"
+msgstr "פעילים עכשיו"
+
+#. translators: %d: seconds
+#: src/Admin/LivePage.php:20
+#, php-format
+msgid "Users active on the site in the last %d seconds."
+msgstr "משתמשים שהיו פעילים באתר ב-%d השניות האחרונות."
+
+#: src/Admin/LivePage.php:21
+msgid "Weak today"
+msgstr "חלש היום"
+
+#: src/Admin/LivePage.php:22
+msgid "Medium today"
+msgstr "בינוני היום"
+
+#: src/Admin/LivePage.php:23
+msgid "Strong and above today"
+msgstr "חזק ומעלה היום"
+
+#. translators: %d: max devices
+#: src/Admin/LivePage.php:46
 #, php-format
 msgid "Enforcing: %d device per user"
 msgid_plural "Enforcing: %d devices per user"
 msgstr[0] "אכיפה: מכשיר אחד למשתמש"
 msgstr[1] "אכיפה: %d מכשירים למשתמש"
 
-#: src/Admin/LivePage.php:21
+#: src/Admin/LivePage.php:47
 msgid "Monitor only"
 msgstr "ניטור בלבד"
 
-#: src/Admin/LivePage.php:27
-msgid "Users online"
-msgstr "משתמשים מחוברים"
-
-#: src/Admin/LivePage.php:28
-msgid "Active sessions"
-msgstr "חיבורים פעילים"
-
-#: src/Admin/LivePage.php:29
-msgid "Users on 2+ devices now"
-msgstr "משתמשים על 2+ מכשירים כעת"
-
-#: src/Admin/LivePage.php:34
+#: src/Admin/LivePage.php:63
 msgid "Filter by name, email, IP or page…"
 msgstr "סינון לפי שם, אימייל, IP או עמוד…"
 
-#: src/Admin/LivePage.php:35
+#: src/Admin/LivePage.php:64
 msgid "Only users on 2+ devices"
 msgstr "רק משתמשים על 2+ מכשירים"
 
-#: src/Admin/LivePage.php:43
+#: src/Admin/LivePage.php:72
 #: src/Admin/UserPage.php:188
 msgid "Device"
 msgstr "מכשיר"
 
-#: src/Admin/LivePage.php:44
+#: src/Admin/LivePage.php:73
 #: src/Admin/UserPage.php:189
 msgid "IP / country"
 msgstr "IP / מדינה"
 
-#: src/Admin/LivePage.php:45
+#: src/Admin/LivePage.php:74
 msgid "Viewing"
 msgstr "צופה ב־"
 
-#: src/Admin/LivePage.php:46
+#: src/Admin/LivePage.php:75
 #: src/Admin/UserPage.php:190
 msgid "Last seen"
 msgstr "נראה לאחרונה"
@@ -762,7 +772,7 @@ msgstr "זה קרה %d פעמים או יותר תוך 7 ימים, או שהמכ
 msgid "You have been signed out because your account was signed in on another device."
 msgstr "נותקת מהאתר כי החשבון שלך התחבר ממכשיר אחר."
 
-#: src/Rest/Controller.php:120
+#: src/Rest/Controller.php:134
 msgid "Session not found or already ended."
 msgstr "החיבור לא נמצא או שכבר הסתיים."
 

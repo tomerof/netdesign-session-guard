@@ -3,6 +3,8 @@ namespace NetDesign\SessionGuard\Rest;
 
 use NetDesign\SessionGuard\Admin\Admin;
 use NetDesign\SessionGuard\Detection\FlagRepository;
+use NetDesign\SessionGuard\Detection\Risk;
+use NetDesign\SessionGuard\Detection\OverlapRepository;
 use NetDesign\SessionGuard\Ping\Handler;
 use NetDesign\SessionGuard\Policy\Settings;
 use NetDesign\SessionGuard\Session\Kicker;
@@ -103,14 +105,26 @@ class Controller {
 			}
 		}
 
+		$today = OverlapRepository::users_by_level_since( get_gmt_from_date( wp_date( 'Y-m-d' ) . ' 00:00:00' ) );
+		$summary = [
+			'active'       => count( $devices ),
+			'weak_today'   => $today[ Risk::WEAK ] ?? 0,
+			'medium_today' => $today[ Risk::MEDIUM ] ?? 0,
+			'strong_today' => ( $today[ Risk::STRONG ] ?? 0 ) + ( $today[ Risk::VERY_STRONG ] ?? 0 ),
+			'users'        => count( $devices ),
+			'sessions'     => count( $out ),
+			'multi'        => $multi,
+			'open_flags'   => FlagRepository::count_open(),
+		];
+
 		return [
 			'sessions' => $out,
-			'summary'  => [
-				'users'      => count( $devices ),
-				'sessions'   => count( $out ),
-				'multi'      => $multi,
-				'open_flags' => FlagRepository::count_open(),
-			],
+			/**
+			 * Numbers for the Live screen cards (see ndsg_live_cards).
+			 *
+			 * @param array $summary key => number
+			 */
+			'summary'  => (array) apply_filters( 'ndsg_live_summary', $summary ),
 		];
 	}
 

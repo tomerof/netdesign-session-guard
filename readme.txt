@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,9 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 4. Settings: device limit.
 
 == Changelog ==
+
+= 1.3.1 =
+* Live screen: cards for users active now and users at each risk level today.
 
 = 1.3.0 =
 * Risk levels (weak / medium / strong / very strong) replace the points score. Accounts are flagged from a level you choose, with a plain explanation and a "How to read the risk levels?" box.
