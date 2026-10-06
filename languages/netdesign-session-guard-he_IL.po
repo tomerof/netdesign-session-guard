@@ -791,19 +791,19 @@ msgstr "מדינות שונות"
 msgid "Devices signed out by the limit"
 msgstr "מכשירים שנותקו בגלל המגבלה"
 
-#: src/Detection/FlagRepository.php:22
+#: src/Detection/FlagRepository.php:23
 msgid "New"
 msgstr "חדש"
 
-#: src/Detection/FlagRepository.php:23
+#: src/Detection/FlagRepository.php:24
 msgid "Needs follow-up"
 msgstr "דורש מעקב"
 
-#: src/Detection/FlagRepository.php:24
+#: src/Detection/FlagRepository.php:25
 msgid "Caught and blocked"
 msgstr "נתפס ונחסם"
 
-#: src/Detection/FlagRepository.php:25
+#: src/Detection/FlagRepository.php:26
 msgid "Checked, OK"
 msgstr "נבדק ותקין"
 
@@ -858,6 +858,6 @@ msgid "Unknown browser"
 msgstr "דפדפן לא מזוהה"
 
 #: src/Session/Tracker.php:113
-#: src/Session/Tracker.php:149
+#: src/Session/Tracker.php:151
 msgid "OK"
 msgstr "אישור"

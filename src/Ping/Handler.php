@@ -17,7 +17,7 @@ class Handler {
 
 	/**
 	 * @param \wpdb $wpdb
-	 * @param array         $input k (ping key), u (url), p (post id), c (course id), i (heartbeat interval, seconds), v (playing video, if any), w (page-view id)
+	 * @param array         $input k (ping key), u (url), p (post id), c (course id), i (heartbeat interval, seconds), v (playing video, if any), vt (its title), w (page-view id)
 	 * @param callable|null $after Called after a valid heartbeat was stored: ( $wpdb, $row, $now, $input ).
 	 *                             $row has id, user_id, device_id and ip_net. Pro records its viewing trail here.
 	 * @return array Response payload.

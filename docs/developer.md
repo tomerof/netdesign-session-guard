@@ -94,7 +94,7 @@ Namespace `ndsg/v1`. Admin routes need the `ndsg_capability` (default `manage_op
 
 | Method | Route | |
 |---|---|---|
-| POST | `/ping` | Public heartbeat. Body: `k` (key), `u` (url), `p` (post), `c` (course), `i` (interval, for the overlap gap), `v` (playing video reported by an add-on), `w` (random page-view id), `m` (`0` when monitoring is off: only the sign-out check runs) |
+| POST | `/ping` | Public heartbeat. Body: `k` (key), `u` (url), `p` (post), `c` (course), `i` (interval, for the overlap gap), `v` (playing video reported by an add-on), `vt` (title of the playing video), `w` (random page-view id), `m` (`0` when monitoring is off: only the sign-out check runs) |
 | GET | `/live` | Online sessions and summary |
 | POST | `/sessions/{id}/kick` | Sign out one session |
 | POST | `/users/{id}/kick` | Sign out every session of a user |

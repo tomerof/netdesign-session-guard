@@ -52,6 +52,7 @@
 		body.set('c', cfg.course || 0);
 		body.set('i', cfg.interval || 30);
 		body.set('v', cfg.video || '');
+		if (cfg.video && cfg.videoTitle) body.set('vt', String(cfg.videoTitle).slice(0, 150));
 		body.set('w', view);
 		if (cfg.monitor === 0) body.set('m', '0');
 
