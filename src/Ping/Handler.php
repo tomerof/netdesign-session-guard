@@ -64,21 +64,30 @@ class Handler {
 			}
 		}
 
-		$wpdb->query( $wpdb->prepare(
-			"UPDATE {$table} SET last_seen = %s, current_url = %s, post_id = %d, course_id = %d"
-				. ( $moved ? ', ip = %s, ip_net = %s, country = %s' : '' )
-				. ' WHERE id = %d',
-			array_merge(
-				[
-					$now,
-					$url,
-					isset( $input['p'] ) ? self::id( $input['p'] ) : 0,
-					isset( $input['c'] ) ? self::id( $input['c'] ) : 0,
-				],
-				$moved ? [ $row->ip, $row->ip_net, (string) $row->country ] : [],
-				[ $row->id ]
-			)
-		) );
+		$post   = isset( $input['p'] ) ? self::id( $input['p'] ) : 0;
+		$course = isset( $input['c'] ) ? self::id( $input['c'] ) : 0;
+		if ( $moved ) {
+			$wpdb->query( $wpdb->prepare(
+				"UPDATE {$table} SET last_seen = %s, current_url = %s, post_id = %d, course_id = %d, ip = %s, ip_net = %s, country = %s WHERE id = %d",
+				$now,
+				$url,
+				$post,
+				$course,
+				$row->ip,
+				$row->ip_net,
+				(string) $row->country,
+				$row->id
+			) );
+		} else {
+			$wpdb->query( $wpdb->prepare(
+				"UPDATE {$table} SET last_seen = %s, current_url = %s, post_id = %d, course_id = %d WHERE id = %d",
+				$now,
+				$url,
+				$post,
+				$course,
+				$row->id
+			) );
+		}
 
 		// m=0: monitoring is off; the heartbeat only checks for sign-outs.
 		if ( isset( $input['m'] ) && '0' === (string) $input['m'] ) {

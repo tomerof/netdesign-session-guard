@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.8
+- Heartbeat UPDATE split into two fixed prepared queries (with and without the IP columns) instead of one built from pieces; wordpress.org's scan flagged `WordPress.DB.PreparedSQL.NotPrepared`. Same behavior.
+
 ## 1.3.7
 - The heartbeat (all transports: REST, Pro's `ping.php` and early endpoint) refreshes the session's `ip`, `ip_net` and `country` when the caller's address changed, resolved like at login (`ClientIp`, `ip_header`, `anonymize_ip`). The extra columns go into the existing UPDATE and only when the IP differs, so a normal heartbeat costs nothing more. New overlaps compare current networks. Reported by the ease-it owner: user 1428's Mac kept its 19/09 IPv6 (privacy addresses rotate daily) until 16/10, so overlap 392 said "different networks".
 - `Device::country_from()`: the country lookup without settings, usable under SHORTINIT.
