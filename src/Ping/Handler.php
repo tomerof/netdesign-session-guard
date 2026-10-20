@@ -1,6 +1,9 @@
 <?php
 namespace NetDesign\SessionGuard\Ping;
 
+use NetDesign\SessionGuard\Session\ClientIp;
+use NetDesign\SessionGuard\Session\Device;
+
 defined( 'ABSPATH' ) || exit;
 
 // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Queries on this plugin's own tables. Table names come from $wpdb->prefix; values are integer-cast or passed through $wpdb->prepare(). Caching would defeat live session tracking.
@@ -19,7 +22,7 @@ class Handler {
 	 * @param \wpdb $wpdb
 	 * @param array         $input k (ping key), u (url), p (post id), c (course id), i (heartbeat interval, seconds), v (playing video, if any), vt (its title), w (page-view id)
 	 * @param callable|null $after Called after a valid heartbeat was stored: ( $wpdb, $row, $now, $input ).
-	 *                             $row has id, user_id, device_id and ip_net. Pro records its viewing trail here.
+	 *                             $row has id, user_id, device_id, ip, ip_net and country (current). Pro records its viewing trail here.
 	 * @return array Response payload.
 	 */
 	public static function handle( $wpdb, array $input, $after = null ) {
@@ -30,7 +33,7 @@ class Handler {
 
 		$table = $wpdb->base_prefix . 'ndsg_sessions';
 		$row   = $wpdb->get_row( $wpdb->prepare(
-			"SELECT id, user_id, device_id, ip_net, ended_at, end_reason, expires_at FROM {$table} WHERE ping_key = %s",
+			"SELECT id, user_id, device_id, ip, ip_net, country, ended_at, end_reason, expires_at FROM {$table} WHERE ping_key = %s",
 			$key
 		) );
 
@@ -48,13 +51,33 @@ class Handler {
 
 		$url = isset( $input['u'] ) ? substr( preg_replace( '/[^\x21-\x7E]/', '', (string) $input['u'] ), 0, 255 ) : '';
 
+		// The IP is saved at login, but a device keeps its session for weeks while its
+		// address changes (IPv6 privacy addresses rotate daily). Follow the current one,
+		// writing the extra columns only when it really changed.
+		$client = self::client();
+		$moved  = '' !== $client['ip'] && $client['ip'] !== (string) $row->ip;
+		if ( $moved ) {
+			$row->ip     = $client['ip'];
+			$row->ip_net = $client['ip_net'];
+			if ( '' !== $client['country'] ) {
+				$row->country = $client['country'];
+			}
+		}
+
 		$wpdb->query( $wpdb->prepare(
-			"UPDATE {$table} SET last_seen = %s, current_url = %s, post_id = %d, course_id = %d WHERE id = %d",
-			$now,
-			$url,
-			isset( $input['p'] ) ? self::id( $input['p'] ) : 0,
-			isset( $input['c'] ) ? self::id( $input['c'] ) : 0,
-			$row->id
+			"UPDATE {$table} SET last_seen = %s, current_url = %s, post_id = %d, course_id = %d"
+				. ( $moved ? ', ip = %s, ip_net = %s, country = %s' : '' )
+				. ' WHERE id = %d',
+			array_merge(
+				[
+					$now,
+					$url,
+					isset( $input['p'] ) ? self::id( $input['p'] ) : 0,
+					isset( $input['c'] ) ? self::id( $input['c'] ) : 0,
+				],
+				$moved ? [ $row->ip, $row->ip_net, (string) $row->country ] : [],
+				[ $row->id ]
+			)
 		) );
 
 		// m=0: monitoring is off; the heartbeat only checks for sign-outs.
@@ -125,6 +148,36 @@ class Handler {
 				) );
 			}
 		}
+	}
+
+	/**
+	 * The caller's IP, network and country, worked out like at login (Tracker::on_login)
+	 * but without the Settings class, which isn't loaded under SHORTINIT.
+	 *
+	 * @return array ip (anonymized if set), ip_net, country.
+	 */
+	private static function client() {
+		foreach ( [ 'Session/ClientIp', 'Session/Device' ] as $file ) {
+			$class = 'NetDesign\\SessionGuard\\' . str_replace( '/', '\\', $file );
+			if ( ! class_exists( $class ) ) {
+				require_once dirname( __DIR__ ) . '/' . $file . '.php';
+			}
+		}
+
+		$settings = get_option( 'ndsg_settings', [] );
+		$settings = is_array( $settings ) ? $settings : [];
+		$mode     = isset( $settings['ip_header'] ) ? (string) $settings['ip_header'] : 'auto';
+
+		list( $ip, , $via_cf ) = ClientIp::resolve( $mode, $_SERVER );
+		if ( ! $ip ) {
+			return [ 'ip' => '', 'ip_net' => '', 'country' => '' ];
+		}
+
+		return [
+			'ip'      => empty( $settings['anonymize_ip'] ) ? $ip : Device::anonymize( $ip ),
+			'ip_net'  => Device::network( $ip ),
+			'country' => Device::country_from( $via_cf, $_SERVER ),
+		];
 	}
 
 	private static function id( $v ) {

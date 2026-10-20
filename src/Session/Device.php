@@ -82,9 +82,20 @@ class Device {
 	}
 
 	public static function country() {
+		return self::country_from( self::resolve()[2], $_SERVER );
+	}
+
+	/**
+	 * Country code from the request headers. Uses no settings, so the
+	 * heartbeat can call it under SHORTINIT.
+	 *
+	 * @param bool  $via_cloudflare Whether ClientIp verified the request came through Cloudflare.
+	 * @param array $server         $_SERVER
+	 */
+	public static function country_from( $via_cloudflare, array $server ) {
 		// CF-IPCountry is only trusted when the request really came through Cloudflare.
-		$cf = self::resolve()[2] ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_CF_IPCOUNTRY'] ?? '' ) ) : '';
-		$c  = strtoupper( (string) ( $cf ?: sanitize_text_field( wp_unslash( $_SERVER['GEOIP_COUNTRY_CODE'] ?? '' ) ) ) );
+		$cf = $via_cloudflare ? sanitize_text_field( wp_unslash( $server['HTTP_CF_IPCOUNTRY'] ?? '' ) ) : '';
+		$c  = strtoupper( (string) ( $cf ?: sanitize_text_field( wp_unslash( $server['GEOIP_COUNTRY_CODE'] ?? '' ) ) ) );
 		return preg_match( '/^[A-Z]{2}$/', $c ) && 'XX' !== $c ? $c : '';
 	}
 

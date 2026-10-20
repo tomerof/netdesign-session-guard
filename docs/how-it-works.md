@@ -22,7 +22,7 @@ Browser (tab visible) ──► every 30 s POST /wp-json/ndsg/v1/ping { key, url
             Ping\Handler (DB only)
             ├─ SELECT row by ping_key (unique index)
             ├─ ended?  → {"s":"revoked","r":"policy"} → browser shows message, leaves page
-            └─ active? → UPDATE last_seen, current_url → {"s":"ok"}
+            └─ active? → UPDATE last_seen, current_url (+ IP, network, country if the IP changed) → {"s":"ok"}
 
 Logout ──► wp_logout hook → mark row "logout"
 

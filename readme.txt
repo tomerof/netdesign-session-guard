@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.6
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,9 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 4. Settings: device limit.
 
 == Changelog ==
+
+= 1.3.7 =
+* The heartbeat keeps each session's IP address, network and country current. They were saved only at sign-in, so a device that signed in weeks earlier elsewhere could make two devices at home look like different networks.
 
 = 1.3.6 =
 * The heartbeat can carry the title of the playing video (used by the Pro add-on).
