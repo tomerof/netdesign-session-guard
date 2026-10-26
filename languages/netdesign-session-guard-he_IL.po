@@ -530,56 +530,64 @@ msgid "Automatic trusts a forwarding header only when the request really comes f
 msgstr "במצב אוטומטי כותרת העברה נחשבת אמינה רק כשהבקשה באמת מגיעה מ־Cloudflare או מפרוקסי מקומי, כך שמבקרים לא יכולים לזייף את כתובת ה־IP שלהם."
 
 #: src/Admin/SettingsPage.php:91
+msgid "Update Cloudflare IP ranges"
+msgstr "עדכון טווחי ה-IP של Cloudflare"
+
+#: src/Admin/SettingsPage.php:91
+msgid "Once a day, downloads Cloudflare's public list of IP ranges from api.cloudflare.com. Off: the list built into the plugin is used. Nothing about your site or users is sent."
+msgstr "פעם ביום מוריד את רשימת טווחי ה-IP הציבורית של Cloudflare מ-api.cloudflare.com. כבוי: משתמשים ברשימה המובנית בתוסף. שום מידע על האתר או המשתמשים לא נשלח."
+
+#: src/Admin/SettingsPage.php:92
 msgid "Store anonymized IPs"
 msgstr "שמירת כתובות IP מוסתרות"
 
-#: src/Admin/SettingsPage.php:92
+#: src/Admin/SettingsPage.php:93
 msgid "Keep session history for (days)"
 msgstr "שמירת היסטוריית חיבורים למשך (ימים)"
 
-#: src/Admin/SettingsPage.php:105
+#: src/Admin/SettingsPage.php:106
 msgid "Session Guard settings"
 msgstr "הגדרות Session Guard"
 
-#: src/Admin/SettingsPage.php:140
+#: src/Admin/SettingsPage.php:141
 msgid "Session Guard Pro adds email alerts, per-user and per-LearnDash-group device limits, LearnDash course tracking and a faster heartbeat."
 msgstr "Session Guard Pro מוסיף התראות במייל, הגבלת מכשירים לפי משתמש ולפי קבוצת LearnDash, מעקב אחר קורסי LearnDash ודופק מהיר יותר."
 
-#: src/Admin/SettingsPage.php:141
+#: src/Admin/SettingsPage.php:142
 msgid "Learn more"
 msgstr "מידע נוסף"
 
-#: src/Admin/SettingsPage.php:154
+#: src/Admin/SettingsPage.php:155
 msgid "direct connection (REMOTE_ADDR)"
 msgstr "חיבור ישיר (REMOTE_ADDR)"
 
-#: src/Admin/SettingsPage.php:155
+#: src/Admin/SettingsPage.php:156
 msgid "Cloudflare (CF-Connecting-IP)"
 msgstr "Cloudflare (CF-Connecting-IP)"
 
-#: src/Admin/SettingsPage.php:156
+#: src/Admin/SettingsPage.php:157
 msgid "Cloudflare (real IP restored by the web server)"
 msgstr "Cloudflare (כתובת ה־IP האמיתית שוחזרה על ידי שרת האינטרנט)"
 
-#: src/Admin/SettingsPage.php:157
+#: src/Admin/SettingsPage.php:158
 msgid "local proxy (X-Forwarded-For)"
 msgstr "פרוקסי מקומי (X-Forwarded-For)"
 
-#: src/Admin/SettingsPage.php:158
+#: src/Admin/SettingsPage.php:159
 msgid "local proxy (X-Real-IP)"
 msgstr "פרוקסי מקומי (X-Real-IP)"
 
 #. translators: %s: detected source
-#: src/Admin/SettingsPage.php:164
+#: src/Admin/SettingsPage.php:165
 #, php-format
 msgid "Detected: %s"
 msgstr "זוהה: %s"
 
-#: src/Admin/SettingsPage.php:165
+#: src/Admin/SettingsPage.php:166
 msgid "Your IP as seen by Automatic:"
 msgstr "כתובת ה־IP שלך לפי המצב האוטומטי:"
 
-#: src/Admin/SettingsPage.php:192
+#: src/Admin/SettingsPage.php:193
 msgid "Enabled"
 msgstr "פעיל"
 
@@ -853,7 +861,7 @@ msgstr "נותקת מהאתר כי החשבון שלך התחבר ממכשיר �
 msgid "Session not found or already ended."
 msgstr "החיבור לא נמצא או שכבר הסתיים."
 
-#: src/Session/Device.php:117
+#: src/Session/Device.php:128
 msgid "Unknown browser"
 msgstr "דפדפן לא מזוהה"
 
