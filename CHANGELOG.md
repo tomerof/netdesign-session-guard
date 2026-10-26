@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.9
+- wordpress.org review (Guideline 7): the daily Cloudflare IP-range download is opt-in, new setting `cloudflare_updates` (Advanced, off by default). While off, `ClientIp::ranges()` uses the built-in list and ignores any saved one.
+- Removed `load_plugin_textdomain()` and the `Domain Path` header; the wordpress.org package no longer ships `languages/` (translations come from translate.wordpress.org). The Hebrew `.po` stays in the repo for importing there.
+- Fixed: `Jobs::daily()` is the `ndsg_daily` cron callback and also fired `do_action( 'ndsg_daily' )`, so it called itself until PHP ran out of memory (since 1.0.0). The daily job never finished, and add-on handlers on `ndsg_daily` (Pro's license check, mail and trail cleanup) never ran. They now run once, from the cron hook itself.
+
 ## 1.3.8
 - Heartbeat UPDATE split into two fixed prepared queries (with and without the IP columns) instead of one built from pieces; wordpress.org's scan flagged `WordPress.DB.PreparedSQL.NotPrepared`. Same behavior.
 

@@ -3,7 +3,7 @@
  * Plugin Name:       Netdesign Session Guard
  * Plugin URI:        https://github.com/tomerof/netdesign-session-guard
  * Description:       See who is signed in right now, detect accounts shared between several people, and limit how many devices an account can use at once.
- * Version:           1.3.8
+ * Version:           1.3.9
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Netdesign
@@ -11,7 +11,6 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       netdesign-session-guard
- * Domain Path:       /languages
  *
  * @package NetdesignSessionGuard
  */
@@ -20,7 +19,7 @@ namespace NetDesign\SessionGuard;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION     = '1.3.8';
+const VERSION     = '1.3.9';
 const PLUGIN_FILE = __FILE__;
 
 define( 'NDSG_DIR', plugin_dir_path( __FILE__ ) );

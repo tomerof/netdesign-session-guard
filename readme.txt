@@ -4,7 +4,7 @@ Tags: sessions, login, account sharing, concurrent logins, security
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.8
+Stable tag: 1.3.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,7 +108,7 @@ Flags store the user ID, the rule values and the handling status. Overlaps store
 
 Ended sessions and overlaps are deleted after 90 days (configurable). Notes are kept until you delete them or the user. Deleting a user deletes their data. Uninstalling the plugin removes all of its data.
 
-**External request:** once a day the plugin downloads Cloudflare's public list of IP ranges from `https://api.cloudflare.com/client/v4/ips`. It uses them only to recognize requests coming through Cloudflare, and a built-in copy is used if the download fails. No data about your site or users is sent anywhere. This service is provided by Cloudflare, Inc.: [Terms of Use](https://www.cloudflare.com/website-terms/), [Privacy Policy](https://www.cloudflare.com/privacypolicy/).
+**External request (off by default):** only if you turn on **Settings → Advanced → Update Cloudflare IP ranges**, the plugin downloads Cloudflare's public list of IP ranges from `https://api.cloudflare.com/client/v4/ips` once a day. It uses them only to recognize requests coming through Cloudflare. While the setting is off, or if the download fails, the list built into the plugin is used. No data about your site or users is sent anywhere. This service is provided by Cloudflare, Inc.: [Terms of Use](https://www.cloudflare.com/website-terms/), [Privacy Policy](https://www.cloudflare.com/privacypolicy/).
 
 Mention this processing in your site's privacy policy. A suggested text: "To protect accounts from unauthorized sharing, we record the devices, approximate location (IP address and country) and activity times of signed-in sessions, for up to 90 days."
 
@@ -120,6 +120,11 @@ Mention this processing in your site's privacy policy. A suggested text: "To pro
 4. Settings: device limit.
 
 == Changelog ==
+
+= 1.3.9 =
+* Downloading Cloudflare's IP ranges is now opt-in (Settings → Advanced), off by default.
+* Translations come from translate.wordpress.org instead of being bundled.
+* Fixed: the daily cleanup job could run out of memory and never finish.
 
 = 1.3.8 =
 * Code cleanup in the heartbeat's database update (no change in behavior).

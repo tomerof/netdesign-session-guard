@@ -88,6 +88,7 @@ class SettingsPage {
 						'HTTP_X_FORWARDED_FOR'  => 'X-Forwarded-For',
 						'HTTP_X_REAL_IP'        => 'X-Real-IP',
 					], __( 'Automatic trusts a forwarding header only when the request really comes from Cloudflare or a local proxy, so visitors cannot fake their IP.', 'netdesign-session-guard' ) ],
+					'cloudflare_updates' => [ 'checkbox', __( 'Update Cloudflare IP ranges', 'netdesign-session-guard' ), null, __( 'Once a day, downloads Cloudflare\'s public list of IP ranges from api.cloudflare.com. Off: the list built into the plugin is used. Nothing about your site or users is sent.', 'netdesign-session-guard' ) ],
 					'anonymize_ip'   => [ 'checkbox', __( 'Store anonymized IPs', 'netdesign-session-guard' ) ],
 					'retention_days' => [ 'number', __( 'Keep session history for (days)', 'netdesign-session-guard' ) ],
 				];

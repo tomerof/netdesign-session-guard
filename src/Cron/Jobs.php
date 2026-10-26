@@ -46,11 +46,15 @@ class Jobs {
 		Repository::close_expired();
 	}
 
+	/**
+	 * Add-ons run their daily work on the same hook (ndsg_daily), so there is no extra action to fire here.
+	 */
 	public function daily() {
 		Repository::purge_older_than( (int) Settings::get( 'retention_days' ) );
 		\NetDesign\SessionGuard\Detection\OverlapRepository::purge_older_than( (int) Settings::get( 'retention_days' ) );
-		ClientIp::refresh_ranges();
-		do_action( 'ndsg_daily' );
+		if ( Settings::get( 'cloudflare_updates' ) ) {
+			ClientIp::refresh_ranges();
+		}
 	}
 
 	/**

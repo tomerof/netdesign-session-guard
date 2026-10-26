@@ -23,11 +23,6 @@ final class Plugin {
 	private function __construct() {
 		Schema::maybe_upgrade();
 
-		// Bundled Hebrew translation until translate.wordpress.org has one.
-		add_action( 'init', function () {
-			load_plugin_textdomain( 'netdesign-session-guard', false, dirname( plugin_basename( PLUGIN_FILE ) ) . '/languages' );
-		}, 1 );
-
 		( new Tracker() )->register();
 		( new Jobs() )->register();
 		\NetDesign\SessionGuard\Detection\Detector::register();

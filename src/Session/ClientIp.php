@@ -19,7 +19,8 @@ defined( 'ABSPATH' ) || exit;
  *      REMOTE_ADDR. Treated as Cloudflare, so its country header is used.
  *   4. Otherwise REMOTE_ADDR.
  *
- * Cloudflare's ranges are built in and refreshed daily from api.cloudflare.com/client/v4/ips.
+ * Cloudflare's ranges are built in. With the cloudflare_updates setting on (off by
+ * default), they are refreshed daily from api.cloudflare.com/client/v4/ips.
  */
 class ClientIp {
 
@@ -101,6 +102,11 @@ class ClientIp {
 
 	public static function ranges() {
 		$saved = get_option( self::RANGES_OPTION );
+		// A downloaded list counts only while updates are on; turning them off goes back to the built-in one.
+		$settings = get_option( 'ndsg_settings', [] );
+		if ( empty( $settings['cloudflare_updates'] ) ) {
+			return self::CLOUDFLARE_RANGES;
+		}
 		return is_array( $saved ) && count( $saved ) > 10 ? $saved : self::CLOUDFLARE_RANGES;
 	}
 

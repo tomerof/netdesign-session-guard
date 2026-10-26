@@ -46,6 +46,7 @@ class Settings {
 			// Privacy / data.
 			'ip_header'           => 'auto',
 			'anonymize_ip'        => 0,
+			'cloudflare_updates'  => 0,
 			'retention_days'      => 90,
 		] );
 	}
@@ -117,6 +118,7 @@ class Settings {
 		$headers                 = [ 'auto', 'REMOTE_ADDR', 'HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP' ];
 		$out['ip_header']        = in_array( $in['ip_header'] ?? '', $headers, true ) ? $in['ip_header'] : $d['ip_header'];
 		$out['anonymize_ip']     = empty( $in['anonymize_ip'] ) ? 0 : 1;
+		$out['cloudflare_updates'] = empty( $in['cloudflare_updates'] ) ? 0 : 1;
 
 		/**
 		 * Add-ons sanitize their own settings here.

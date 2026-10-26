@@ -15,7 +15,8 @@ const dist = join(root, 'dist');
 const stage = join(dist, slug);
 
 // Only what WordPress needs. No dev files, no docs, no build scripts.
-const include = [`${slug}.php`, 'uninstall.php', 'readme.txt', 'src', 'assets', 'languages'];
+const include = [`${slug}.php`, 'uninstall.php', 'readme.txt', 'src', 'assets'];
+// No languages/: wordpress.org serves translations from translate.wordpress.org.
 
 const header = readFileSync(join(root, `${slug}.php`), 'utf8');
 const version = (header.match(/^\s*\*\s*Version:\s*(\S+)/m) || [])[1];
